@@ -215,3 +215,5 @@ II. 今後実行したい施策 (中長期的な効果/連携強化)
     - **実装:** 自治体・企業向けAPIを提供し、情報連携を容易化。専用の管理画面を用意し、情報投稿・管理を可能にする。地域イベント、観光情報、共同キャンペーン、データ連携などを想定。
     - **技術:** RESTful API設計、管理画面構築。
 
+# 画面遷移図
+[画面遷移図 - Figma](https://www.figma.com/design/KLFvR5XxxfFpCntEmAjWCI/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=G3GAkMWF2NfmeO7u-1)
