@@ -217,3 +217,6 @@ II. 今後実行したい施策 (中長期的な効果/連携強化)
 
 # 画面遷移図
 [画面遷移図 - Figma](https://www.figma.com/design/KLFvR5XxxfFpCntEmAjWCI/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=G3GAkMWF2NfmeO7u-1)
+
+# ER図
+[![Image from Gyazo](https://i.gyazo.com/834c4f5932352a3b49c917e1ea597610.png)](https://gyazo.com/834c4f5932352a3b49c917e1ea597610)
