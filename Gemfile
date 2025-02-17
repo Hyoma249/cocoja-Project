@@ -66,3 +66,4 @@ end
 
 # 下記に新しくgemの追加
 gem "devise"
+gem "dotenv-rails"
