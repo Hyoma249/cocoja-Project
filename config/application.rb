@@ -7,7 +7,7 @@ require "rails/all"
 require "dotenv"
 Dotenv.load(".env.local", ".env")
 
-config.autoload_lib(ignore: %w[assets tasks])
+Bundler.require(*Rails.groups)
 
 module App
   class Application < Rails::Application
