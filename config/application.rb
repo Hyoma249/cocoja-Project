@@ -4,10 +4,10 @@ require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-require 'dotenv'
-Dotenv.load('.env.local', '.env')
+require "dotenv"
+Dotenv.load(".env.local", ".env")
 
-Bundler.require(*Rails.groups)
+config.autoload_lib(ignore: %w[assets tasks])
 
 module App
   class Application < Rails::Application
