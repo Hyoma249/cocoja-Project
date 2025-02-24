@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-# master keyの存在確認を追加
+# master keyの存在確認（重複を削除し、一箇所に統一）
 if [ -z "$RAILS_MASTER_KEY" ]; then
     echo "Error: RAILS_MASTER_KEY is not set"
     exit 1
@@ -12,21 +12,25 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# Verify Rails environment variables
-if [ "$RAILS_ENV" = "production" ]; then
-    if [ -z "$RAILS_MASTER_KEY" ]; then
-        echo "Error: RAILS_MASTER_KEY is not set in production"
-        exit 1
-    fi
-fi
-
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-    # Verify database connection before running prepare
-    echo "Checking database connection..."
-    ./bin/rails db:version || true
-    echo "Running database prepare..."
-    ./bin/rails db:prepare
+    # データベース接続を確認（リトライ処理を追加）
+    max_attempts=30
+    counter=0
+    until bundle exec rails db:version > /dev/null 2>&1; do
+        counter=$((counter + 1))
+        if [ $counter -eq $max_attempts ]; then
+            echo "Failed to connect to database after $max_attempts attempts"
+            exit 1
+        fi
+        echo "Waiting for database connection... (attempt $counter/$max_attempts)"
+        sleep 2
+    done
+    echo "Database connection established"
+    
+    # データベースの準備
+    bundle exec rails db:prepare
 fi
 
-exec "${@}"
+# Rails serverのポート設定を8080に変更
+exec "${@}" -p 8080
