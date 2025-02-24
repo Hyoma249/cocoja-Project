@@ -5,14 +5,15 @@
 # docker build -t myapp .
 # docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name myapp myapp
 
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
-
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.3.6
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
+
+# 環境変数をARGとして定義
+ARG RAILS_MASTER_KEY
 
 # Install base packages
 RUN apt-get update -qq && \
@@ -28,6 +29,10 @@ ENV RAILS_ENV="production" \
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
+
+# 環境変数をbuildステージでも利用可能にする
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY="${RAILS_MASTER_KEY}"
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
@@ -56,20 +61,18 @@ RUN yarn install --frozen-lockfile
 # Copy application code
 COPY . .
 
-# RAILS_MASTER_KEYの確認用（ビルド時のみ）
+# RAILS_MASTER_KEYの確認と資産のプリコンパイル
 RUN if [ -z "$RAILS_MASTER_KEY" ]; then \
-    echo "Warning: RAILS_MASTER_KEY is not set during build"; \
+      echo "Warning: RAILS_MASTER_KEY is not set during build"; \
+      SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile; \
+    else \
+      ./bin/rails assets:precompile; \
     fi
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-
 RUN rm -rf node_modules
-
 
 # Final stage for app image
 FROM base
