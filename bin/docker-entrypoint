@@ -5,40 +5,9 @@ set -x
 
 echo "Starting entrypoint script..."
 
-# master keyの存在確認
-if [ -z "$RAILS_MASTER_KEY" ]; then
-    echo "Error: RAILS_MASTER_KEY is not set"
-    exit 1
-fi
-echo "RAILS_MASTER_KEY is set"
+# データベース接続テスト（非ブロッキングで）
+bundle exec rails db:version || echo "Database version check failed, but continuing..."
 
-# Enable jemalloc for reduced memory usage and latency.
-if [ -z "${LD_PRELOAD+x}" ]; then
-    LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
-    export LD_PRELOAD
-fi
-
-echo "Environment variables:"
-env
-
-echo "Files in /rails directory:"
-ls -la /rails
-
-echo "Current directory:"
-pwd
-
-# データベース接続を試みる前の待機
-echo "Waiting for 10 seconds before attempting database connection..."
-sleep 10
-
-echo "Attempting database connection..."
-# データベース接続テスト（失敗してもスクリプトを継続）
-bundle exec rails db:version || echo "Database connection failed, but continuing..."
-
-echo "Creating minimal database structure..."
-# 最小限のデータベース操作（スキーマの初期化）
-bundle exec rails db:create || echo "Database creation failed, but continuing..."
-
-echo "Command to execute: ${@}"
-# 元のコマンドを実行
+# サーバー起動
+echo "Starting Rails server on port 8080..."
 exec "${@}"
