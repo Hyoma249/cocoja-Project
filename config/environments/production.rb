@@ -51,7 +51,7 @@ Rails.application.configure do
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  config.solid_queue.connects_to = { database: { writing: :primary } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -94,4 +94,8 @@ Rails.application.configure do
   config.read_encrypted_secrets = true
   config.hosts.clear # 開発段階では一時的にホスト制限を解除
   config.log_level = :debug  # 一時的にログレベルを上げる
+
+  # ActionCable設定を追加
+  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
 end
