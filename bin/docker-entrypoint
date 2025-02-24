@@ -12,25 +12,22 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -1}" == "server" ]; then
-    # データベース接続を確認
-    max_attempts=30
-    counter=0
-    until bundle exec rails db:version > /dev/null 2>&1; do
-        counter=$((counter + 1))
-        if [ $counter -eq $max_attempts ]; then
-            echo "Failed to connect to database after $max_attempts attempts"
-            exit 1
-        fi
-        echo "Waiting for database connection... (attempt $counter/$max_attempts)"
-        sleep 2
-    done
-    echo "Database connection established"
-    
-    # データベースの準備
-    bundle exec rails db:prepare
-fi
+# データベース接続を確認
+max_attempts=30
+counter=0
+until bundle exec rails db:version > /dev/null 2>&1; do
+    counter=$((counter + 1))
+    if [ $counter -eq $max_attempts ]; then
+        echo "Failed to connect to database after $max_attempts attempts"
+        exit 1
+    fi
+    echo "Waiting for database connection... (attempt $counter/$max_attempts)"
+    sleep 2
+done
+echo "Database connection established"
 
-# 元のコマンドを実行（ポートの指定は削除し、CMDに任せる）
+# データベースの準備
+bundle exec rails db:prepare
+
+# 元のコマンドを実行
 exec "${@}"

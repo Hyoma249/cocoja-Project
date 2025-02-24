@@ -87,10 +87,12 @@ RUN groupadd --system --gid 1000 rails && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
+# Healthcheck設定を追加
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/up || exit 1
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start server via Thruster by default, this can be overwritten at runtime
-EXPOSE 8080
-# ポート8080を明示的に指定
-CMD ["./bin/thrust", "./bin/rails", "server", "-p", "8080"]
+# サーバー起動コマンドを修正
+CMD ["bash", "-c", "bundle exec rails server -b 0.0.0.0 -p 8080"]
