@@ -1,10 +1,16 @@
 #!/bin/bash -e
 
+# デバッグ出力を有効化
+set -x
+
+echo "Starting entrypoint script..."
+
 # master keyの存在確認
 if [ -z "$RAILS_MASTER_KEY" ]; then
     echo "Error: RAILS_MASTER_KEY is not set"
     exit 1
 fi
+echo "RAILS_MASTER_KEY is set"
 
 # Enable jemalloc for reduced memory usage and latency.
 if [ -z "${LD_PRELOAD+x}" ]; then
@@ -12,22 +18,27 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# データベース接続を確認
-max_attempts=30
-counter=0
-until bundle exec rails db:version > /dev/null 2>&1; do
-    counter=$((counter + 1))
-    if [ $counter -eq $max_attempts ]; then
-        echo "Failed to connect to database after $max_attempts attempts"
-        exit 1
-    fi
-    echo "Waiting for database connection... (attempt $counter/$max_attempts)"
-    sleep 2
-done
-echo "Database connection established"
+echo "Environment variables:"
+env
 
-# データベースの準備
-bundle exec rails db:prepare
+echo "Files in /rails directory:"
+ls -la /rails
 
+echo "Current directory:"
+pwd
+
+# データベース接続を試みる前の待機
+echo "Waiting for 10 seconds before attempting database connection..."
+sleep 10
+
+echo "Attempting database connection..."
+# データベース接続テスト（失敗してもスクリプトを継続）
+bundle exec rails db:version || echo "Database connection failed, but continuing..."
+
+echo "Creating minimal database structure..."
+# 最小限のデータベース操作（スキーマの初期化）
+bundle exec rails db:create || echo "Database creation failed, but continuing..."
+
+echo "Command to execute: ${@}"
 # 元のコマンドを実行
 exec "${@}"

@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # ヘルスチェック用エンドポイント
   get '/up', to: proc { [200, {}, ['OK']] }
 
+  # ルートを追加
+  root to: proc { [200, {}, ['Welcome to Rails on Back4app!']] }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

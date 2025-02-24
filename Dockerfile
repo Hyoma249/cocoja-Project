@@ -97,5 +97,5 @@ EXPOSE 8080/tcp
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# サーバー起動コマンドを修正
-CMD ["bash", "-c", "bundle exec rails server -b 0.0.0.0 -p 8080"]
+# サーバー起動コマンドを単純化
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "8080"]

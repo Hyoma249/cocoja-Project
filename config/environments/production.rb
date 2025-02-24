@@ -94,6 +94,11 @@ Rails.application.configure do
   config.read_encrypted_secrets = true
   config.hosts.clear # 開発段階では一時的にホスト制限を解除
   config.log_level = :debug  # 一時的にログレベルを上げる
+  # データベース設定を一時的に無効化（まずはサーバーを起動させる）
+  config.cache_classes = false  # 開発時は一時的に無効化
+  config.eager_load = false     # 開発時は一時的に無効化
+  # ホスト制限を解除
+  config.hosts = nil
 
   # ActionCable設定を追加
   config.action_cable.disable_request_forgery_protection = true
