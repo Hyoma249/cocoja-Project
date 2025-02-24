@@ -91,4 +91,5 @@ Rails.application.configure do
   # 以下をデプロイ時に追加
   config.assets.compile = true
   config.require_master_key = true
+  config.read_encrypted_secrets = true
 end

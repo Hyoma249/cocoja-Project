@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+# master keyの存在確認を追加
+if [ -z "$RAILS_MASTER_KEY" ]; then
+    echo "Error: RAILS_MASTER_KEY is not set"
+    exit 1
+fi
+
 # Enable jemalloc for reduced memory usage and latency.
 if [ -z "${LD_PRELOAD+x}" ]; then
     LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)

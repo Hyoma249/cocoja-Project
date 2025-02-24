@@ -24,6 +24,8 @@ ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
+# 既存のENV設定の近くに以下を追加
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
