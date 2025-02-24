@@ -87,5 +87,8 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # 以下をデプロイ時に追加
   config.assets.compile = true
+  config.require_master_key = true
 end
