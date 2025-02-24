@@ -92,4 +92,5 @@ Rails.application.configure do
   config.assets.compile = true
   config.require_master_key = true
   config.read_encrypted_secrets = true
+  config.hosts.clear # 開発段階では一時的にホスト制限を解除
 end
