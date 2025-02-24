@@ -23,9 +23,8 @@ RUN apt-get update -qq && \
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
-# 既存のENV設定の近くに以下を追加
-ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    BUNDLE_WITHOUT="development" \
+    RAILS_MASTER_KEY="${RAILS_MASTER_KEY}"
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
@@ -56,6 +55,11 @@ RUN yarn install --frozen-lockfile
 
 # Copy application code
 COPY . .
+
+# RAILS_MASTER_KEYの確認用（ビルド時のみ）
+RUN if [ -z "$RAILS_MASTER_KEY" ]; then \
+    echo "Warning: RAILS_MASTER_KEY is not set during build"; \
+    fi
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
