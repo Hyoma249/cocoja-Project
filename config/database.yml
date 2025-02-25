@@ -17,6 +17,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    adapter: postgresql
     url: <%= ENV['DATABASE_URL'] %>
     host: <%= ENV['DATABASE_HOST'] %>
     port: <%= ENV['DATABASE_PORT'] %>
