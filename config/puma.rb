@@ -1,26 +1,24 @@
-# 環境変数からスレッド数を取得
-threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
+# スレッド数の設定
+threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 threads threads_count, threads_count
 
-# 明示的にポート8080を指定
-port ENV.fetch("PORT", 8080)
+# ポート設定（bindディレクティブは削除）
+port ENV.fetch("PORT") { 8080 }
+
+# 環境設定
 environment ENV.fetch("RAILS_ENV") { "production" }
 
-# バインドアドレスを指定（重要）
-bind "tcp://0.0.0.0:#{ENV.fetch("PORT", 8080)}"
-
-# Allow puma to be restarted by `bin/rails restart` command.
+# Railsのリスタートを許可
 plugin :tmp_restart
 
-# Solid Queue plugin
-plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
+# プロセス管理
+pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
-# Enable pidfile if specified
-pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
-
-# Production specific settings
-if ENV['RAILS_ENV'] == 'production'
-  environment ENV.fetch("RAILS_ENV", "production")
-  workers ENV.fetch("WEB_CONCURRENCY", 2)
+# Production環境の設定
+if ENV.fetch("RAILS_ENV") { "development" } == "production"
+  # ワーカープロセス数
+  workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+  
+  # アプリケーションを事前読み込み
   preload_app!
 end
