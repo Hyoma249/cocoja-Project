@@ -4,6 +4,7 @@ threads threads_count, threads_count
 
 # 明示的にポート8080を指定
 port ENV.fetch("PORT", 8080)
+environment ENV.fetch("RAILS_ENV") { "production" }
 
 # バインドアドレスを指定（重要）
 bind "tcp://0.0.0.0:#{ENV.fetch("PORT", 8080)}"
