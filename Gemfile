@@ -10,6 +10,8 @@ gem "stimulus-rails"
 gem "cssbundling-rails"
 gem "jbuilder"
 
+gem "sprockets-rails"
+
 # 古いキャッシュシステムを使用
 gem "redis", "~> 4.0"
 

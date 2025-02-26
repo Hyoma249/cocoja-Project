@@ -13,6 +13,8 @@ Rails.application.configure do
   # アセット設定
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
   config.assets.compile = true
+  config.assets.digest = true
+  config.assets.version = '1.0'
 
   # SSL設定
   config.force_ssl = true
@@ -36,4 +38,7 @@ Rails.application.configure do
   config.hosts = nil
   config.action_cable.disable_request_forgery_protection = true
   config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
+
+  # パブリックファイルの設定
+  config.public_file_server.enabled = true
 end
