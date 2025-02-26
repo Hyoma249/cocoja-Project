@@ -10,9 +10,6 @@ gem "stimulus-rails"
 gem "cssbundling-rails"
 gem "jbuilder"
 
-# アセットパイプライン - propshaftの代わりにsprocketsを使用
-gem "sprockets-rails"
-
 # 古いキャッシュシステムを使用
 gem "redis", "~> 4.0"
 
