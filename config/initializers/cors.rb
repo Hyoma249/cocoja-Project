@@ -3,7 +3,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     if Rails.env.development?
       origins 'localhost:3000'
     else
-      origins ENV.fetch('ALLOWED_ORIGINS')
+      origins ENV.fetch('ALLOWED_ORIGINS', '*')
     end
 
     resource '*',
