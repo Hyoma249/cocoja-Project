@@ -34,3 +34,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# 追加のgem
+gem 'rack-cors'
