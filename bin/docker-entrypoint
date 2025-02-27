@@ -5,8 +5,19 @@ set -x
 
 echo "Starting entrypoint script..."
 
-# データベース接続テスト（非ブロッキングで）
-bundle exec rails db:version || echo "Database version check failed, but continuing..."
+# データベース接続を待機
+max_attempts=30
+counter=0
+until bundle exec rails db:version
+do
+    counter=$((counter + 1))
+    if [ $counter -eq $max_attempts ]; then
+        echo "Could not connect to database after $max_attempts attempts."
+        exit 1
+    fi
+    echo "Waiting for database... (attempt $counter/$max_attempts)"
+    sleep 5
+done
 
 # サーバー起動
 echo "Starting Rails server on port 8080..."

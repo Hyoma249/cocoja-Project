@@ -87,10 +87,6 @@ RUN groupadd --system --gid 1000 rails && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
-# Healthcheck設定を追加
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:8080/up || exit 1
-
 # TCPポートを明示的に指定
 EXPOSE 8080/tcp
 
