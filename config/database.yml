@@ -16,15 +16,16 @@ test:
 
 production:
   primary: &primary_production
-    <<: *default
     adapter: postgresql
     encoding: unicode
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     host: <%= ENV['DATABASE_HOST'] %>
-    port: <%= ENV['DATABASE_PORT'] %>
+    port: <%= ENV['DATABASE_PORT'] || '5432' %>  # デフォルトポートを指定
     database: <%= ENV['DATABASE_NAME'] %>
     username: <%= ENV['DATABASE_USERNAME'] %>
     password: <%= ENV['DATABASE_PASSWORD'] %>
+    connect_timeout: 5
+    sslmode: require  # Back4appではSSL接続が必要
 
   cable:
     <<: *primary_production

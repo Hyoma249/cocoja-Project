@@ -5,10 +5,13 @@ set -x
 
 echo "Starting entrypoint script..."
 
+# PIDファイルの削除（重要）
+rm -f /rails/tmp/pids/server.pid
+
 # データベース接続を待機
 max_attempts=30
 counter=0
-until bundle exec rails db:version
+until RAILS_ENV=production bundle exec rails db:version
 do
     counter=$((counter + 1))
     if [ $counter -eq $max_attempts ]; then
@@ -18,6 +21,9 @@ do
     echo "Waiting for database... (attempt $counter/$max_attempts)"
     sleep 5
 done
+
+# マイグレーション実行（オプション）
+RAILS_ENV=production bundle exec rails db:migrate
 
 # サーバー起動
 echo "Starting Rails server on port 8080..."
