@@ -5,7 +5,6 @@ threads min_threads_count, max_threads_count
 
 # バインディング設定
 port        ENV.fetch("PORT") { 8080 }
-environment ENV.fetch("RAILS_ENV") { "production" }
 
 # プロセス管理
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }

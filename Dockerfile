@@ -88,7 +88,7 @@ RUN groupadd --system --gid 1000 rails && \
 USER 1000:1000
 
 # TCPポートを明示的に指定
-EXPOSE 8080/tcp
+EXPOSE 8080
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
