@@ -8,6 +8,9 @@ echo "Starting entrypoint script..."
 # PIDファイルの削除（重要）
 rm -f /rails/tmp/pids/server.pid
 
+# データベース接続のためのホスト名を明示的に設定
+export POSTGRES_HOST=db
+
 # データベース接続を待機
 max_attempts=30
 counter=0
