@@ -27,6 +27,9 @@ ENV RAILS_ENV="production" \
     BUNDLE_WITHOUT="development" \
     RAILS_MASTER_KEY="${RAILS_MASTER_KEY}"
 
+# 環境変数PORTを追加
+ENV PORT=8080
+
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
@@ -88,10 +91,10 @@ RUN groupadd --system --gid 1000 rails && \
 USER 1000:1000
 
 # TCPポートを明示的に指定
-EXPOSE 8080
+EXPOSE $PORT
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # サーバー起動コマンドを単純化
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "8080"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

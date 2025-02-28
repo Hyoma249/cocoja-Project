@@ -15,17 +15,9 @@ test:
   database: myapp_test
 
 production:
-  primary: &primary_production
-    adapter: postgresql
-    encoding: unicode
-    host: <%= ENV['DATABASE_HOST'] %>
-    port: <%= ENV['DATABASE_PORT'] %>
-    database: <%= ENV['DATABASE_NAME'] %>
-    username: <%= ENV['DATABASE_USERNAME'] %>
-    password: <%= ENV['DATABASE_PASSWORD'] %>
-
-  cable:
-    <<: *primary_production
-
-  queue:
-    <<: *primary_production
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
+  database: <%= ENV['DATABASE_NAME'] %>
+  pool: <%= ENV.fetch("DB_POOL", 10) %>
+  connect_timeout: 2
+  reconnect: true

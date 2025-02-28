@@ -25,9 +25,6 @@ module Myapp
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # 明示的にポートを設定
-    config.port = ENV.fetch("PORT", 8080)
-
     config.assets.initialize_on_precompile = false
     config.assets.enabled = true
     config.assets.version = '1.0'
