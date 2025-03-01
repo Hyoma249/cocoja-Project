@@ -8,23 +8,25 @@ echo "Starting entrypoint script..."
 # PIDファイルの削除
 rm -f /rails/tmp/pids/server.pid
 
-# データベース接続情報の出力（デバッグ用）
-echo "Database connection info (masked):"
-echo "Database URL exists: $([ ! -z "$DATABASE_URL" ] && echo "YES" || echo "NO")"
+# データベース接続情報の確認
+if [ -z "$DATABASE_URL" ] && [ -z "$RAILS_MASTER_KEY" ]; then
+  echo "Warning: Neither DATABASE_URL nor RAILS_MASTER_KEY is set"
+  echo "Make sure credentials.yml.enc contains neon connection string"
+fi
 
 # データベース接続を待機
-max_attempts=30
+max_attempts=10
 counter=0
-until RAILS_ENV=production bundle exec rails db:version
+until RAILS_ENV=production bundle exec rails db:version > /dev/null 2>&1
 do
     counter=$((counter + 1))
     if [ $counter -eq $max_attempts ]; then
-        echo "Could not connect to database after $max_attempts attempts."
-        echo "Please check your DATABASE_URL configuration in Back4app."
+        echo "Could not connect to Neon database after $max_attempts attempts."
+        echo "Please check your database configuration."
         exit 1
     fi
-    echo "Waiting for database... (attempt $counter/$max_attempts)"
-    sleep 5
+    echo "Waiting for Neon database... (attempt $counter/$max_attempts)"
+    sleep 3
 done
 
 # マイグレーション実行

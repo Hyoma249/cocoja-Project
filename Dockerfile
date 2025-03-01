@@ -3,7 +3,7 @@
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
 # docker build -t myapp .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name myapp myapp
+# docker run -d -p 8080:8080 -e RAILS_MASTER_KEY=<value from config/master.key> --name myapp myapp
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.3.6
@@ -12,7 +12,7 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
-# 環境変数をARGとして定義
+# ビルド引数としてRAILS_MASTER_KEYを定義
 ARG RAILS_MASTER_KEY
 
 # Install base packages
@@ -25,17 +25,11 @@ ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development" \
-    RAILS_MASTER_KEY="${RAILS_MASTER_KEY}"
-
-# 環境変数PORTを追加
-ENV PORT=8080
+    RAILS_MASTER_KEY="${RAILS_MASTER_KEY}" \
+    PORT=8080
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
-
-# 環境変数をbuildステージでも利用可能にする
-ARG RAILS_MASTER_KEY
-ENV RAILS_MASTER_KEY="${RAILS_MASTER_KEY}"
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
