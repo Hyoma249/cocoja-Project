@@ -1,35 +1,30 @@
+version: '3'
 services:
   db:
-    image: postgres
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    image: postgres:13
     volumes:
-      - postgres_volume:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    restart: always
+
   web:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
-    env_file:
-      - .env
-    environment:
-      POSTGRES_HOST: db
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - .:/myapp
-      - bundle_data:/myapp/vendor/bundle
-    ports:
-      - "8080:8080"
-    tty: true
-    stdin_open: true
+      dockerfile: Dockerfile
+    command: bash -c "/rails/bin/docker-entrypoint"
     depends_on:
       - db
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: "true"
+    ports:
+      - "8080:8080"
+    restart: always
+
 volumes:
-  postgres_volume:
-  bundle_data:
+  postgres_data:

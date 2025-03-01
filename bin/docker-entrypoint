@@ -5,11 +5,12 @@ set -x
 
 echo "Starting entrypoint script..."
 
-# PIDファイルの削除（重要）
+# PIDファイルの削除
 rm -f /rails/tmp/pids/server.pid
 
-# データベース接続のためのホスト名を明示的に設定
-export POSTGRES_HOST=db
+# データベース接続情報の出力（デバッグ用）
+echo "Database connection info (masked):"
+echo "Database URL exists: $([ ! -z "$DATABASE_URL" ] && echo "YES" || echo "NO")"
 
 # データベース接続を待機
 max_attempts=30
@@ -19,13 +20,14 @@ do
     counter=$((counter + 1))
     if [ $counter -eq $max_attempts ]; then
         echo "Could not connect to database after $max_attempts attempts."
+        echo "Please check your DATABASE_URL configuration in Back4app."
         exit 1
     fi
     echo "Waiting for database... (attempt $counter/$max_attempts)"
     sleep 5
 done
 
-# マイグレーション実行（オプション）
+# マイグレーション実行
 RAILS_ENV=production bundle exec rails db:migrate
 
 # サーバー起動
