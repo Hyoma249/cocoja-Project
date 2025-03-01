@@ -14,10 +14,11 @@ if [ -z "$DATABASE_URL" ] && [ -z "$RAILS_MASTER_KEY" ]; then
   echo "Make sure credentials.yml.enc contains neon connection string"
 fi
 
-# データベース接続を待機
-max_attempts=10
+# データベース初期化（より安全な方法）
+max_attempts=15
 counter=0
-until RAILS_ENV=production bundle exec rails db:version > /dev/null 2>&1
+
+until RAILS_ENV=production bundle exec rails db:migrate:status > /dev/null 2>&1
 do
     counter=$((counter + 1))
     if [ $counter -eq $max_attempts ]; then
@@ -29,8 +30,9 @@ do
     sleep 3
 done
 
-# マイグレーション実行
-RAILS_ENV=production bundle exec rails db:migrate
+# データベースの初期セットアップ
+echo "Setting up the database..."
+RAILS_ENV=production bundle exec rails db:prepare
 
 # サーバー起動
 echo "Starting Rails server on port 8080..."
