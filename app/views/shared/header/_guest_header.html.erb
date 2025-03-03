@@ -1,0 +1,15 @@
+<!-- Header -->
+<header class="bg-white p-4 flex justify-between items-center sticky top-0 shadow-sm z-50">
+  <h1>
+    <%= image_tag "cocoja_logo.svg", class: "h-[4.5rem] w-[120px]", alt: "ココジャ" %>
+  </h1>
+  <div class="flex gap-2">
+    <button class="text-[72%] font-bold px-4 py-2 text-blue-600 border border-blue-600 rounded-full">ログイン</button>
+    <button class="text-[72%] font-bold px-4 py-2 bg-blue-600 text-white rounded-full">新規登録</button>
+  </div>
+</header>
+
+<%# メインコンテンツのパディング調整用 %>
+<div class="md:ml-80">
+  <%= yield %>
+</div>
