@@ -1,0 +1,26 @@
+<%# スマホ用ヘッダー（md:hidden） %>
+<header class="bg-white shadow md:hidden">
+  <nav class="px-4 py-2">
+    <div class="flex justify-between items-center">
+      <h1>ユーザーID</h1>
+      <ul class="flex space-x-4">
+        <p>ハンバーガーメニュー</p>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<%# PC用サイドバー（hidden md:block） %>
+<div class="hidden md:block fixed left-0 top-0 h-full w-60 bg-white shadow">
+  <nav class="flex flex-col p-6 h-full ml-3">
+    <h1>ユーザーID</h1>
+    <ul class="flex flex-col space-y-6">
+      <p>ハンバーガーメニュー</p>
+    </ul>
+  </nav>
+</div>
+
+<%# メインコンテンツのパディング調整用 %>
+<div class="md:ml-80">
+  <%= yield %>
+</div>
