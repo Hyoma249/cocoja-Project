@@ -4,7 +4,7 @@
     <h2 class="text-2xl font-bold mb-2">つながって、広がって</h2>
     <h3 class="text-3xl font-bold mb-4">日本をもっと好きになる！</h3>
     <p class="mb-4">日本の魅力を再発見！地元の人しか知らない穴場スポットや文化を共有しよう</p>
-    <button class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold">今すぐ登録</button>
+    <button class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">今すぐ登録</button>
   </div>
 
   <!-- Ranking Section -->
@@ -85,10 +85,10 @@
       <h3 class="text-xl font-bold">投稿フォーマットの紹介</h3>
     </div>
     <!-- スライダー -->
-    <div class="main-slider relative w-full max-w-4xl mx-auto overflow-hidden">
-      <div class="slider-wrapper flex transition-transform duration-500 ease-in-out">
+    <div class="main-slider relative w-full max-w-4xl mx-auto overflow-hidden" data-controller="slider">
+      <div class="slider-wrapper flex transition-transform duration-500 ease-in-out" data-slider-target="wrapper">
         <!-- 投稿1 -->
-        <div class="slider-item w-full flex-shrink-0">
+        <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
           <div class="post-content p-4">
             <div class="bg-white rounded-xl shadow-sm">
               <div class="flex items-center gap-5 p-4">
@@ -113,7 +113,7 @@
           </div>
         </div>
         <!-- 投稿2 -->
-        <div class="slider-item w-full flex-shrink-0">
+        <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
           <div class="post-content p-4">
             <div class="bg-white rounded-xl shadow-sm">
               <div class="flex items-center gap-5 p-4">
@@ -138,7 +138,7 @@
           </div>
         </div>
         <!-- 投稿3 -->
-        <div class="slider-item w-full flex-shrink-0">
+        <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
           <div class="post-content p-4">
             <div class="bg-white rounded-xl shadow-sm">
               <div class="flex items-center gap-5 p-4">
@@ -165,13 +165,13 @@
       </div>
 
       <!-- カスタムナビゲーションボタン -->
-      <button class="slide-nav prev absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow flex items-center justify-center">
-        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button class="slide-nav prev absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow flex items-center justify-center" data-slider-target="prevButton" data-action="click->slider#prev">
+        <svg class="w-[2.5rem] h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
       </button>
-      <button class="slide-nav next absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow flex items-center justify-center">
-        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button class="slide-nav next absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow flex items-center justify-center" data-slider-target="nextButton" data-action="click->slider#next">
+        <svg class="w-[2.5rem] h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
       </button>
@@ -181,8 +181,8 @@
   <!-- Bottom CTA -->
   <div class="bg-white p-6 text-center mt-6">
     <h3 class="text-xl font-bold mb-4"><%= image_tag "cocoja_logo.svg", class: "w-auto h-auto", alt: "ココジャ" %>で新しい発見をしよう！</h3>
-    <button class="w-full bg-blue-600 text-white py-3 rounded-full font-bold mb-2">今すぐ登録</button>
-    <button class="w-full border border-blue-600 text-blue-600 py-3 rounded-full font-bold">ログイン</button>
+    <button class="w-full bg-blue-600 text-white py-3 rounded-full font-bold mb-2 transition-all duration-200 hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">今すぐ登録</button>
+    <button class="w-full border border-blue-600 text-blue-600 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">ログイン</button>
   </div>
 
   <small class="block text-center text-xs text-gray-400 m-4">© 2025 cocoja</small>
