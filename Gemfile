@@ -37,3 +37,5 @@ end
 
 # 追加のgem
 gem 'rack-cors'
+# ユーザー機能
+gem 'devise'
