@@ -4,8 +4,12 @@
 
 import { application } from "./application";
 
+// 明示的にコントローラーを登録
 import HelloController from "./hello_controller";
 application.register("hello", HelloController);
 
 import SliderController from "./slider_controller";
 application.register("slider", SliderController);
+
+import PasswordVisibilityController from "./password_visibility_controller";
+application.register("password-visibility", PasswordVisibilityController);
