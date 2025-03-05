@@ -239,7 +239,10 @@ GEM
     rake (13.2.1)
     rdoc (6.12.0)
       psych (>= 4.0.0)
-    redis (4.8.1)
+    redis (5.4.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.23.2)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -346,7 +349,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.1.5)
   rails-i18n
-  redis (~> 4.0)
+  redis (~> 5.4)
   rubocop-rails-omakase
   selenium-webdriver
   sprockets-rails
