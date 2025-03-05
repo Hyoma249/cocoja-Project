@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
   }
 
+  # プロフィール登録機能を実装するためのルーティング
+  resources :profiles, only: [:new, :create, :edit, :update]
+
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
 end
