@@ -28,6 +28,8 @@ end
 
 group :development do
   gem "web-console"
+  gem "letter_opener"
+  gem 'letter_opener_web'
 end
 
 group :test do
@@ -35,7 +37,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-# 追加のgem
+# 追加 ⬇️
 gem 'rack-cors'
 # ユーザー機能
 gem 'devise'

@@ -23,8 +23,17 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   #   super(resource_name)
   # end
 
-  # The path used after confirmation.
-  # def after_confirmation_path_for(resource_name, resource)
-  #   super(resource_name, resource)
-  # end
+  # メール確認後の処理をオーバーライド
+  def after_confirmation_path_for(resource_name, resource)
+    # ユーザーのプロフィールが存在するか確認
+    if resource.profile.nil?
+      # sign_inメソッドで自動ログイン
+      sign_in(resource)
+      # プロフィール新規作成ページへリダイレクト
+      new_profile_path
+    else
+      # 既にプロフィールがある場合は通常のログインページへ
+      new_user_session_path
+    end
+  end
 end
