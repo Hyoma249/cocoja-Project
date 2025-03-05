@@ -14,7 +14,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
+    # 古いサーバーのPIDファイルを削除 / 必要なgemをインストール / サーバーを起動
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bin/dev"
     env_file:
       - .env
     environment:

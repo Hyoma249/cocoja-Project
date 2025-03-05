@@ -28,5 +28,11 @@ module Myapp
     config.assets.initialize_on_precompile = false
     config.assets.enabled = true
     config.assets.version = '1.0'
+
+    # 追加項目⬇️
+    # デフォルト言語を日本語に設定
+    config.i18n.default_locale = :ja
+    # i18n の翻訳ファイルのパスを追加
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
   end
 end
