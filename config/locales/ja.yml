@@ -1,0 +1,8 @@
+ja:
+  activerecord:
+    models:
+      profile: "プロフィール"  # モデル名がProfileの場合
+    attributes:
+      profile:  # または実際のモデル名
+        username: "ユーザー名"
+        uid: "ユーザーID"
