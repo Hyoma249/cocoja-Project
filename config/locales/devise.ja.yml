@@ -1,0 +1,19 @@
+# config/locales/devise.ja.yml
+ja:
+  devise:
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "既にログアウトしています。"
+      user:
+        invalid: "メールアドレスまたはパスワードが正しくありません。"
+        not_found_in_database: "メールアドレスまたはパスワードが正しくありません。"
+        unconfirmed: "メールアドレスの確認が必要です。メールをご確認ください。"
+    failure:
+      invalid: "メールアドレスまたはパスワードが正しくありません。"
+      not_found_in_database: "メールアドレスまたはパスワードが正しくありません。"
+      unauthenticated: "続行するにはログインまたはアカウント登録が必要です。"
+      unconfirmed: "メールアドレスの確認が必要です。"
+      locked: "アカウントはロックされています。"
+      last_attempt: "あと1回失敗するとアカウントがロックされます。"
+      timeout: "セッションがタイムアウトしました。続行するには再度ログインしてください。"

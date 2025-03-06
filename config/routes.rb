@@ -13,7 +13,8 @@ Rails.application.routes.draw do
   # 認証に関連する複数のルートを自動的に生成します。
   devise_for :users, controllers: {
     registrations: 'users/registrations',
-    confirmations: 'users/confirmations'
+    confirmations: 'users/confirmations',
+    sessions: 'users/sessions',
   }
 
   # プロフィール登録機能を実装するためのルーティング
