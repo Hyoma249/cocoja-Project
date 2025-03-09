@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   # ログイントップページ
   get 'top_page_login', to: 'top_page_login#top'
+  get 'post_creation', to: 'post_creation#new'
 
   # deviseのルーティング
   devise_for :users, controllers: {
