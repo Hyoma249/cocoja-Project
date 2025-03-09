@@ -1,22 +1,8 @@
 <%# スマホ用ヘッダー（md:hidden） %>
-<header class="bg-white shadow md:hidden">
+<header class="bg-white shadow">
   <nav class="px-4 py-2">
     <div class="font-noto-sans-jp font-bold">
-      <%= image_tag "cocoja_logo.svg", class: "h-[4.5rem] w-auto" %>
+      <%= image_tag "cocoja_logo.svg", class: "h-[4rem] w-auto" %>
     </div>
   </nav>
 </header>
-
-<%# PC用サイドバー（hidden md:block） %>
-<div class="hidden md:block fixed left-0 top-0 h-full w-60 bg-white shadow">
-  <nav class="flex flex-col p-6 h-full ml-3">
-    <div class="font-noto-sans-jp font-bold mt-8">
-      <%= image_tag "cocoja_logo.svg", class: "h-[4.5rem] w-auto" %>
-    </div>
-  </nav>
-</div>
-
-<%# メインコンテンツのパディング調整用 %>
-<div class="md:ml-80">
-  <%= yield %>
-</div>
