@@ -1,0 +1,28 @@
+<div>
+  <!-- ヘッダー -->
+  <%= render "shared/header/login_header" %>
+
+  <!-- メインコンテンツ -->
+  <div>
+    <div>
+      <h1>都道府県の魅力を<br>投稿しよう！</h1>
+      <p>こんな投稿、大歓迎！</p>
+      <ul>
+        <li>穴場の観光スポット情報</li>
+        <li>旅行先で出会った絶景写真</li>
+        <li>地元で愛されるB級グルメのレポート</li>
+        <li>地元のお祭りやイベントの様子</li>
+        <li>何気ない日常で見つけた美しい風景</li>
+      </ul>
+      <p>あなたの視点で切り取った日本の魅力を教えてください！</p>
+    </div>
+
+    <div>
+      <h2>ココじゃで、あなただけの日本を発信しよう！</h2>
+      <%= link_to "投稿する", class: "btn w-full bg-blue-600 text-white py-3 rounded-full font-bold mb-2 transition-all duration-200 hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2" %>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <%= render "shared/footer/login_footer" %>
+</div>

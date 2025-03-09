@@ -10,7 +10,10 @@ Rails.application.routes.draw do
   # 未ログインのトップページ
   root 'static_pages_guest#top'
 
-  # 認証に関連する複数のルートを自動的に生成します。
+  # ログイントップページ
+  get 'top_page_login', to: 'top_page_login#top'
+
+  # deviseのルーティング
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     confirmations: 'users/confirmations',
