@@ -1,0 +1,22 @@
+<!-- 投稿作成ページ全体のコンテナ -->
+<div class="min-h-screen flex flex-col">
+  <!-- ヘッダー -->
+  <header class="bg-white py-4 border-b">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between">
+        <button class="text-gray-600" onclick="history.back()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h1 class="text-lg font-bold text-center text-blue-600">新規投稿作成</h1>
+        <div class="w-6"></div><!-- 左右のバランスを取るための空div -->
+      </div>
+    </div>
+  </header>
+
+  <%= render "posts/form" %>
+
+  <!-- フッター -->
+  <%= render "shared/footer/login_footer" %>
+</div>
