@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_10_065127) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_16_010356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "posts", force: :cascade do |t|
+    t.bigint "profile_id"
+    t.bigint "prefecture_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["prefecture_id"], name: "index_posts_on_prefecture_id"
+    t.index ["profile_id"], name: "index_posts_on_profile_id"
+  end
 
   create_table "prefectures", force: :cascade do |t|
     t.string "name", null: false
@@ -27,6 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_10_065127) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "profile_image_url"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -47,5 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_10_065127) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "posts", "prefectures"
+  add_foreign_key "posts", "profiles"
   add_foreign_key "profiles", "users"
 end

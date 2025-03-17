@@ -1,0 +1,16 @@
+<div>
+  <% if @posts.present? %>
+    <% @posts.each do |post| %>
+      <div>
+        <div>
+          <p class ="font-bold text-red-400"><%= post.prefecture.name %></p>
+        </div>
+      </div>
+      <div>
+        <%= post.content %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="mb-3">投稿がありません</div>
+  <% end %>
+</div>
