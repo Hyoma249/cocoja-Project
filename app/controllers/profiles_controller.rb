@@ -1,40 +1,25 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_profile, only: [:edit, :update]
 
-  def new
-    @profile = Profile.new
-  end
-
-  def create
-    @profile = Profile.new(profile_params)
-    @profile.user = current_user
-
-    if @profile.save
-      redirect_to root_path, notice: 'プロフィールが作成されました'
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def edit
+  def setup
+    # 現在ログインしているユーザー情報を格納している
+    @user = current_user
   end
 
   def update
-    if @profile.update(profile_params)
-      redirect_to root_path, notice: 'プロフィールが更新されました'
+    @user = current_user
+
+    if @user.update(profile_params)
+      redirect_to top_page_login_path, notice: "プロフィールが登録されました"
     else
-      render :edit, status: :unprocessable_entity
+      flash.now[:notice] = "プロフィール登録に失敗しました"
+      render :setup, status: :unprocessable_entity
     end
   end
 
   private
 
-  def set_profile
-    @profile = current_user.profile
-  end
-
   def profile_params
-    params.require(:profile).permit(:username, :uid)
+    params.require(:user).permit(:username, :uid)
   end
 end

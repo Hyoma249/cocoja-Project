@@ -1,4 +1,7 @@
-<div>
+<div class="min-h-screen flex flex-col">
+  <!-- ヘッダー -->
+  <%= render "shared/header/login_header" %>
+
   <% if @posts.present? %>
     <% @posts.each do |post| %>
       <div>
@@ -13,4 +16,7 @@
   <% else %>
     <div class="mb-3">投稿がありません</div>
   <% end %>
+
+  <!-- フッター -->
+  <%= render "shared/footer/login_footer" %>
 </div>

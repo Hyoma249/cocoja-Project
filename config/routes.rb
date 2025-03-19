@@ -8,6 +8,10 @@ Rails.application.routes.draw do
   # ログイントップページ
   get 'top_page_login', to: 'top_page_login#top'
 
+  # プロフィール登録
+  get 'profile/setup', to: 'profiles#setup'
+  patch 'profile/update', to: 'profiles#update'
+
   # deviseのルーティング
   devise_for :users, controllers: {
     registrations: 'users/registrations',
@@ -15,8 +19,6 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
   }
 
-  # プロフィール登録機能を実装するためのルーティング
-  resources :profiles, only: [:new, :create, :edit, :update]
   # 投稿関連
   resources :posts, only: [:index, :new, :create]
 
