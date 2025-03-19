@@ -5,6 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable
 
-  # usersテーブルとのアソシエーション（1:1）
-  has_one :profile, dependent: :destroy # ユーザーが削除されたらプロフィールも削除される
+  # ユーザーは たくさんの投稿 を持てる
+  has_many :posts
+
+  validates :username, length: { minimum: 2, maximum: 20 }, uniqueness: true, presence: true, allow_nil: true
+  validates :uid, format: { with: /\A[a-zA-Z0-9]+\z/ }, length: { minimum: 6, maximum: 15 }, uniqueness: true, presence: true, allow_nil: true
 end

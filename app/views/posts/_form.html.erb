@@ -1,19 +1,18 @@
-<form class="p-4 min-h-screen flex flex-col">
+<%= form_with model: @post, class: "p-4 min-h-screen flex flex-col" do |form| %>
   <!-- 都道府県選択フォーム -->
-  <div class="mb-6">
-    <label for="prefecture" class="block text-sm font-medium text-gray-700 mb-2">都道府県を選択</label>
-    <select id="prefecture" name="prefecture" class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md text-gray-400" onchange="this.classList.remove('text-gray-400')">
-      <option value="" disabled selected>都道府県を選択してください</option>
-      <% if @prefectures.present? %>
-        <% @prefectures.each do |prefecture| %>
-          <option value="<%= prefecture.id %>"><%= prefecture.name %></option>
-        <% end %>
-      <% end %>
-    </select>
+  <div class="mb-6 mt-6">
+    <p class="block text-sm font-medium text-gray-700 mb-2">都道府県選択</p>
+    <%= form.collection_select :prefecture_id,
+                              @prefectures,
+                              :id,
+                              :name,
+                              { prompt: "都道府県を選択してください" },
+                              { class: "block w-full pl-3 pr-10 py-3 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md text-gray-400",
+                                onchange: "this.classList.remove('text-gray-400')" } %>
   </div>
 
   <!-- 写真選択 -->
-  <div class="mb-6">
+  <!--<div class="mb-6">
     <p class="block text-sm font-medium text-gray-700 mb-2">写真を選択</p>
     <a href="#" class="hover:border-blue-500  hover:border-solid hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-sm leading-6 text-gray-400 font-medium py-3">
       <svg class="group-hover:text-blue-500 mb-1 text-slate-400" width="20" height="20" fill="currentColor" aria-hidden="true">
@@ -21,17 +20,17 @@
        </svg>
       <p>クリックして写真を選択しよう！</p>
     </a>
-  </div>
+  </div> -->
 
-  <!-- 投稿内容 -->
+  <!-- 投稿内容・ハッシュタグのインラインタグ機能 -->
   <div class="mb-6">
     <p class="block text-sm font-medium text-gray-700 mb-2">投稿内容</p>
-    <textarea class="resize-none w-full border border-gray-300 rounded-md p-2 pb-[200px] placeholder-gray-400 hover:border-blue-500" placeholder="投稿内容を入力してください"></textarea>
+    <%= form.text_area :content, class: "resize-none w-full border border-gray-300 rounded-md p-2 pb-[300px] placeholder-gray-400 hover:border-blue-500", placeholder: "投稿内容を入力してください" %>
   </div>
 
-  <!-- ハッシュタグ -->
-  <div>
-    <p class="block text-sm font-medium text-gray-700 mb-2">ハッシュタグ</p>
-    <input type="text" class="w-full p-2 border border-gray-300 rounded-md hover:border-blue-500 " placeholder="#ハッシュタグを入力してください">
+  <!-- 投稿ボタン -->
+  <div class="flex justify-center">
+    <%= form.submit '投稿する',
+        class: 'w-[240px] bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-full transition duration-150 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' %>
   </div>
-</form>
+<% end %>

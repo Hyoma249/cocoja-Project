@@ -9,11 +9,12 @@
       </span>
     </h2>
 
-    <%= form_with(model: @profile,
-            url: profiles_path,
+    <%= form_with(model: @user,
+            url: profile_update_path,
+            method: :patch,
             local: true) do |f| %>
 
-      <%= render "shared/error_messages", resource: @profile %>
+      <%= render "shared/error_messages", resource: @user %>
 
       <div class="space-y-6">
         <div>
