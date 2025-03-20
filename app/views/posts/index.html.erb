@@ -1,16 +1,26 @@
-<div class="min-h-screen flex flex-col">
+<div class="max-w-md mx-auto min-h-screen pb-16">
   <!-- ヘッダー -->
   <%= render "shared/header/login_header" %>
 
   <% if @posts.present? %>
     <% @posts.each do |post| %>
-      <div>
-        <div>
-          <p class ="font-bold text-red-400"><%= post.prefecture.name %></p>
+      <div class="w-full">
+        <div class="flex items-center gap-5 p-4">
+          <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-12 h-12 object-cover rounded-full" %>
+          <div>
+            <h4 class="font-bold mb-1"><%= post.user.uid %></h4>
+            <div class="flex items-center text-sm text-gray-600">
+              <span><%= post.prefecture.name %></span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div>
-        <%= post.content %>
+        <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", class: "w-full h-50 object-cover mb-4" %>
+        <p class="text-gray-800 p-4"><%= post.content %></p>
+        <div class="flex gap-2 mb-4 p-4">
+          <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#沖縄</span>
+          <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#旅行</span>
+          <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ビーチ</span>
+        </div>
       </div>
     <% end %>
   <% else %>
