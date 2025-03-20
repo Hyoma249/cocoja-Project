@@ -1,6 +1,9 @@
 class PostsController < ApplicationController
+  # ログインユーザーによってのみ実行可能となる
+  before_action :authenticate_user!
+
   def index
-    @posts = Post.includes(:prefecture).order(created_at: :desc)
+    @posts = Post.includes(:prefecture, :user).order(created_at: :desc)
   end
 
   # 「新しい投稿を作成」ボタンを押したときに実行される
@@ -12,7 +15,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.build(post_params)
     if @post.save
       flash[:notice] = "投稿が作成されました"
       redirect_to posts_path
