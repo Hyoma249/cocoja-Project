@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get 'profile/setup', to: 'profiles#setup'
   patch 'profile/update', to: 'profiles#update'
 
+  # ハッシュタグ
+  get '/posts/hashtag/:name', to: 'posts#hashtag', as: 'hashtag_posts'
+
   # deviseのルーティング
   devise_for :users, controllers: {
     registrations: 'users/registrations',
