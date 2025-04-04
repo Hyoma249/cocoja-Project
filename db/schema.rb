@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_20_134618) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_24_065632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_20_134618) do
     t.datetime "updated_at", null: false
     t.index ["hashtag_id"], name: "index_post_hashtags_on_hashtag_id"
     t.index ["post_id"], name: "index_post_hashtags_on_post_id"
+  end
+
+  create_table "post_images", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_images_on_post_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -71,6 +79,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_20_134618) do
 
   add_foreign_key "post_hashtags", "hashtags"
   add_foreign_key "post_hashtags", "posts"
+  add_foreign_key "post_images", "posts"
   add_foreign_key "posts", "prefectures"
   add_foreign_key "posts", "users"
 end

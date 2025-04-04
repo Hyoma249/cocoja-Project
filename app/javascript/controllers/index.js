@@ -13,3 +13,6 @@ application.register("slider", SliderController);
 
 import PasswordVisibilityController from "./password_visibility_controller";
 application.register("password-visibility", PasswordVisibilityController);
+
+import PostPrevController from "./post_prev_controller";
+application.register("post-prev", PostPrevController);

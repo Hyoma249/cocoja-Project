@@ -7,7 +7,7 @@
     <% @posts.each do |post| %>
       <div class="w-full">
         <div class="flex items-center gap-5 p-4">
-          <%= image_tag "sample_icon1.svg", alt: "user_icon", class: "w-12 h-12 object-cover rounded-full" %>
+          <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-12 h-12 object-cover rounded-full" %>
           <div>
             <h4 class="font-bold mb-1"><%= post.user.uid %></h4>
             <div class="flex items-center text-sm text-gray-600">
@@ -15,17 +15,19 @@
             </div>
           </div>
         </div>
-        <%= image_tag "post-okinawa.png", alt: "投稿画像", class: "w-full h-50 object-cover mb-4" %>
+        <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", class: "w-full h-50 object-cover mb-4" %>
         <p class="text-gray-800 p-4"><%= format_content_with_hashtags(post.content) %></p>
         <div class="flex gap-2 mb-4 p-4">
           <% post.hashtags.each do |tag| %>
-            <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full"><%= tag.name %></span>
+            <%= link_to "/posts/hashtag/#{tag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
+              <%= tag.name %>
+            <% end %>
           <% end %>
         </div>
       </div>
     <% end %>
   <% else %>
-    <div class="p-4 text-gray-600">このハッシュタグの投稿はありません</div>
+    <div class="mb-3">投稿がありません</div>
   <% end %>
 
   <%= render "shared/footer/login_footer" %>

@@ -19,11 +19,33 @@ class PostsController < ApplicationController
     @post = Post.new
     # 「都道府県のリストを全部取り出す」 ためのコード
     @prefectures = Prefecture.all
+    # 投稿に紐づいた画像フォームを出すために、空の子モデル（PostImage）を作っておく処理
+    @post.post_images.build
   end
 
+  # submitボタンを押したときに実行される
   def create
+    # ログインしているユーザーの投稿を作成する
     @post = current_user.posts.build(post_params)
+    # 画像数のチェック
+    max_images = 10
+    if params[:post_images] && params[:post_images][:image].present?
+      if params[:post_images][:image].select {|img| img.present? }.count > max_images
+        @prefectures = Prefecture.all
+        flash.now[:notice] = "画像は最大#{max_images}枚までになります"
+        render :new, status: :unprocessable_entity
+        return
+      end
+    end
+
     if @post.save
+      if params[:post_images] && params[:post_images][:image].present?
+        params[:post_images][:image].each do |image|
+          next if image.blank?  # 空の画像をスキップ
+          @post.post_images.create(image: image)
+        end
+      end
+
       flash[:notice] = "投稿が作成されました"
       redirect_to posts_path
     else
@@ -47,6 +69,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:prefecture_id, :content)
+    params.require(:post).permit(:prefecture_id, :content, post_images_attributes: [:image] )
   end
 end

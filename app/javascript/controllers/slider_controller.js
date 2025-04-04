@@ -1,41 +1,226 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["wrapper", "slide", "prevButton", "nextButton"];
-
-  initialize() {
-    this.currentIndex = 0;
-    // 無効なボタンを非表示にする ⬇️
-    this.updateButtonVisibility();
+  static targets = ["wrapper", "slide", "prevButton", "nextButton", "counter"];
+  static values = {
+    initialIndex: { type: Number, default: 0 }
   }
 
-  next() {
-    this.currentIndex = Math.min(
-      this.currentIndex + 1,
-      this.slideTargets.length - 1
-    );
-    this.updateSlider();
+  connect() {
+    // スライド数の確認
+    this.slidesCount = this.slideTargets.length;
+    if (this.slidesCount <= 1) {
+      this.hideNavigation();
+      return;
+    }
+
+    // 初期インデックスの設定
+    this.initializeCurrentIndex();
+
+    // スライド幅を取得
+    this.slideWidth = this.wrapperTarget.offsetWidth;
+
+    // スワイプ関連の変数を初期化
+    this.initializeSwipeVariables();
+
+    // 初期スライドを表示
+    this.updateSlider(false);
+
+    // イベントリスナーを設定
+    this.setupSwipeEvents();
+
+    // UI要素を更新
     this.updateButtonVisibility();
+    this.updateCounter();
+  }
+
+  initializeCurrentIndex() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const slideIndex = urlParams.get('slide');
+
+    if (slideIndex !== null && !isNaN(parseInt(slideIndex)) && parseInt(slideIndex) < this.slidesCount) {
+      this.currentIndex = parseInt(slideIndex) - 1; // 1ベースから0ベースに変換
+    } else {
+      this.currentIndex = this.initialIndexValue;
+    }
+  }
+
+  initializeSwipeVariables() {
+    this.startX = 0;
+    this.currentX = 0;
+    this.isDragging = false;
+    this.threshold = 50; // スワイプを検知する閾値
+  }
+
+  setupSwipeEvents() {
+    // タッチイベント (モバイル用)
+    this.wrapperTarget.addEventListener('touchstart', this.touchStart.bind(this), { passive: true });
+    this.wrapperTarget.addEventListener('touchmove', this.touchMove.bind(this), { passive: false });
+    this.wrapperTarget.addEventListener('touchend', this.touchEnd.bind(this), { passive: true });
+
+    // マウスイベント (PC用)
+    this.wrapperTarget.addEventListener('mousedown', this.touchStart.bind(this));
+    this.wrapperTarget.addEventListener('mousemove', this.touchMove.bind(this));
+    this.wrapperTarget.addEventListener('mouseup', this.touchEnd.bind(this));
+    this.wrapperTarget.addEventListener('mouseleave', this.touchEnd.bind(this));
+  }
+
+  touchStart(event) {
+    this.isDragging = true;
+    this.startX = this.getPositionX(event);
+
+    // トランジションを無効化して即座に反応するようにする
+    this.wrapperTarget.style.transition = 'none';
+
+    // カーソルスタイルを変更
+    this.wrapperTarget.style.cursor = 'grabbing';
+  }
+
+  touchMove(event) {
+    if (!this.isDragging) return;
+
+    event.preventDefault(); // スクロールを防止
+
+    this.currentX = this.getPositionX(event);
+    const diffX = this.currentX - this.startX;
+
+    // 現在のトランスフォーム値 + 移動量を計算
+    const translateX = this.calculateTranslateX(diffX);
+
+    // スライダーの位置を更新
+    this.wrapperTarget.style.transform = `translateX(${translateX}%)`;
+  }
+
+  calculateTranslateX(diffX) {
+    // 基本の移動量を計算
+    const baseTranslateX = (this.currentIndex * -100) + (diffX / this.slideWidth * 100);
+
+    // 端の場合は抵抗を加える（移動量を半分にする）
+    if ((this.currentIndex === 0 && diffX > 0) || 
+        (this.currentIndex === this.slidesCount - 1 && diffX < 0)) {
+      return (this.currentIndex * -100) + (diffX / this.slideWidth * 50);
+    }
+
+    return baseTranslateX;
+  }
+
+  touchEnd(event) {
+    if (!this.isDragging) return;
+
+    this.isDragging = false;
+    const diffX = this.currentX - this.startX;
+
+    // カーソルスタイルを戻す
+    this.wrapperTarget.style.cursor = '';
+
+    // スムーズなトランジションを再有効化
+    this.wrapperTarget.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+    // スワイプの方向と距離に基づいてスライドを移動
+    this.handleSwipe(diffX);
+
+    // スライダーとUI要素を更新
+    this.updateSlider(true);
+    this.updateButtonVisibility();
+    this.updateCounter();
+
+    // URLを更新
+    this.updateURL();
+  }
+
+  handleSwipe(diffX) {
+    if (Math.abs(diffX) > this.threshold) {
+      if (diffX > 0 && this.currentIndex > 0) {
+        // 右スワイプ -> 前のスライド
+        this.currentIndex--;
+      } else if (diffX < 0 && this.currentIndex < this.slidesCount - 1) {
+        // 左スワイプ -> 次のスライド
+        this.currentIndex++;
+      }
+    }
+  }
+
+  getPositionX(event) {
+    // タッチイベントとマウスイベントの両方に対応
+    return event.type.includes('mouse')
+      ? event.pageX
+      : event.touches[0].clientX;
+  }
+
+  updateSlider(animate = true) {
+    const offset = this.currentIndex * -100;
+
+    // アニメーションの有無を設定
+    if (animate) {
+      this.wrapperTarget.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    } else {
+      this.wrapperTarget.style.transition = 'none';
+    }
+
+    // スライダーの位置を更新
+    this.wrapperTarget.style.transform = `translateX(${offset}%)`;
+
+    // アニメーション完了後、トランジションをリセット
+    if (animate) {
+      setTimeout(() => {
+        this.wrapperTarget.style.transition = 'none';
+      }, 300);
+    }
+  }
+
+  // ボタンによるナビゲーション
+  next() {
+    if (this.currentIndex < this.slidesCount - 1) {
+      this.currentIndex++;
+      this.updateSlider(true);
+      this.updateButtonVisibility();
+      this.updateCounter();
+      this.updateURL();
+    }
   }
 
   prev() {
-    this.currentIndex = Math.max(this.currentIndex - 1, 0);
-    this.updateSlider();
-    this.updateButtonVisibility();
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.updateSlider(true);
+      this.updateButtonVisibility();
+      this.updateCounter();
+      this.updateURL();
+    }
   }
 
-  updateSlider() {
-    const offset = this.currentIndex * -100;
-    this.wrapperTarget.style.transform = `translateX(${offset}%)`;
+  // URLの更新機能
+  updateURL() {
+    if (window.history && window.history.replaceState) {
+      const url = new URL(window.location);
+      url.searchParams.set('slide', this.currentIndex + 1); // 0ベースから1ベースに変換
+      window.history.replaceState({}, '', url);
+    }
+  }
+
+  hideNavigation() {
+    if (this.hasPrevButtonTarget) {
+      this.prevButtonTarget.style.display = "none";
+    }
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.style.display = "none";
+    }
   }
 
   updateButtonVisibility() {
-    if (this.prevButtonTarget) {
-      this.prevButtonTarget.style.display = this.currentIndex === 0 ? "none" : "block";
+    if (this.hasPrevButtonTarget) {
+      this.prevButtonTarget.style.display = this.currentIndex === 0 ? "none" : "flex";
     }
 
-    if (this.nextButtonTarget) {
-      this.nextButtonTarget.style.display = this.currentIndex === this.slideTargets.length - 1 ? "none" : "block";
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.style.display = 
+        this.currentIndex === this.slidesCount - 1 ? "none" : "flex";
+    }
+  }
+
+  updateCounter() {
+    if (this.hasCounterTarget) {
+      this.counterTarget.textContent = (this.currentIndex + 1).toString();
     }
   }
 }
