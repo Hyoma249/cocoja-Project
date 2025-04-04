@@ -46,3 +46,4 @@ gem 'rails-i18n'     # Rails の国際化対応
 gem 'devise-i18n'    # devise の国際化対応
 # 画像アップロード
 gem 'carrierwave'
+gem 'mini_magick'

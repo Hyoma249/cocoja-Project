@@ -1,47 +1,116 @@
-<div class="mx-auto min-h-screen pb-16">
+<div class="mx-auto min-h-screen pb-16 bg-gray-50">
   <!-- ヘッダー -->
   <%= render "shared/header/login_header" %>
 
-  <% if @posts.present? %>
-    <% @posts.each do |post| %>
-      <div class="w-full">
-        <div class="flex items-center gap-5 p-4">
-          <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-12 h-12 object-cover rounded-full" %>
-          <div>
-            <h4 class="font-bold mb-1"><%= post.user.uid %></h4>
-            <div class="flex items-center text-sm text-gray-600">
-              <span><%= post.prefecture.name %></span>
+  <div class="max-w-lg mx-auto">
+    <% if @posts.present? %>
+      <% @posts.each do |post| %>
+        <!-- 投稿カード -->
+        <div class="bg-white mb-2 border border-gray-200 rounded-sm overflow-hidden">
+          <!-- ユーザーヘッダー -->
+          <div class="flex items-center justify-between p-3 border-b border-gray-100">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+                <%= image_tag "sample_icon1.svg", alt: post.user.uid, class: "w-full h-full object-cover" %>
+              </div>
+              <div>
+                <h4 class="font-semibold text-sm"><%= post.user.uid %></h4>
+                <p class="text-xs text-gray-500"><%= post.prefecture.name %></p>
+              </div>
             </div>
+            <!-- <button class="text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+              </svg>
+            </button> -->
           </div>
-        </div>
 
-        <% if post.post_images.present? %>
-          <div class="flex gap-2 overflow-x-auto mb-4">
-            <% post.post_images.each do |post_image| %>
-              <% if post_image.image.present? && post_image.image.url.present? %>
-                <%= image_tag post_image.image.url, class: "w-full h-50 object-cover", size: "200×300" %>
-              <% else %>
-                <div class="w-full h-50 bg-gray-200 flex items-center justify-center">
-                  画像が表示できません
+          <!-- 画像スライダー -->
+          <% if post.post_images.present? %>
+            <div class="relative" data-controller="slider">
+              <!-- スライダーコンテナ -->
+              <div class="w-full aspect-square overflow-hidden touch-none">
+                <div class="flex h-full will-change-transform touch-pan-y" data-slider-target="wrapper">
+                  <% post.post_images.each_with_index do |post_image, index| %>
+                    <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
+                      <% if post_image.image.present? && post_image.image.url.present? %>
+                        <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none", draggable: "false" %>
+                      <% else %>
+                        <div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
+                          <span>画像なし</span>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
                 </div>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
 
-        <p class="text-gray-800 p-4"><%= format_content_with_hashtags(post.content) %></p>
-        <div class="flex gap-2 mb-4 p-4">
-          <% post.hashtags.each do |tag| %>
-            <%= link_to "/posts/hashtag/#{tag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
-              <%= tag.name %>
-            <% end %>
+                <!-- インジケーター（複数画像の場合） -->
+                <% if post.post_images.length > 1 %>
+                  <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
+                    <span data-slider-target="counter">1</span>/<%= post.post_images.length %>
+                  </div>
+
+                  <!-- ナビゲーションボタン -->
+                  <button class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="prevButton" data-action="click->slider#prev">
+                    <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="nextButton" data-action="click->slider#next">
+                    <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                <% end %>
+              </div>
+            </div>
           <% end %>
+
+          <!-- アクションボタン -->
+          <!-- <div class="px-3 pt-3 pb-1">
+            <div class="flex justify-between">
+              <div class="flex gap-4">
+                <button class="focus:outline-none">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  </svg>
+                </button>
+                <button class="focus:outline-none">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>-->
+
+          <!-- 投稿本文 -->
+          <div class="px-3 py-3">
+            <div class="text-sm mb-2">
+              <span><%= format_content_with_hashtags(post.content) %></span>
+            </div>
+
+            <% if post.hashtags.present? %>
+              <div class="flex flex-wrap gap-2 mt-3">
+                <% post.hashtags.each do |tag| %>
+                  <%= link_to "/posts/hashtag/#{tag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
+                    <%= tag.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <p class="text-xs text-gray-500 mt-3">投稿日：<%= post.created_at.strftime('%Y年%m月%d日') %></p>
+          </div>
         </div>
+      <% end %>
+    <% else %>
+      <div class="bg-white rounded-md p-8 text-center mt-4">
+        <p class="text-gray-500">投稿がありません</p>
+        <p class="text-sm text-gray-400 mt-2">旅の思い出を共有しましょう！</p>
       </div>
     <% end %>
-  <% else %>
-    <div class="mb-3">投稿がありません</div>
-  <% end %>
+  </div>
 
   <!-- フッター -->
   <%= render "shared/footer/login_footer" %>

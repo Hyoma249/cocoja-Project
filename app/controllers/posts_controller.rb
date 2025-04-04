@@ -27,6 +27,17 @@ class PostsController < ApplicationController
   def create
     # ログインしているユーザーの投稿を作成する
     @post = current_user.posts.build(post_params)
+    # 画像数のチェック
+    max_images = 10
+    if params[:post_images] && params[:post_images][:image].present?
+      if params[:post_images][:image].select {|img| img.present? }.count > max_images
+        @prefectures = Prefecture.all
+        flash.now[:notice] = "画像は最大#{max_images}枚までになります"
+        render :new, status: :unprocessable_entity
+        return
+      end
+    end
+
     if @post.save
       if params[:post_images] && params[:post_images][:image].present?
         params[:post_images][:image].each do |image|
