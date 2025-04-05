@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  # ランキング
+  get 'rankings/index'
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
 
