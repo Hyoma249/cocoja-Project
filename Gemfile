@@ -47,5 +47,5 @@ gem 'devise-i18n'    # devise の国際化対応
 # 画像アップロード
 gem 'carrierwave'
 gem 'mini_magick'
-
+# 画像アップロードのストレージ
 gem "cloudinary", "~> 2.3"
