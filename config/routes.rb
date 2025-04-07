@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  # ランキング
-  get 'rankings/index'
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -26,6 +24,10 @@ Rails.application.routes.draw do
 
   # 投稿関連
   resources :posts, only: [:index, :new, :create]
+  # ランキング
+  resources :rankings, only: [:index]
+  # マイページ
+  resources :mypages, only: [:index]
 
   # letter_opener_webのルーティング（開発環境のみ）
   if Rails.env.development?
