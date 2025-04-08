@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   # ランキング
   resources :rankings, only: [:index]
   # マイページ
-  resources :mypages, only: [:index]
+  resource :mypage, only: [:show, :edit, :update]
 
   # letter_opener_webのルーティング（開発環境のみ）
   if Rails.env.development?
