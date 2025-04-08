@@ -43,4 +43,7 @@ Rails.application.configure do
 
   # パブリックファイルの設定
   config.public_file_server.enabled = true
+
+  # HTTPSとHTTPの不一致によるCSRFエラーを回避
+  config.action_controller.forgery_protection_origin_check = false
 end
