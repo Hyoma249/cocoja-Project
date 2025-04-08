@@ -1,11 +1,12 @@
 class ProfileImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+  include Cloudinary::CarrierWave
 
-  storage :file
+  # storage :file
 
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
+  # def store_dir
+  #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  # end
 
   # プロフィール画像用にリサイズ
   process resize_to_fill: [300, 300]
