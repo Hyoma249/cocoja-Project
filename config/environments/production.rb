@@ -20,7 +20,7 @@ Rails.application.configure do
   config.assets.version = '1.0'
 
   # SSL設定
-  config.force_ssl = true # back4app側で設定しているためfalse
+  config.force_ssl = false # back4app側で設定しているためfalse
 
   # ログ設定
   config.log_tags = [ :request_id ]
