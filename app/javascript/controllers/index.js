@@ -16,3 +16,6 @@ application.register("password-visibility", PasswordVisibilityController);
 
 import PostPrevController from "./post_prev_controller";
 application.register("post-prev", PostPrevController);
+
+import ImageInputController from "./image_input_controller";
+application.register("image-input", ImageInputController);

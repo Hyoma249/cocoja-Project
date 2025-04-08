@@ -8,6 +8,18 @@ class User < ApplicationRecord
   # ユーザーは たくさんの投稿 を持てる
   has_many :posts
 
-  validates :username, length: { minimum: 2, maximum: 20 }, uniqueness: true, presence: true, allow_nil: true
-  validates :uid, format: { with: /\A[a-zA-Z0-9]+\z/ }, length: { minimum: 6, maximum: 15 }, uniqueness: true, presence: true, allow_nil: true
+  # Active Storageの代わりにCarrierWaveを使用
+  mount_uploader :profile_image_url, ProfileImageUploader
+
+  # バリデーションの修正
+  validates :username, presence: true, 
+                      length: { minimum: 1, maximum: 20 }, 
+                      uniqueness: true
+
+  validates :uid, presence: true,
+                 format: { with: /\A[a-zA-Z0-9]+\z/, message: 'は半角英数字のみ使用できます' },
+                 length: { minimum: 6, maximum: 15 },
+                 uniqueness: true
+
+  validates :bio, length: { maximum: 160 }, allow_blank: true
 end
