@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'settings/index'
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
 
