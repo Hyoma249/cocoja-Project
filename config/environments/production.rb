@@ -22,6 +22,12 @@ Rails.application.configure do
   # SSL設定
   config.force_ssl = false # back4app側で設定しているためfalse
 
+  # プロキシ設定の追加
+  config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
+
+  # デフォルトURLオプションの設定
+  config.action_controller.default_url_options = { protocol: 'https' }
+
   # ログ設定
   config.log_tags = [ :request_id ]
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
@@ -43,7 +49,4 @@ Rails.application.configure do
 
   # パブリックファイルの設定
   config.public_file_server.enabled = true
-
-  # HTTPSとHTTPの不一致によるCSRFエラーを回避
-  config.action_controller.forgery_protection_origin_check = false
 end
