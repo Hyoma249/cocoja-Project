@@ -39,4 +39,7 @@ Rails.application.routes.draw do
   get '/debug_headers', to: proc {
     |env| [200, {}, [env.select {|k,v| k.match(/^HTTP_/) }.map {|k,v| "#{k}: #{v}" }.join("\n")]]
   }
+
+  # routes.rbに追加（既存の/debug_headersとは別に）
+  get '/simple_test', to: proc { [200, {"Content-Type" => "text/plain"}, ["It works!"]] }
 end
