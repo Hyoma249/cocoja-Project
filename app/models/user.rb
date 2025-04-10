@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable
+        #  :confirmable メール認証を有効にする場合はコメントアウトを外す
 
   # ユーザーは たくさんの投稿 を持てる
   has_many :posts
