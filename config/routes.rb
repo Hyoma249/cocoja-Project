@@ -34,4 +34,9 @@ Rails.application.routes.draw do
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
+
+  # ヘルスチェック用のルーティング
+  get '/debug_headers', to: proc {
+    |env| [200, {}, [env.select {|k,v| k.match(/^HTTP_/) }.map {|k,v| "#{k}: #{v}" }.join("\n")]]
+  }
 end
