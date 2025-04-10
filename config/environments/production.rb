@@ -6,15 +6,9 @@ Rails.application.configure do
   config.eager_load = true
   config.consider_all_requests_local = false
 
-  # キャッシュ設定
+  # キャッシュ設定 - メモリストアに切り替え
   config.action_controller.perform_caching = true
-  config.cache_store = :redis_cache_store, {
-    url: ENV['REDIS_URL'],
-    pool_size: 2,     # 小さい値に設定
-    pool_timeout: 3,  # 短く設定
-    compress: true,   # 圧縮を有効化
-    expires_in: 1.day # デフォルトの有効期限
-  }
+  config.cache_store = :memory_store, { size: 16.megabytes } # 小さいサイズに設定
 
   # アセット設定
   config.public_file_server.headers = {
