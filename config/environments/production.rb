@@ -10,12 +10,10 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.cache_store = :redis_cache_store, {
     url: ENV['REDIS_URL'],
-    pool: {
-      size: 2,     # プール数を削減
-      timeout: 3   # タイムアウトも短縮
-    },
-    compress: true, # 圧縮を有効化
-    expires_in: 1.day # デフォルトの有効期限を設定
+    pool_size: 2,     # 小さい値に設定
+    pool_timeout: 3,  # 短く設定
+    compress: true,   # 圧縮を有効化
+    expires_in: 1.day # デフォルトの有効期限
   }
 
   # アセット設定
