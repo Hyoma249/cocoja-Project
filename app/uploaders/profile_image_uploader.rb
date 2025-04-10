@@ -1,5 +1,5 @@
 class ProfileImageUploader < CarrierWave::Uploader::Base
-  include CarrierWave::MiniMagick
+  # include CarrierWave::MiniMagick
   include Cloudinary::CarrierWave
 
   # storage :file
