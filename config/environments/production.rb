@@ -20,7 +20,7 @@ Rails.application.configure do
   config.assets.version = '1.0'
 
   # SSL設定
-  config.force_ssl = false # back4app側で設定しているためfalse
+  config.force_ssl = true
 
   # プロキシ設定の追加
   config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
