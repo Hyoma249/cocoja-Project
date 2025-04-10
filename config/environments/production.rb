@@ -5,16 +5,23 @@ Rails.application.configure do
   config.cache_classes = true
   config.eager_load = true
   config.consider_all_requests_local = false
+
   # キャッシュ設定
   config.action_controller.perform_caching = true
   config.cache_store = :redis_cache_store, {
     url: ENV['REDIS_URL'],
-    pool_size: 5,
-    pool_timeout: 5
-  }  # 推奨設定
+    pool: {
+      size: 2,     # プール数を削減
+      timeout: 3   # タイムアウトも短縮
+    },
+    compress: true, # 圧縮を有効化
+    expires_in: 1.day # デフォルトの有効期限を設定
+  }
 
   # アセット設定
-  config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
+  config.public_file_server.headers = {
+    "Cache-Control" => "public, max-age=31536000, immutable"
+  }
   config.assets.compile = false
   config.assets.digest = true
   config.assets.version = '1.0'
@@ -31,10 +38,10 @@ Rails.application.configure do
   # ログ設定
   config.log_tags = [ :request_id ]
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  config.log_level = :info
+  config.log_level = :warn  # infoからwarnに変更してログ量削減
 
-  # Active Storage
-  config.active_storage.service = :local
+  # Active Storage - Cloudinaryを使用しているため無効化
+  # config.active_storage.service = :local
 
   # i18n
   config.i18n.fallbacks = true
@@ -49,4 +56,7 @@ Rails.application.configure do
 
   # パブリックファイルの設定
   config.public_file_server.enabled = true
+
+  # ページキャッシュを有効化（オプション）
+  config.action_controller.page_cache_directory = Rails.root.join("public", "cached_pages")
 end
