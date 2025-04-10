@@ -21,9 +21,9 @@ gem "bootsnap", require: false
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 group :development, :test do
-  # gem "debug", platforms: %i[ mri windows ]
-  # gem "brakeman", require: false
-  # gem "rubocop-rails-omakase", require: false
+  gem "debug", platforms: %i[ mri windows ]
+  gem "brakeman", require: false
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :development do
@@ -46,6 +46,5 @@ gem 'rails-i18n'     # Rails の国際化対応
 gem 'devise-i18n'    # devise の国際化対応
 # 画像アップロード
 gem 'carrierwave'
-# gem 'mini_magick'
 # 画像アップロードのストレージ
 gem "cloudinary", "~> 2.3"
