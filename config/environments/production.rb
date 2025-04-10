@@ -10,8 +10,8 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.cache_store = :redis_cache_store, {
     url: ENV['REDIS_URL'],
-    pool_size: 3,
-    pool_timeout: 3
+    pool_size: 5,
+    pool_timeout: 5
   }
 
   # アセット設定
