@@ -23,16 +23,10 @@ Rails.application.configure do
   config.assets.version = '1.0'
 
   # SSL設定
-  config.force_ssl = true
+  config.force_ssl = false
 
   # プロキシ設定の追加
   config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
-
-  # SSL検証を調整
-  config.ssl_options = {
-    redirect: { exclude: -> request { request.headers["X-Forwarded-Proto"] == "https" } },
-    hsts: { subdomains: false }
-  }
 
   # デフォルトURLオプションの設定
   config.action_controller.default_url_options = { protocol: 'https' }
