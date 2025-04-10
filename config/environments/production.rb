@@ -6,9 +6,9 @@ Rails.application.configure do
   config.eager_load = true
   config.consider_all_requests_local = false
 
-  # キャッシュ設定 - メモリストアに切り替え
+  # キャッシュ設定
   config.action_controller.perform_caching = true
-  config.cache_store = :memory_store, { size: 16.megabytes } # 小さいサイズに設定
+  config.cache_store = :null_store
 
   # アセット設定
   config.public_file_server.headers = {
