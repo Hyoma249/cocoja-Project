@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # OPTIONSリクエストを許可
+  match '*path', to: proc { [204, {}, []] }, via: :options, constraints: { path: /.*/ }
+
   get 'settings/index'
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
