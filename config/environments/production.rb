@@ -8,7 +8,11 @@ Rails.application.configure do
 
   # キャッシュ設定
   config.action_controller.perform_caching = true
-  config.cache_store = :null_store
+  config.cache_store = :redis_cache_store, {
+    url: ENV['REDIS_URL'],
+    pool_size: 3,
+    pool_timeout: 3
+  }
 
   # アセット設定
   config.public_file_server.headers = {
