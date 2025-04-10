@@ -53,6 +53,4 @@ Rails.application.configure do
   # パブリックファイルの設定
   config.public_file_server.enabled = true
 
-  # ページキャッシュを有効化（オプション）
-  config.action_controller.page_cache_directory = Rails.root.join("public", "cached_pages")
 end
