@@ -12,8 +12,7 @@ gem "jbuilder"
 
 gem "sprockets-rails"
 
-# 古いキャッシュシステムを使用
-gem "redis", "~> 4.0"
+gem "redis", "~> 5.0"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -33,8 +32,8 @@ group :development do
 end
 
 group :test do
-  gem "capybara"
-  gem "selenium-webdriver"
+  # gem "capybara"
+  # gem "selenium-webdriver"
 end
 
 # 追加 ⬇️

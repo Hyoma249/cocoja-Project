@@ -25,22 +25,9 @@ module Myapp
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # メモリ使用量の最適化設定
     config.assets.initialize_on_precompile = false
     config.assets.enabled = true
-    config.assets.compress = true
-    config.assets.js_compressor = :uglifier
-    config.assets.css_compressor = :sass
-    config.assets.compile = false
     config.assets.version = '1.0'
-
-    # キャッシュの設定
-    config.cache_store = :memory_store, { size: 64.megabytes }
-    config.active_record.cache_versioning = true
-
-    # ガベージコレクションの設定
-    GC.stress = false
-    GC::Profiler.enable
 
     # 追加項目⬇️
     # デフォルト言語を日本語に設定
