@@ -4,6 +4,11 @@ class PostImageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::MiniMagick
   include Cloudinary::CarrierWave
 
+  # キャッシュディレクトリを明示的に指定
+  def cache_dir
+    "#{Rails.root}/tmp/uploads"
+  end
+
   # Choose what kind of storage to use for this uploader:
   # storage :file
   # storage :fog

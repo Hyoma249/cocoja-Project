@@ -43,18 +43,17 @@ class PostsController < ApplicationController
         params[:post_images][:image].each do |image|
           next if image.blank?
           begin
-            # デバッグ情報を追加
-            Rails.logger.info("画像アップロード開始: #{image.original_filename}")
+            Rails.logger.info("画像アップロード開始: キャッシュディレクトリ=#{CarrierWave.configure.cache_dir}")
+            Rails.logger.info("画像情報: クラス=#{image.class.name}, サイズ=#{image.size if image.respond_to?(:size)}")
 
-            # 明示的にPostImageインスタンスを作成してからアップロード
             image_record = @post.post_images.build
             image_record.image = image
             image_record.save!
 
-            Rails.logger.info("画像アップロード成功: ID=#{image_record.id}")
+            Rails.logger.info("画像アップロード成功: ID=#{image_record.id}, URL=#{image_record.image.url}")
           rescue => e
             Rails.logger.error("画像アップロード失敗: #{e.class.name} - #{e.message}")
-            Rails.logger.error(e.backtrace.join("\n")) # バックトレースも記録
+            Rails.logger.error(e.backtrace.join("\n"))
           end
         end
       end

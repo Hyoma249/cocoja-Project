@@ -1,4 +1,8 @@
 CarrierWave.configure do |config|
-  # 明示的にCloudinaryのみを使用するよう指定
-  config.cache_storage = :file
+  if Rails.env.production?
+    # 本番環境ではtmpディレクトリを使用（通常は書き込み可能）
+    config.cache_dir = "#{Rails.root}/tmp/uploads"
+    # または環境変数TMP_DIRを使用
+    # config.cache_dir = ENV.fetch('TMP_DIR', '/tmp')
+  end
 end
