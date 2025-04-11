@@ -8,6 +8,7 @@ class ProfilesController < ApplicationController
 
   def update
     @user = current_user
+    Rails.logger.debug "更新パラメータ: #{profile_params.inspect}"
 
     if @user.update(profile_params)
       redirect_to top_page_login_path, notice: "プロフィールが登録されました"
