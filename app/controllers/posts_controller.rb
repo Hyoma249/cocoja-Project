@@ -42,10 +42,15 @@ class PostsController < ApplicationController
       if params[:post_images] && params[:post_images][:image].present?
         params[:post_images][:image].each do |image|
           next if image.blank?  # 空の画像をスキップ
-          @post.post_images.create(image: image)
+          begin
+            image_record = @post.post_images.create!(image: image)
+            Rails.logger.info("画像を作成しました: #{image_record.id}")
+          rescue => e
+            Rails.logger.error("画像作成中にエラーが発生: #{e.message}")
+            # エラーがあっても続行
+          end
         end
       end
-
       flash[:notice] = "投稿が作成されました"
       redirect_to posts_path
     else
