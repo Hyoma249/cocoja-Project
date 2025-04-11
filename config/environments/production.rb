@@ -26,7 +26,7 @@ Rails.application.configure do
   config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
 
   # デフォルトURLオプションの設定
-  config.action_controller.default_url_options = { protocol: 'https' }
+  config.action_controller.default_url_options = { host: 'cocoja-7b01rrht.b4a.run', protocol: 'https' }
 
   # ログ設定
   config.log_tags = [ :request_id ]
