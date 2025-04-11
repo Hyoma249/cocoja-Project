@@ -1,8 +1,9 @@
 CarrierWave.configure do |config|
   if Rails.env.production?
-    # 本番環境ではtmpディレクトリを使用（通常は書き込み可能）
+    # キャッシュディレクトリの設定
     config.cache_dir = "#{Rails.root}/tmp/uploads"
-    # または環境変数TMP_DIRを使用
-    # config.cache_dir = ENV.fetch('TMP_DIR', '/tmp')
+
+    # キャッシュの保存期間設定（任意）
+    config.cache_storage = :file
   end
 end

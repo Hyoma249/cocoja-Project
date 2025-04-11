@@ -8,9 +8,6 @@ class ProfileImageUploader < CarrierWave::Uploader::Base
   #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   # end
 
-  # プロフィール画像用にリサイズ
-  process resize_to_fill: [300, 300]
-
   # 許可する拡張子
   def extension_allowlist
     %w(jpg jpeg gif png heic)

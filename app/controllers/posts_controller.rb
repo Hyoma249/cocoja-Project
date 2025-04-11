@@ -43,17 +43,11 @@ class PostsController < ApplicationController
         params[:post_images][:image].each do |image|
           next if image.blank?
           begin
-            Rails.logger.info("画像アップロード開始: キャッシュディレクトリ=#{CarrierWave.configure.cache_dir}")
-            Rails.logger.info("画像情報: クラス=#{image.class.name}, サイズ=#{image.size if image.respond_to?(:size)}")
-
-            image_record = @post.post_images.build
-            image_record.image = image
-            image_record.save!
-
-            Rails.logger.info("画像アップロード成功: ID=#{image_record.id}, URL=#{image_record.image.url}")
+            # シンプルに作成を試みる
+            @post.post_images.create!(image: image)
           rescue => e
             Rails.logger.error("画像アップロード失敗: #{e.class.name} - #{e.message}")
-            Rails.logger.error(e.backtrace.join("\n"))
+            # エラーが発生しても処理を続行
           end
         end
       end
