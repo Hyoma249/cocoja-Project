@@ -41,13 +41,20 @@ class PostsController < ApplicationController
     if @post.save
       if params[:post_images] && params[:post_images][:image].present?
         params[:post_images][:image].each do |image|
-          next if image.blank?  # 空の画像をスキップ
+          next if image.blank?
           begin
-            image_record = @post.post_images.create!(image: image)
-            Rails.logger.info("画像を作成しました: #{image_record.id}")
+            # デバッグ情報を追加
+            Rails.logger.info("画像アップロード開始: #{image.original_filename}")
+
+            # 明示的にPostImageインスタンスを作成してからアップロード
+            image_record = @post.post_images.build
+            image_record.image = image
+            image_record.save!
+
+            Rails.logger.info("画像アップロード成功: ID=#{image_record.id}")
           rescue => e
-            Rails.logger.error("画像作成中にエラーが発生: #{e.message}")
-            # エラーがあっても続行
+            Rails.logger.error("画像アップロード失敗: #{e.class.name} - #{e.message}")
+            Rails.logger.error(e.backtrace.join("\n")) # バックトレースも記録
           end
         end
       end
