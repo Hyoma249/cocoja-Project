@@ -1,4 +1,4 @@
-<div class="max-w-md mx-auto bg-gray-50 min-h-screen">
+<div class="max-w-md mx-auto min-h-screen">
   <!-- Header -->
   <%= render "shared/header/guest_header" %>
 
@@ -6,8 +6,10 @@
   <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6">
     <h2 class="text-2xl font-bold mb-2">つながって、広がって</h2>
     <h3 class="text-3xl font-bold mb-4">日本をもっと好きになる！</h3>
-    <p class="mb-4">日本の魅力を再発見！地元の人しか知らない穴場スポットや文化を共有しよう</p>
-    <button class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">今すぐ登録</button>
+    <p>日本の魅力を再発見！地元の人しか知らない穴場スポットや文化を共有しよう</p>
+    <div class="mt-6">
+      <%= link_to "今すぐ登録", new_user_registration_path, class: "bg-white text-blue-600 px-6 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2" %>
+    </div>
   </div>
 
   <!-- Ranking Section -->
@@ -30,7 +32,7 @@
             <p class="text-sm text-gray-600 mb-2">
               富良野のラベンダー畑や新鮮な海産物など、自然と食の魅力が満載！
             </p>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
               <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#絶景</span>
               <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#富良野のラベンダー畑</span>
             </div>
@@ -87,15 +89,18 @@
     <div class="flex items-center gap-2 mb-4">
       <h3 class="text-xl font-bold">投稿フォーマットの紹介</h3>
     </div>
+
     <!-- スライダー -->
     <div class="main-slider relative w-full max-w-4xl mx-auto overflow-hidden" data-controller="slider">
       <div class="slider-wrapper flex transition-transform duration-500 ease-in-out" data-slider-target="wrapper">
-        <!-- 投稿1 -->
+        <!-- 投稿 1 -->
         <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
-          <div class="post-content p-4">
-            <div class="bg-white rounded-xl shadow-sm">
-              <div class="flex items-center gap-5 p-4">
-                <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-12 h-12 object-cover rounded-full" %>
+          <div class="bg-white mb-2 border border-gray-200 rounded-sm overflow-hidden">
+            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+                  <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-15 h-15 object-cover rounded-full" %>
+                </div>
                 <div>
                   <h4 class="font-bold mb-1">travel_Taro</h4>
                   <div class="flex items-center text-sm text-gray-600">
@@ -103,68 +108,82 @@
                   </div>
                 </div>
               </div>
-              <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", class: "w-full h-50 object-cover mb-4" %>
-              <p class="text-gray-800 p-4">
-                沖縄旅行で最高の景色に出会いました！透き通った海と白い砂浜が本当に綺麗で、時間を忘れて過ごしました。皆さんも沖縄に行く際は、ぜひこのビーチに立ち寄ってみてください！
-              </p>
-              <div class="flex gap-2 mb-4 p-4">
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">沖縄</span>
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">旅行</span>
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">ビーチ</span>
-              </div>
             </div>
+            <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", class: "w-full h-50 object-cover mb-4" %>
+            <div class="text-sm mb-2">
+              <p class="text-gray-800 p-4">
+                沖縄<span class="text-blue-600">#旅行</span>で最高の景色に出会いました！透き通った海と白い砂浜が本当に綺麗で、時間を忘れて過ごしました。皆さんも<span class="text-blue-600">#沖縄</span>に行く際は、ぜひこの<span class="text-blue-600">#ビーチ</span>に立ち寄ってみてください！
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 pl-4">
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#沖縄</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#旅行</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ビーチ</span>
+            </div>
+            <p class="pl-4 pb-4 text-xs text-gray-500 mt-3">投稿日：2025年03月19日</p>
           </div>
         </div>
-        <!-- 投稿2 -->
+        <!-- 投稿 2 -->
         <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
-          <div class="post-content p-4">
-            <div class="bg-white rounded-xl shadow-sm">
-              <div class="flex items-center gap-5 p-4">
-                <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-12 h-12 object-cover rounded-full" %>
+          <div class="bg-white mb-2 border border-gray-200 rounded-sm overflow-hidden">
+            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+                  <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-15 h-15 object-cover rounded-full" %>
+                </div>
                 <div>
-                  <h4 class="font-bold mb-1">travel_Taro</h4>
+                  <h4 class="font-bold mb-1">Gurume_Hanako</h4>
                   <div class="flex items-center text-sm text-gray-600">
                     <span>福岡県</span>
                   </div>
                 </div>
               </div>
-              <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", class: "w-full h-50 object-cover mb-4" %>
-              <p class="text-gray-800 p-4">
-                沖縄旅行で最高の景色に出会いました！透き通った海と白い砂浜が本当に綺麗で、時間を忘れて過ごしました。皆さんも沖縄に行く際は、ぜひこのビーチに立ち寄ってみてください！
-              </p>
-              <div class="flex gap-2 mb-4 p-4">
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#沖縄</span>
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#旅行</span>
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ビーチ</span>
-              </div>
             </div>
+            <%= image_tag "post-fukuoka.png", alt: "福岡ラーメン", class: "w-full h-50 object-cover mb-4" %>
+            <div class="text-sm mb-2">
+              <p class="text-gray-800 p-4">
+                <span class="text-blue-600">#福岡</span>に来たらやっぱり<span class="text-blue-600">#ラーメン</span>！<span class="text-blue-600">#屋台</span>で食べる熱々の豚骨ラーメンは最高です！スープまで飲み干してしまうほど美味しかった！
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 pl-4">
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#福岡</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ラーメン</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#屋台</span>
+            </div>
+            <p class="pl-4 pb-4 text-xs text-gray-500 mt-3">投稿日：2025年02月10日</p>
           </div>
         </div>
-        <!-- 投稿3 -->
+        <!-- 投稿 3 -->
         <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
-          <div class="post-content p-4">
-            <div class="bg-white rounded-xl shadow-sm">
-              <div class="flex items-center gap-5 p-4">
-                <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-12 h-12 object-cover rounded-full" %>
+          <div class="bg-white mb-2 border border-gray-200 rounded-sm overflow-hidden">
+            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+                  <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-15 h-15 object-cover rounded-full" %>
+                </div>
                 <div>
-                  <h4 class="font-bold mb-1">travel_Taro</h4>
+                  <h4 class="font-bold mb-1">kyoto_kyoco</h4>
                   <div class="flex items-center text-sm text-gray-600">
                     <span>京都府</span>
                   </div>
                 </div>
               </div>
-              <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", class: "w-full h-50 object-cover mb-4" %>
-              <p class="text-gray-800 p-4">
-                沖縄旅行で最高の景色に出会いました！透き通った海と白い砂浜が本当に綺麗で、時間を忘れて過ごしました。皆さんも沖縄に行く際は、ぜひこのビーチに立ち寄ってみてください！
-              </p>
-              <div class="flex gap-2 mb-4 p-4">
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#沖縄</span>
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#旅行</span>
-                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ビーチ</span>
-              </div>
             </div>
+            <%= image_tag "post-kyoto.png", alt: "京都の祇園祭", class: "w-full h-50 object-cover mb-4" %>
+            <div class="text-sm mb-2">
+              <p class="text-gray-800 p-4">
+                <span class="text-blue-600">#京都</span> の<span class="text-blue-600">#祇園祭</span> に行ってきました！豪華絢爛な山鉾巡行は圧巻！日本の<span class="text-blue-600">#伝統文化</span> に触れることができました。来年も絶対行きたい！ 
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3 pl-4">
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#京都</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#祇園祭</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#伝統文化</span>
+            </div>
+            <p class="pl-4 pb-4 text-xs text-gray-500 mt-3">投稿日：2025年01月07日</p>
           </div>
         </div>
+
       </div>
 
       <!-- カスタムナビゲーションボタン -->
@@ -182,10 +201,12 @@
   </div>
 
   <!-- Bottom CTA -->
-  <div class="bg-white p-6 text-center mt-6">
-    <h3 class="text-xl font-bold mb-4"><%= image_tag "cocoja_logo.svg", class: "w-auto h-auto", alt: "ココジャ" %>で新しい発見をしよう！</h3>
-    <button class="w-full bg-blue-600 text-white py-3 rounded-full font-bold mb-2 transition-all duration-200 hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">今すぐ登録</button>
-    <button class="w-full border border-blue-600 text-blue-600 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">ログイン</button>
+  <div class="bg-white pb-6 px-6 text-center">
+    <h3 class="text-xl font-bold"><%= image_tag "cocoja_logo.svg", class: "w-auto h-auto", alt: "ココジャ" %>で新しい発見をしよう！</h3>
+    <div class="pt-8">
+      <%= link_to "今すぐ登録", new_user_registration_path, class: "p-4 w-full bg-blue-600 text-white py-3 rounded-full font-bold mb-2 transition-all duration-200 hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 cus:ring-blue-500 focus:ring-offset-2" %>
+      <%= link_to "ログイン", new_user_session_path, class: "p-4 w-full border border-blue-600 text-blue-600 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 cus:ring-blue-500 focus:ring-offset-2" %>
+    </div>
   </div>
 
   <!-- Footer -->
