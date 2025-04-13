@@ -73,7 +73,7 @@
                 <div class="flex flex-wrap gap-2 mt-3">
                   <% post.hashtags.each do |tag| %>
                     <%= link_to "/posts/hashtag/#{tag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
-                      <%= tag.name %>
+                      #<%= tag.name %>
                     <% end %>
                   <% end %>
                 </div>
