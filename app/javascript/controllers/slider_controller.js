@@ -3,8 +3,8 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["wrapper", "slide", "prevButton", "nextButton", "counter"];
   static values = {
-    initialIndex: { type: Number, default: 0 }
-  }
+    initialIndex: { type: Number, default: 0 },
+  };
 
   connect() {
     // スライド数の確認
@@ -36,9 +36,13 @@ export default class extends Controller {
 
   initializeCurrentIndex() {
     const urlParams = new URLSearchParams(window.location.search);
-    const slideIndex = urlParams.get('slide');
+    const slideIndex = urlParams.get("slide");
 
-    if (slideIndex !== null && !isNaN(parseInt(slideIndex)) && parseInt(slideIndex) < this.slidesCount) {
+    if (
+      slideIndex !== null &&
+      !isNaN(parseInt(slideIndex)) &&
+      parseInt(slideIndex) < this.slidesCount
+    ) {
       this.currentIndex = parseInt(slideIndex) - 1; // 1ベースから0ベースに変換
     } else {
       this.currentIndex = this.initialIndexValue;
@@ -54,15 +58,28 @@ export default class extends Controller {
 
   setupSwipeEvents() {
     // タッチイベント (モバイル用)
-    this.wrapperTarget.addEventListener('touchstart', this.touchStart.bind(this), { passive: true });
-    this.wrapperTarget.addEventListener('touchmove', this.touchMove.bind(this), { passive: false });
-    this.wrapperTarget.addEventListener('touchend', this.touchEnd.bind(this), { passive: true });
+    this.wrapperTarget.addEventListener(
+      "touchstart",
+      this.touchStart.bind(this),
+      { passive: true }
+    );
+    this.wrapperTarget.addEventListener(
+      "touchmove",
+      this.touchMove.bind(this),
+      { passive: false }
+    );
+    this.wrapperTarget.addEventListener("touchend", this.touchEnd.bind(this), {
+      passive: true,
+    });
 
     // マウスイベント (PC用)
-    this.wrapperTarget.addEventListener('mousedown', this.touchStart.bind(this));
-    this.wrapperTarget.addEventListener('mousemove', this.touchMove.bind(this));
-    this.wrapperTarget.addEventListener('mouseup', this.touchEnd.bind(this));
-    this.wrapperTarget.addEventListener('mouseleave', this.touchEnd.bind(this));
+    this.wrapperTarget.addEventListener(
+      "mousedown",
+      this.touchStart.bind(this)
+    );
+    this.wrapperTarget.addEventListener("mousemove", this.touchMove.bind(this));
+    this.wrapperTarget.addEventListener("mouseup", this.touchEnd.bind(this));
+    this.wrapperTarget.addEventListener("mouseleave", this.touchEnd.bind(this));
   }
 
   touchStart(event) {
@@ -70,10 +87,10 @@ export default class extends Controller {
     this.startX = this.getPositionX(event);
 
     // トランジションを無効化して即座に反応するようにする
-    this.wrapperTarget.style.transition = 'none';
+    this.wrapperTarget.style.transition = "none";
 
     // カーソルスタイルを変更
-    this.wrapperTarget.style.cursor = 'grabbing';
+    this.wrapperTarget.style.cursor = "grabbing";
   }
 
   touchMove(event) {
@@ -84,37 +101,45 @@ export default class extends Controller {
     this.currentX = this.getPositionX(event);
     const diffX = this.currentX - this.startX;
 
-    // 現在のトランスフォーム値 + 移動量を計算
+    // スライダーの位置を更新（移動量を制限）
     const translateX = this.calculateTranslateX(diffX);
-
-    // スライダーの位置を更新
     this.wrapperTarget.style.transform = `translateX(${translateX}%)`;
   }
 
   calculateTranslateX(diffX) {
-    // 基本の移動量を計算
-    const baseTranslateX = (this.currentIndex * -100) + (diffX / this.slideWidth * 100);
+    // 現在のスライド位置を基準とした移動量を計算
+    const currentTranslate = this.currentIndex * -100;
+    const movePercent = (diffX / this.slideWidth) * 100;
+    let newTranslate = currentTranslate + movePercent;
 
-    // 端の場合は抵抗を加える（移動量を半分にする）
-    if ((this.currentIndex === 0 && diffX > 0) || 
-        (this.currentIndex === this.slidesCount - 1 && diffX < 0)) {
-      return (this.currentIndex * -100) + (diffX / this.slideWidth * 50);
+    // 端のスライドでの移動制限
+    if (this.currentIndex === 0 && newTranslate > 0) {
+      newTranslate = movePercent * 0.3; // 最初のスライドでの右方向への移動を制限
+    } else if (
+      this.currentIndex === this.slidesCount - 1 &&
+      newTranslate < -100 * (this.slidesCount - 1)
+    ) {
+      const overflow = newTranslate + 100 * (this.slidesCount - 1);
+      newTranslate = -100 * (this.slidesCount - 1) + overflow * 0.3; // 最後のスライドでの左方向への移動を制限
     }
 
-    return baseTranslateX;
+    return newTranslate;
   }
 
   touchEnd(event) {
     if (!this.isDragging) return;
 
     this.isDragging = false;
+    // 最後のタッチ位置を正しく取得
+    this.currentX = this.getPositionX(event);
     const diffX = this.currentX - this.startX;
 
     // カーソルスタイルを戻す
-    this.wrapperTarget.style.cursor = '';
+    this.wrapperTarget.style.cursor = "";
 
     // スムーズなトランジションを再有効化
-    this.wrapperTarget.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    this.wrapperTarget.style.transition =
+      "transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)";
 
     // スワイプの方向と距離に基づいてスライドを移動
     this.handleSwipe(diffX);
@@ -123,6 +148,15 @@ export default class extends Controller {
     this.updateSlider(true);
     this.updateButtonVisibility();
     this.updateCounter();
+
+    // デバッグ用のログ
+    console.log({
+      startX: this.startX,
+      currentX: this.currentX,
+      diffX: diffX,
+      threshold: this.threshold,
+      currentIndex: this.currentIndex,
+    });
 
     // URLを更新
     this.updateURL();
@@ -142,7 +176,7 @@ export default class extends Controller {
 
   getPositionX(event) {
     // タッチイベントとマウスイベントの両方に対応
-    return event.type.includes('mouse')
+    return event.type.includes("mouse")
       ? event.pageX
       : event.touches[0].clientX;
   }
@@ -152,9 +186,10 @@ export default class extends Controller {
 
     // アニメーションの有無を設定
     if (animate) {
-      this.wrapperTarget.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+      this.wrapperTarget.style.transition =
+        "transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)";
     } else {
-      this.wrapperTarget.style.transition = 'none';
+      this.wrapperTarget.style.transition = "none";
     }
 
     // スライダーの位置を更新
@@ -163,7 +198,7 @@ export default class extends Controller {
     // アニメーション完了後、トランジションをリセット
     if (animate) {
       setTimeout(() => {
-        this.wrapperTarget.style.transition = 'none';
+        this.wrapperTarget.style.transition = "none";
       }, 300);
     }
   }
@@ -193,8 +228,8 @@ export default class extends Controller {
   updateURL() {
     if (window.history && window.history.replaceState) {
       const url = new URL(window.location);
-      url.searchParams.set('slide', this.currentIndex + 1); // 0ベースから1ベースに変換
-      window.history.replaceState({}, '', url);
+      url.searchParams.set("slide", this.currentIndex + 1); // 0ベースから1ベースに変換
+      window.history.replaceState({}, "", url);
     }
   }
 
@@ -209,11 +244,12 @@ export default class extends Controller {
 
   updateButtonVisibility() {
     if (this.hasPrevButtonTarget) {
-      this.prevButtonTarget.style.display = this.currentIndex === 0 ? "none" : "flex";
+      this.prevButtonTarget.style.display =
+        this.currentIndex === 0 ? "none" : "flex";
     }
 
     if (this.hasNextButtonTarget) {
-      this.nextButtonTarget.style.display = 
+      this.nextButtonTarget.style.display =
         this.currentIndex === this.slidesCount - 1 ? "none" : "flex";
     }
   }
