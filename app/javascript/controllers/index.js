@@ -19,3 +19,6 @@ application.register("post-prev", PostPrevController);
 
 import ImageInputController from "./image_input_controller";
 application.register("image-input", ImageInputController);
+
+import FlashController from "./flash_controller";
+application.register("flash", FlashController);

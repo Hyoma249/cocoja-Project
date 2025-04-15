@@ -22,9 +22,24 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+  <body class="bg-gray-50">
+    <!-- フラッシュメッセージ -->
+    <% if notice.present? || alert.present? %>
+      <div class="fixed top-4 left-1/2 transform -translate-x-1/2 w-full max-w-md z-[99999] px-4">
+        <% if notice.present? %>
+          <div data-controller="flash"
+               class="bg-green-50 text-green-700 p-4 rounded-lg mb-4 shadow-lg transition-all duration-150 ease-in-out">
+            <%= notice %>
+          </div>
+        <% end %>
+        <% if alert.present? %>
+          <div data-controller="flash"
+               class="bg-red-50 text-red-700 p-4 rounded-lg mb-4 shadow-lg transition-all duration-150 ease-in-out">
+            <%= alert %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>
