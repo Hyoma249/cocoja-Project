@@ -20,13 +20,13 @@ Rails.application.configure do
   config.assets.version = '1.0'
 
   # SSL設定
-  config.force_ssl = false
-
-  # プロキシ設定の追加
-  config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
+  config.force_ssl = true
 
   # デフォルトURLオプションの設定
   config.action_controller.default_url_options = { protocol: 'https' }
+
+  # プロキシ設定の追加
+  config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
 
   # ログ設定
   config.log_tags = [ :request_id ]
