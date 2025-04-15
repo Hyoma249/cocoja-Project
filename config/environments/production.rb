@@ -19,14 +19,17 @@ Rails.application.configure do
   config.assets.digest = true
   config.assets.version = '1.0'
 
-  # SSL設定
-  config.force_ssl = true
+  # SSL設定 - リダイレクトループを避けるためfalseに
+  config.force_ssl = false
 
-  # デフォルトURLオプションの設定
+  # しかし、内部で生成されるURLはHTTPSを使用
   config.action_controller.default_url_options = { protocol: 'https' }
 
-  # プロキシ設定の追加
-  config.action_dispatch.trusted_proxies = %w(0.0.0.0/0).map { |proxy| IPAddr.new(proxy) }
+  # プロキシ設定 - より限定的に
+  config.action_dispatch.trusted_proxies = %w(127.0.0.1 ::1).map { |proxy| IPAddr.new(proxy) }
+
+  # X-Forwarded-Proto ヘッダーを信頼するように設定
+  config.ssl_options = { redirect: { exclude: -> request { request.get_header('HTTP_X_FORWARDED_PROTO') == 'https' } } }
 
   # ログ設定
   config.log_tags = [ :request_id ]
