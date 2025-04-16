@@ -12,8 +12,8 @@
           <div class="flex items-center justify-between p-3 border-b border-gray-100">
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden">
-                <% if post.user.profile_image.present? %>
-                  <%= image_tag post.user.profile_image.url, alt: post.user.uid, class: "w-full h-full object-cover" %>
+                <% if post.user.profile_image_url.present? %>
+                  <%= image_tag post.user.profile_image_url.url, alt: post.user.uid, class: "w-full h-full object-cover" %>
                 <% else %>
                   <%= image_tag "sample_icon1.svg", alt: post.user.uid, class: "w-full h-full object-cover" %>
                 <% end %>
