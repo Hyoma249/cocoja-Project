@@ -52,7 +52,7 @@ class PostsController < ApplicationController
         end
       end
       flash[:notice] = "投稿が作成されました"
-      redirect_to posts_path
+      redirect_to posts_url(protocol: 'https')
     else
       @prefectures = Prefecture.all
       flash.now[:notice] = "投稿の作成に失敗しました"
@@ -67,7 +67,7 @@ class PostsController < ApplicationController
     if @tag
       @posts = @tag.posts.includes(:prefecture, :user, :hashtags).order(created_at: :desc)
     else
-      redirect_to posts_path, notice: "該当する投稿がありません"
+      redirect_to posts_url(protocol: 'https'), notice: "該当する投稿がありません"
     end
   end
 

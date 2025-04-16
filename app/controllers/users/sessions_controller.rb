@@ -16,7 +16,7 @@ class Users::SessionsController < Devise::SessionsController
   # DELETE /resource/sign_out
   def destroy
     super do
-      return redirect_to root_path, notice: "ログアウトしました"
+      return redirect_to root_url(protocol: 'https'), notice: "ログアウトしました"
     end
   end
 
