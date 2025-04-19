@@ -10,6 +10,14 @@ services:
       - postgres_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
   web:
     build:
       context: .
@@ -21,6 +29,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
     volumes:
       - .:/myapp
       - bundle_data:/myapp/vendor/bundle
@@ -30,6 +39,29 @@ services:
     stdin_open: true
     depends_on:
       - db
+      - redis
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "bundle install && bundle exec sidekiq"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: development
+    volumes:
+      - .:/myapp
+      - bundle_data:/myapp/vendor/bundle
+    depends_on:
+      - db
+      - redis
+      - web
+
 volumes:
   postgres_volume:
   bundle_data:
+  redis_data:

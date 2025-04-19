@@ -81,6 +81,12 @@
 
               <p class="text-xs md:text-sm text-gray-500 mt-4">投稿日：<%= post.created_at.strftime('%Y年%m月%d日') %></p>
             </div>
+
+            <!-- 詳細ページへのリンクを追加 -->
+            <div class="p-3 border-t text-right">
+              <%= link_to "詳細を見る", post_path(post),
+                        class: "text-indigo-600 hover:text-indigo-800 text-sm" %>
+            </div>
           </div>
         <% end %>
       </div>

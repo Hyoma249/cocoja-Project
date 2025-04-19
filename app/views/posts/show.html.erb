@@ -1,0 +1,60 @@
+<!-- app/views/posts/show.html.erb -->
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <!-- 投稿のヘッダー部分 -->
+    <div class="p-4 border-b">
+      <div class="flex items-center">
+        <% if @post.user.profile_image_url.present? %>
+          <img src="<%= @post.user.profile_image_url %>" alt="<%= @post.user.username %>" class="w-10 h-10 rounded-full mr-3">
+        <% else %>
+          <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+            <span class="text-gray-500 font-bold"><%= @post.user.username[0].upcase %></span>
+          </div>
+        <% end %>
+
+        <div>
+          <p class="font-medium"><%= @post.user.username %></p>
+          <p class="text-xs text-gray-500"><%= l @post.created_at, format: :long %></p>
+        </div>
+      </div>
+
+      <!-- 都道府県情報 -->
+      <div class="mt-2">
+        <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">
+          <%= @post.prefecture.name %>
+        </span>
+      </div>
+    </div>
+
+    <!-- 投稿の内容 -->
+    <div class="p-4">
+      <div class="prose max-w-none">
+        <%= simple_format(h(@post.content)) %>
+      </div>
+
+      <!-- 投稿画像があれば表示 -->
+      <% if @post.post_images.present? %>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <% @post.post_images.each do |image| %>
+            <div class="aspect-w-16 aspect-h-9 overflow-hidden rounded">
+              <%= image_tag image.image.url, class: "w-full h-full object-cover" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- ハッシュタグがあれば表示 -->
+      <% if @post.hashtags.present? %>
+        <div class="mt-4 flex flex-wrap gap-1">
+          <% @post.hashtags.each do |hashtag| %>
+            <%= link_to "##{hashtag.name}", hashtag_posts_path(hashtag.name), 
+                      class: "text-blue-600 hover:underline text-sm" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- ポイント付与フォーム -->
+  <%= render 'vote_form', post: @post %>
+</div>

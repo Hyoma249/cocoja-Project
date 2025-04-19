@@ -13,6 +13,10 @@ class PostsController < ApplicationController
     end
   end
 
+  def show
+    @post = Post.find(params[:id])
+  end
+
   # 「新しい投稿を作成」ボタンを押したときに実行される
   def new
     # 「新しい投稿（Post）を作る準備」 をしている

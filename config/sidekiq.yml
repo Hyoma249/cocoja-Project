@@ -1,0 +1,10 @@
+:queues:
+  - default
+  - mailers
+
+:scheduler:
+  :schedule:
+    update_weekly_ranking:
+      cron: '0 0 * * 1'  # 毎週月曜日の0時に実行
+      class: UpdateWeeklyRankingJob
+      queue: default
