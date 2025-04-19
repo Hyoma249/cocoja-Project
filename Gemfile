@@ -47,3 +47,6 @@ gem 'devise-i18n'    # devise の国際化対応
 gem 'carrierwave'
 # 画像アップロードのストレージ
 gem "cloudinary", "~> 2.3"
+# Railsで非同期ジョブ（バックグラウンド処理）を実行するための定番ツール
+gem 'sidekiq'
+gem 'sidekiq-scheduler'

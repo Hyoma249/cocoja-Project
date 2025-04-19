@@ -9,6 +9,12 @@ class Post < ApplicationRecord
   has_many :post_hashtags
   has_many :hashtags, through: :post_hashtags
 
+  has_many :votes, dependent: :destroy
+  # この投稿が、全部で何ポイント投票されているか？
+  def total_points
+    votes.sum(:points)
+  end
+
   # 画像アップロード用
   has_many :post_images, dependent: :destroy
   # 1つのフォームで投稿＋画像を一緒に追加・編集・削除できるようにする

@@ -37,5 +37,11 @@ module Myapp
 
     # CSRF保護のオリジンチェックを無効化（HTTP/HTTPS不一致問題を解決）
     config.action_controller.forgery_protection_origin_check = false
+
+    # タイムゾーンを日本時間に設定
+    config.time_zone = 'Asia/Tokyo'
+
+    # DBに保存する時間をアプリケーションのタイムゾーンに設定
+    config.active_record.default_timezone = :local
   end
 end

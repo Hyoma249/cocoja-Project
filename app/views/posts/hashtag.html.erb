@@ -66,8 +66,9 @@
               </div>
             <% end %>
 
-            <div class="px-4 py-4">
-              <div class="text-sm md:text-base mb-2">
+            <!-- 投稿本文 -->
+            <div class="px-3 py-3">
+              <div class="text-sm mb-2">
                 <span><%= format_content_with_hashtags(post.content) %></span>
               </div>
 
@@ -75,13 +76,19 @@
                 <div class="flex flex-wrap gap-2 mt-3">
                   <% post.hashtags.each do |tag| %>
                     <%= link_to "/posts/hashtag/#{tag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
-                      #<%= tag.name %>
+                      <%= tag.name %>
                     <% end %>
                   <% end %>
                 </div>
               <% end %>
 
-              <p class="text-xs md:text-sm text-gray-500 mt-4">投稿日：<%= post.created_at.strftime('%Y年%m月%d日') %></p>
+              <p class="text-xs text-gray-500 mt-3">投稿日：<%= post.created_at.strftime('%Y年%m月%d日') %></p>
+            </div>
+
+            <!-- 詳細ページへのリンクを追加 -->
+            <div class="p-3 border-t text-right">
+              <%= link_to "詳細を見る", post_path(post),
+                        class: "text-indigo-600 hover:text-indigo-800 text-sm" %>
             </div>
           </div>
         <% end %>

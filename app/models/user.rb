@@ -7,6 +7,20 @@ class User < ApplicationRecord
 
   # ユーザーは たくさんの投稿 を持てる
   has_many :posts
+  has_many :votes, dependent: :destroy
+
+  # 今日投票したポイントの合計
+  def daily_votes_count
+    votes.today.sum(:points)
+  end
+  # 今日の残り投票ポイント
+  def remaining_daily_points
+    [0, 5 - daily_votes_count].max
+  end
+  # 今日の残り投票ポイントを加算しても大丈夫か
+  def can_vote?(points_to_add)
+    remaining_daily_points >= points_to_add
+  end
 
   # Active Storageの代わりにCarrierWaveを使用
   mount_uploader :profile_image_url, ProfileImageUploader
