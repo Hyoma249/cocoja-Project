@@ -25,7 +25,7 @@
         <div class="bg-white rounded-lg shadow-sm">
           <div class="flex items-center p-4">
             <% if post.user.profile_image_url.present? %>
-              <img src="<%= @post.user.profile_image_url %>" alt="<%= @post.user.username %>" class="w-10 h-10 rounded-full">
+              <img src="<%= post.user.profile_image_url %>" alt="<%= post.user.username %>" class="w-10 h-10 rounded-full">
             <% else %>
               <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                 <%= image_tag "sample_icon1.svg", alt: post.user.uid, class: "w-full h-full object-cover" %>
