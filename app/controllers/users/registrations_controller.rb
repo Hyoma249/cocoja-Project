@@ -10,9 +10,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super do |resource|
+      if resource.persisted?
+        sign_in(resource)
+        # プロフィール設定ページへリダイレクト
+        redirect_to profile_setup_path and return
+      end
+    end
+  end
 
   # GET /resource/edit
   # def edit
