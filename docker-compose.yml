@@ -10,6 +10,35 @@ services:
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: "true"
       PORT: 8080
+      REDIS_URL: ${REDIS_URL}
     ports:
       - "8080:8080"
     restart: always
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    command: bundle exec sidekiq
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: "true"
+      REDIS_URL: ${REDIS_URL}
+    restart: always
+    depends_on:
+      - redis
+      - web
+
+volumes:
+  redis_data:

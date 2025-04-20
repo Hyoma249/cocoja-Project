@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_11_050858) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_18_062033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,9 +78,35 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_11_050858) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.integer "points", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_votes_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_votes_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
+  create_table "weekly_rankings", force: :cascade do |t|
+    t.bigint "prefecture_id", null: false
+    t.integer "year", null: false
+    t.integer "week", null: false
+    t.integer "rank", null: false
+    t.integer "points", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["prefecture_id", "year", "week"], name: "index_weekly_rankings_on_prefecture_year_week", unique: true
+    t.index ["prefecture_id"], name: "index_weekly_rankings_on_prefecture_id"
+  end
+
   add_foreign_key "post_hashtags", "hashtags"
   add_foreign_key "post_hashtags", "posts"
   add_foreign_key "post_images", "posts"
   add_foreign_key "posts", "prefectures"
   add_foreign_key "posts", "users"
+  add_foreign_key "votes", "posts"
+  add_foreign_key "votes", "users"
+  add_foreign_key "weekly_rankings", "prefectures"
 end

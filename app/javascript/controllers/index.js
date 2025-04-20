@@ -22,3 +22,6 @@ application.register("image-input", ImageInputController);
 
 import FlashController from "./flash_controller";
 application.register("flash", FlashController);
+
+import VoteController from "./vote_controller";
+application.register("vote", VoteController);

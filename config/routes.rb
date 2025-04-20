@@ -27,9 +27,16 @@ Rails.application.routes.draw do
   }
 
   # 投稿関連
-  resources :posts, only: [:index, :new, :create]
+  resources :posts, only: [:index, :new, :create, :show] do
+    resources :votes, only: [:create]
+  end
+
+  # 都道府県
+  resources :prefectures, only: [:index, :show]
+
   # ランキング
   resources :rankings, only: [:index]
+
   # マイページ
   resource :mypage, only: [:show, :edit, :update]
 

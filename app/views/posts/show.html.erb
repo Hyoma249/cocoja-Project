@@ -1,0 +1,94 @@
+<!-- app/views/posts/show.html.erb -->
+<div class="mx-auto min-h-screen pb-16 bg-gray-50">
+  <%= render "shared/header/setting_header" %>
+  <div class="container mx-auto px-4 py-8 md:pl-[calc(288px+2rem)] md:pr-8">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <!-- 投稿のヘッダー部分 -->
+      <div class="p-4 border-b flex">
+        <div class="flex items-center">
+          <% if @post.user.profile_image_url.present? %>
+            <img src="<%= @post.user.profile_image_url %>" alt="<%= @post.user.username %>" class="w-10 h-10 rounded-full mr-3">
+          <% else %>
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+              <span class="text-gray-500 font-bold"><%= @post.user.username[0].upcase %></span>
+            </div>
+          <% end %>
+
+          <div>
+            <p class="font-medium"><%= @post.user.uid %></p>
+            <p class="text-xs text-gray-500"><%= l @post.created_at, format: :long %></p>
+          </div>
+        </div>
+
+        <!-- 都道府県情報 -->
+        <div class="mt-2 ml-4">
+          <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">
+            <%= @post.prefecture.name %>
+          </span>
+        </div>
+      </div>
+
+      <!-- 投稿の内容 -->
+      <div class="p-4">
+        <!-- 投稿画像があれば表示 -->
+        <% if @post.post_images.present? %>
+          <div class="relative" data-controller="slider">
+            <div class="w-full md:aspect-[4/3] aspect-square overflow-hidden touch-none">
+              <div class="flex h-full will-change-transform touch-pan-y" data-slider-target="wrapper">
+                <% @post.post_images.each_with_index do |post_image, index| %>
+                  <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
+                    <% if post_image.image.present? && post_image.image.url.present? %>
+                      <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none", draggable: "false" %>
+                    <% else %>
+                      <div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
+                        <span>画像なし</span>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+
+              <!-- インジケーター（複数画像の場合） -->
+              <% if @post.post_images.length > 1 %>
+                <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
+                  <span data-slider-target="counter">1</span>/<%= @post.post_images.length %>
+                </div>
+
+                <!-- ナビゲーションボタン -->
+                <button class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="prevButton" data-action="click->slider#prev">
+                  <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="nextButton" data-action="click->slider#next">
+                  <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="prose max-w-none pt-4">
+          <span><%= format_content_with_hashtags(@post.content) %></span>
+        </div>
+
+        <!-- ハッシュタグがあれば表示 -->
+        <% if @post.hashtags.present? %>
+          <div class="mt-4 flex flex-wrap gap-1">
+            <% @post.hashtags.each do |hashtag| %>
+              <%= link_to "/posts/hashtag/#{hashtag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
+                #<%= hashtag.name %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- ポイント付与フォーム -->
+    <%= render 'vote_form', post: @post %>
+  </div>
+  <%= render "shared/footer/login_footer" %>
+</div>
