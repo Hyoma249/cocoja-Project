@@ -53,4 +53,15 @@ Rails.application.configure do
   # パブリックファイルの設定
   config.public_file_server.enabled = true
 
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true      # Railsのログに記録
+    Bullet.raise = true             # N+1問題があれば例外を発生（本番環境では注意）
+    Bullet.add_footer = true        # HTMLのフッターにN+1問題を表示
+    Bullet.skip_html_injection = false
+
+    # 特定のコントローラーを除外する場合
+    # Bullet.add_safelist type: :n_plus_one_query, class_name: "Post", association: :comments
+  end
+
 end
