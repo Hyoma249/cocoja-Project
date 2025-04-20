@@ -16,7 +16,7 @@
 
       <div class="divide-y divide-gray-100">
         <% @current_rankings.each do |ranking| %>
-          <div class="p-4 flex items-center hover:bg-gray-50 transition-colors duration-150">
+          <%= link_to prefecture_path(ranking.prefecture), class: "block p-4 flex items-center hover:bg-gray-50 transition-colors duration-150" do %>
             <div class="w-16 text-center">
               <% if ranking.rank <= 3 %>
                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full
@@ -33,8 +33,7 @@
 
             <div class="flex-1 ml-4">
               <h3 class="text-lg font-medium">
-                <%= link_to ranking.prefecture.name, prefecture_path(ranking.prefecture),
-                            class: "hover:text-indigo-600 transition-colors duration-150" %>
+                <%= ranking.prefecture.name %>
               </h3>
               <p class="text-sm text-gray-600">
                 <%= ranking.points %>ポイント
@@ -67,7 +66,7 @@
                 <% end %>
               </div>
             <% end %>
-          </div>
+          <% end %>
         <% end %>
       </div>
     </div>
