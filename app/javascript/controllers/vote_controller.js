@@ -1,36 +1,28 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["pointButtons", "submitButton"]
+  static targets = [
+    "submitButton",
+    "pointDisplay",
+    "quickSelect",
+    "pointInput",
+  ];
 
   connect() {
-    console.log("Vote controller connected")
-
-    // 初期状態ではボタンを無効化
-    if (this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.disabled = true
-    }
+    this.submitButtonTarget.disabled = true;
+    this.pointDisplayTarget.textContent = "選択してください";
   }
 
   selectPoint(event) {
-    // ボタンを有効化
-    if (this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.disabled = false
-    }
+    const points = event.currentTarget.dataset.pointValue;
+    this.pointInputTarget.value = points;
+    this.pointDisplayTarget.textContent = `${points} ポイント`;
 
-    // 選択したポイントをハイライト表示
-    if (this.hasPointButtonsTarget) {
-      const labels = this.pointButtonsTarget.querySelectorAll("label")
-      labels.forEach(label => {
-        label.classList.remove("ring-2", "ring-indigo-300")
-      })
+    // ボタンの選択状態を更新
+    this.quickSelectTargets.forEach((btn) => {
+      btn.setAttribute("aria-selected", btn.dataset.pointValue === points);
+    });
 
-      const selectedInput = event.target
-      const selectedLabel = selectedInput.nextElementSibling
-
-      if (selectedLabel) {
-        selectedLabel.classList.add("ring-2", "ring-indigo-300")
-      }
-    }
+    this.submitButtonTarget.disabled = false;
   }
 }
