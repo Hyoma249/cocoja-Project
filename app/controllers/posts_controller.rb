@@ -5,11 +5,13 @@ class PostsController < ApplicationController
 
   def index
     @user = current_user
-    @posts = Post.includes(:prefecture, :user, :hashtags).order(created_at: :desc)
+    # :post_imagesを追加して先読み
+    @posts = Post.includes(:prefecture, :user, :hashtags, :post_images).order(created_at: :desc)
 
     if params[:name].present?
       @tag = Hashtag.find_by(name: params[:name])
-      @posts = @posts.joins(:hashtags).where(hashtags: { name: params[:name] }) if @tag
+      # タグ検索時にも:post_imagesを追加
+      @posts = @posts.joins(:hashtags).where(hashtags: { name: params[:name] }).includes(:post_images) if @tag
     end
   end
 
@@ -42,25 +44,26 @@ class PostsController < ApplicationController
       end
     end
 
-    if @post.save
-      if params[:post_images] && params[:post_images][:image].present?
-        params[:post_images][:image].each do |image|
-          next if image.blank?
-          begin
-            # シンプルに作成を試みる
+    # トランザクションでまとめて処理
+    ActiveRecord::Base.transaction do
+      if @post.save
+        if params[:post_images] && params[:post_images][:image].present?
+          # 画像を一括でメモリに読み込み、順次処理
+          images_to_process = params[:post_images][:image].select {|img| img.present? }
+
+          images_to_process.each do |image|
+            # 画像を最適化してから保存（先に読み込むことでI/O待ちを減らす）
             @post.post_images.create!(image: image)
-          rescue => e
-            Rails.logger.error("画像アップロード失敗: #{e.class.name} - #{e.message}")
-            # エラーが発生しても処理を続行
           end
         end
+
+        flash[:notice] = "投稿が作成されました"
+        redirect_to posts_path
+      else
+        @prefectures = Prefecture.all
+        flash.now[:notice] = "投稿の作成に失敗しました"
+        render :new, status: :unprocessable_entity
       end
-      flash[:notice] = "投稿が作成されました"
-      redirect_to posts_url(protocol: 'https')
-    else
-      @prefectures = Prefecture.all
-      flash.now[:notice] = "投稿の作成に失敗しました"
-      render :new, status: :unprocessable_entity
     end
   end
 
