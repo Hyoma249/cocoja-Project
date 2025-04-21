@@ -9,9 +9,15 @@ class PostImageUploader < CarrierWave::Uploader::Base
   # 画像をリサイズする（サムネイル用）
   process resize_to_limit: [1200, 1200]
 
+  # 品質設定とフォーマット最適化
+  process quality: 'auto:good'
+  process fetch_format: :auto
+
   # サムネイル用のバージョンを作成
   version :thumb do
     process resize_to_fill: [400, 400]
+    process quality: 'auto:good'
+    process fetch_format: :auto
   end
 
   # 画像ファイル形式

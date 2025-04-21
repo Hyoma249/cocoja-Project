@@ -58,7 +58,7 @@ class PostsController < ApplicationController
         end
 
         flash[:notice] = "投稿が作成されました"
-        redirect_to posts_path
+        redirect_to posts_url(protocol: 'https')
       else
         @prefectures = Prefecture.all
         flash.now[:notice] = "投稿の作成に失敗しました"
