@@ -1,9 +1,13 @@
-<div class="mx-auto min-h-screen pb-16 bg-gray-50">
+<div class="mx-auto min-h-screen pb-16 bg-gray-50" 
+     data-controller="infinite-scroll" 
+     data-infinite-scroll-url-value="<%= posts_path %>" 
+     data-infinite-scroll-page-value="1">
   <%= render "shared/header/login_header" %>
 
   <div class="max-w-4xl mx-auto px-4 md:pl-[calc(288px+2rem)] md:pr-8">
     <% if @posts.present? %>
-      <div class="grid gap-4 py-4">
+      <!-- 投稿リスト - 無限スクロールターゲット -->
+      <div class="grid gap-4 py-4" data-infinite-scroll-target="entries">
         <% @posts.each do |post| %>
           <div class="bg-white rounded-lg shadow-sm overflow-hidden">
             <!-- ユーザーヘッダー -->
@@ -31,7 +35,14 @@
                     <% post.post_images.each_with_index do |post_image, index| %>
                       <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
                         <% if post_image.image.present? && post_image.image.url.present? %>
-                          <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none", draggable: "false" %>
+                          <!-- 遅延読み込みのための修正 -->
+                          <% if index == 0 %>
+                            <!-- 最初の画像は即時読み込み -->
+                            <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none", draggable: "false" %>
+                          <% else %>
+                            <!-- 2枚目以降は遅延読み込み -->
+                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none lazy-image" draggable="false">
+                          <% end %>
                         <% else %>
                           <div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
                             <span>画像なし</span>
@@ -100,6 +111,19 @@
         <p class="text-gray-500">投稿がありません</p>
         <p class="text-sm text-gray-400 mt-2">旅の思い出を共有しましょう！</p>
       </div>
+    <% end %>
+    
+    <!-- 読み込み中表示 -->
+    <div data-infinite-scroll-target="loading" class="text-center py-6 hidden">
+      <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-indigo-600" role="status">
+        <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">読み込み中...</span>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">読み込み中...</p>
+    </div>
+    
+    <!-- 次ページ読み込みトリガー (画面に入ったら次のページを読み込む) -->
+    <% if @posts.present? && @posts.next_page.present? %>
+      <div data-infinite-scroll-target="pagination" class="h-10"></div>
     <% end %>
   </div>
 

@@ -34,6 +34,11 @@ class Post < ApplicationRecord
     end
   end
 
+  # JSON応答用に日付をフォーマットするメソッド
+  def created_at_formatted
+    created_at.strftime('%Y年%m月%d日')
+  end
+
   private
 
   def post_images_count_within_limit

@@ -19,9 +19,9 @@
         </div>
       </div>
 
-      <%# 投稿グリッド %>
-      <div class="mt-8">
-        <div class="grid grid-cols-3 gap-1">
+      <%# 投稿グリッド - インフィニットスクロール用に変更 %>
+      <div class="mt-8" data-controller="infinite-scroll" data-infinite-scroll-url-value="<%= mypage_path %>" data-infinite-scroll-next-slide-value="2">
+        <div class="grid grid-cols-3 gap-1" data-infinite-scroll-target="container">
           <% @posts.each do |post| %>
             <% if post.post_images.present? %>
               <div class="aspect-square overflow-hidden relative group">
@@ -37,6 +37,11 @@
               </div>
             <% end %>
           <% end %>
+        </div>
+
+        <!-- ローディングインジケーター -->
+        <div class="flex justify-center my-8 hidden" data-infinite-scroll-target="loader">
+          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
         </div>
       </div>
     </div>

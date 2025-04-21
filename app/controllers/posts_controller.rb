@@ -5,13 +5,24 @@ class PostsController < ApplicationController
 
   def index
     @user = current_user
-    # :post_imagesを追加して先読み
-    @posts = Post.includes(:prefecture, :user, :hashtags, :post_images).order(created_at: :desc)
+    # 基本のクエリを構築
+    base_query = Post.includes(:prefecture, :user, :hashtags, :post_images)
+                   .order(created_at: :desc)
 
+    # タグフィルタリング
     if params[:name].present?
       @tag = Hashtag.find_by(name: params[:name])
-      # タグ検索時にも:post_imagesを追加
-      @posts = @posts.joins(:hashtags).where(hashtags: { name: params[:name] }).includes(:post_images) if @tag
+      if @tag
+        base_query = base_query.joins(:hashtags).where(hashtags: { name: params[:name] })
+      end
+    end
+
+    # slideパラメータを使用してページネーション
+    @posts = base_query.page(params[:slide]).per(12)
+
+    respond_to do |format|
+      format.html
+      format.json
     end
   end
 
@@ -72,7 +83,30 @@ class PostsController < ApplicationController
     @tag = Hashtag.find_by(name: params[:name])
 
     if @tag
-      @posts = @tag.posts.includes(:prefecture, :user, :hashtags).order(created_at: :desc)
+      # 基本クエリを構築
+      base_query = @tag.posts.includes(:prefecture, :user, :hashtags, :post_images)
+                       .order(created_at: :desc)
+
+      # ページネーションを適用
+      @posts = base_query.page(params[:page]).per(12)
+
+      respond_to do |format|
+        format.html
+        format.json do
+          render json: {
+            posts: @posts.as_json(
+              include: [
+                { user: { only: [:uid], methods: [:profile_image_url] } },
+                { prefecture: { only: [:name] } },
+                { hashtags: { only: [:name] } },
+                { post_images: { only: [], methods: [:image] } }
+              ],
+              methods: [:created_at_formatted]
+            ),
+            next_page: @posts.next_page.present?
+          }
+        end
+      end
     else
       redirect_to posts_url(protocol: 'https'), notice: "該当する投稿がありません"
     end

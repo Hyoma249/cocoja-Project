@@ -58,3 +58,5 @@ gem "cloudinary", "~> 2.3"
 # Railsで非同期ジョブ（バックグラウンド処理）を実行するための定番ツール
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
+
+gem 'kaminari'  # ページネーション機能のベースとして使用

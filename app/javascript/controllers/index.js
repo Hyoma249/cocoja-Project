@@ -25,3 +25,6 @@ application.register("flash", FlashController);
 
 import VoteController from "./vote_controller";
 application.register("vote", VoteController);
+
+import InfiniteScrollController from "./infinite_scroll_controller";
+application.register("infinite-scroll", InfiniteScrollController);
