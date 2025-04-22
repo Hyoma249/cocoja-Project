@@ -37,18 +37,11 @@ group :test do
 end
 
 # 追加 ⬇️
-gem 'rack-cors'
-# ユーザー機能
-gem 'devise'
-# 言語対応
+gem 'rack-cors'      # CORS設定
+gem 'devise'         # 認証機能
 gem 'rails-i18n'     # Rails の国際化対応
 gem 'devise-i18n'    # devise の国際化対応
-# 画像アップロード
-gem 'carrierwave'
-# 画像アップロードのストレージ
-gem "cloudinary", "~> 2.3"
-# Railsで非同期ジョブ（バックグラウンド処理）を実行するための定番ツール
-gem 'sidekiq'
-gem 'sidekiq-scheduler'
-
+gem 'carrierwave'    # 画像アップロード
+gem "cloudinary", "~> 2.3"    # 画像アップロードのストレージ
+gem 'oj'             # 高速JSONパーサー（JSON処理が多い場合）
 gem 'kaminari'  # ページネーション機能のベースとして使用
