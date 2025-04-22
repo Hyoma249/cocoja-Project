@@ -36,14 +36,6 @@ group :test do
   # gem "selenium-webdriver"
 end
 
-group :development, :production do
-  gem 'bullet'
-  gem 'rack-mini-profiler'
-  gem 'memory_profiler'
-  gem 'flamegraph'
-  gem 'stackprof'
-end
-
 # 追加 ⬇️
 gem 'rack-cors'
 # ユーザー機能
