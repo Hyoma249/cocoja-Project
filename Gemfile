@@ -45,3 +45,4 @@ gem 'carrierwave'    # 画像アップロード
 gem "cloudinary", "~> 2.3"    # 画像アップロードのストレージ
 gem 'oj'             # 高速JSONパーサー（JSON処理が多い場合）
 gem 'kaminari'  # ページネーション機能のベースとして使用
+gem 'sidekiq'       # 非同期処理

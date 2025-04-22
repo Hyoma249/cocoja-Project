@@ -31,6 +31,6 @@ class ProfileImageUploader < CarrierWave::Uploader::Base
 
   # 画像サイズの上限を指定
   def size_range
-    1.byte..3.megabytes
+    1.byte..5.megabytes
   end
 end

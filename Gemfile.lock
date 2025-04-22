@@ -340,6 +340,12 @@ GEM
       ffi (~> 1.12)
       logger
     securerandom (0.4.1)
+    sidekiq (8.0.2)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -409,6 +415,7 @@ DEPENDENCIES
   rails-i18n
   redis (~> 5.0)
   rubocop-rails-omakase
+  sidekiq
   sprockets-rails
   stimulus-rails
   turbo-rails

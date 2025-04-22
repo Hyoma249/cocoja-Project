@@ -6,3 +6,6 @@ ja:
       profile:  # または実際のモデル名
         username: "ユーザー名"
         uid: "ユーザーID"
+  errors:
+    messages:
+      max_size_error: "のファイルサイズが大きすぎます。%{max_size}以下にしてください。"
