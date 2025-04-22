@@ -124,8 +124,6 @@ GEM
       devise (>= 4.9.0)
     drb (2.2.1)
     erubi (1.13.1)
-    et-orbi (1.2.11)
-      tzinfo
     faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -144,9 +142,6 @@ GEM
     ffi (1.17.1-x86_64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     ffi (1.17.1-x86_64-linux-musl)
-    fugit (1.11.1)
-      et-orbi (~> 1, >= 1.2.11)
-      raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -236,6 +231,9 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.3-x86_64-linux-musl)
       racc (~> 1.4)
+    oj (3.16.10)
+      bigdecimal (>= 3.0)
+      ostruct (>= 0.2)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
     parallel (1.26.3)
@@ -252,7 +250,6 @@ GEM
     public_suffix (6.0.1)
     puma (6.6.0)
       nio4r (~> 2.0)
-    raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.10)
     rack-cors (2.0.2)
@@ -342,19 +339,7 @@ GEM
     ruby-vips (2.2.3)
       ffi (~> 1.12)
       logger
-    rufus-scheduler (3.9.2)
-      fugit (~> 1.1, >= 1.11.1)
     securerandom (0.4.1)
-    sidekiq (7.3.9)
-      base64
-      connection_pool (>= 2.3.0)
-      logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
-    sidekiq-scheduler (5.0.6)
-      rufus-scheduler (~> 3.2)
-      sidekiq (>= 6, < 8)
-      tilt (>= 1.4.0, < 3)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -367,7 +352,6 @@ GEM
       railties (>= 6.0.0)
     stringio (3.1.5)
     thor (1.3.2)
-    tilt (2.6.0)
     timeout (0.4.3)
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
@@ -417,6 +401,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   letter_opener_web
+  oj
   pg (~> 1.1)
   puma (>= 5.0)
   rack-cors
@@ -424,8 +409,6 @@ DEPENDENCIES
   rails-i18n
   redis (~> 5.0)
   rubocop-rails-omakase
-  sidekiq
-  sidekiq-scheduler
   sprockets-rails
   stimulus-rails
   turbo-rails
