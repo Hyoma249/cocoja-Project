@@ -26,6 +26,7 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development" \
     RAILS_MASTER_KEY="${RAILS_MASTER_KEY}" \
+    REDIS_URL="${REDIS_URL}" \
     PORT=8080
 
 # Throw-away build stage to reduce size of final image
