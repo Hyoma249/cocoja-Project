@@ -32,7 +32,7 @@ Rails.application.configure do
   # ログ設定 - パフォーマンス向上のため最適化
   config.log_tags = [ :request_id ]
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", :warn).to_sym
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", :debug).to_sym
 
   # i18n
   config.i18n.fallbacks = true
