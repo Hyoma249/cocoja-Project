@@ -6,7 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   # ユーザーは たくさんの投稿 を持てる
-  has_many :posts
+  has_many :posts, dependent: :destroy
   has_many :votes, dependent: :destroy
 
   # 今日投票したポイントの合計
