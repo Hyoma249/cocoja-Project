@@ -48,7 +48,7 @@ export default class extends Controller {
     // URLパスからページタイプを判別
     const isMypage = window.location.pathname.includes('/mypage')
     
-    fetch(`${this.urlValue}?page=${this.pageValue}`, {
+    fetch(`${this.urlValue}?slide=${this.pageValue}`, {
       headers: {
         Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest"
