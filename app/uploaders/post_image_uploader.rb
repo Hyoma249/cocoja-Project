@@ -1,7 +1,4 @@
 class PostImageUploader < CarrierWave::Uploader::Base
-  # Include RMagick, MiniMagick, or Vips support:
-  # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
   include Cloudinary::CarrierWave
 
   # キャッシュディレクトリを明示的に指定
@@ -9,17 +6,19 @@ class PostImageUploader < CarrierWave::Uploader::Base
     "#{Rails.root}/tmp/uploads"
   end
 
-  # Choose what kind of storage to use for this uploader:
-  # storage :file
-  # storage :fog
+  # 画像をリサイズする（サムネイル用）
+  process resize_to_limit: [1200, 1200]
 
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
-  # def store_dir
-  #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  # end
+  # 品質設定とフォーマット最適化
+  process quality: 'auto:good'
+  process fetch_format: :auto
 
-  # process resize_to_fill: [400, 300]
+  # サムネイル用のバージョンを作成
+  version :thumb do
+    process resize_to_fill: [400, 400]
+    process quality: 'auto:good'
+    process fetch_format: :auto
+  end
 
   # 画像ファイル形式
   def extension_allowlist

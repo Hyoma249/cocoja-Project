@@ -2,7 +2,16 @@ class MypagesController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
 
   def show
-    @posts = @user.posts.includes(:post_images).order(created_at: :desc)
+    # 基本クエリを構築
+    base_query = @user.posts.includes(:post_images).order(created_at: :desc)
+
+    # ページネーションを適用
+    @posts = base_query.page(params[:slide]).per(12)
+
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def edit; end

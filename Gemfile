@@ -36,14 +36,6 @@ group :test do
   # gem "selenium-webdriver"
 end
 
-group :development, :production do
-  gem 'bullet'
-  gem 'rack-mini-profiler'
-  gem 'memory_profiler'
-  gem 'flamegraph'
-  gem 'stackprof'
-end
-
 # 追加 ⬇️
 gem 'rack-cors'
 # ユーザー機能
@@ -58,3 +50,5 @@ gem "cloudinary", "~> 2.3"
 # Railsで非同期ジョブ（バックグラウンド処理）を実行するための定番ツール
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
+
+gem 'kaminari'  # ページネーション機能のベースとして使用

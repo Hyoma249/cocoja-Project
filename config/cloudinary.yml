@@ -3,9 +3,19 @@ development:
   api_key: <%= Rails.application.credentials.cloudinary[:development][:api_key] %>
   api_secret: <%= Rails.application.credentials.cloudinary[:development][:api_secret] %>
   secure: true
+  enhance_image_tag: true
+  static_file_support: true
+  eager_async: true
+  cdn_subdomain: true
+  timeout: 60
 
 production:
   cloud_name: <%= Rails.application.credentials.cloudinary[:production][:cloud_name] %>
   api_key: <%= Rails.application.credentials.cloudinary[:production][:api_key] %>
   api_secret: <%= Rails.application.credentials.cloudinary[:production][:api_secret] %>
   secure: true
+  enhance_image_tag: true
+  static_file_support: true
+  eager_async: true
+  cdn_subdomain: true
+  timeout: 60
