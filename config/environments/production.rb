@@ -42,7 +42,7 @@ Rails.application.configure do
 
   # データベース最適化
   config.active_record.dump_schema_after_migration = false
-  config.active_record.pool = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+
   # クエリキャッシュを有効化
   config.active_record.query_cache_size = 100
 
