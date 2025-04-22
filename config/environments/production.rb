@@ -23,8 +23,6 @@ Rails.application.configure do
   config.assets.compile = false
   config.assets.digest = true
   config.assets.version = '1.0'
-  # CDNを使用してアセット配信を高速化
-  config.action_controller.asset_host = ENV.fetch("ASSET_HOST") { nil }
 
   # SSL設定 - リダイレクトループを避けるためfalseに
   config.force_ssl = false
