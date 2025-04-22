@@ -11,6 +11,7 @@ services:
       RAILS_LOG_TO_STDOUT: "true"
       PORT: 8080
       REDIS_URL: ${REDIS_URL}
+      REDIS_CACHE_URL: ${REDIS_URL}  # キャッシュ用に同じRedisを使用
     ports:
       - "8080:8080"
     restart: always
