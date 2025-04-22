@@ -43,9 +43,6 @@ Rails.application.configure do
   # データベース最適化
   config.active_record.dump_schema_after_migration = false
 
-  # クエリキャッシュを有効化
-  config.active_record.query_cache_size = 100
-
   # その他の設定
   config.require_master_key = true
 
