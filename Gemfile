@@ -23,6 +23,9 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
+  gem 'rspec-rails', '~> 7.1'        # RSpec本体
+  gem 'factory_bot_rails', '~> 6.4'  # テストデータ作成用
+  gem 'faker', '~> 3.3'              # ダミーデータ生成用
 end
 
 group :development do
@@ -32,8 +35,11 @@ group :development do
 end
 
 group :test do
-  # gem "capybara"
-  # gem "selenium-webdriver"
+  gem 'database_cleaner-active_record', '~> 2.1' # テスト前後にDBをクリーンアップ
+  gem 'shoulda-matchers', '~> 6.1'    # アサーション簡略化（モデルのバリデーション・アソシエーションを超簡単にテストできる）
+  gem 'capybara', '~> 3.40'           # ブラウザ操作をシミュレート
+  gem 'webdrivers', '~> 5.3'          # Selenium WebDriverの自動インストール
+  gem 'simplecov', '~> 0.22', require: false  # コードカバレッジ計測
 end
 
 # 追加 ⬇️
