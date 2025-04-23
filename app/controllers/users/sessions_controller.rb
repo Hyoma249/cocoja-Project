@@ -23,7 +23,8 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    top_page_login_url(protocol: 'https'), notice: "ログインしました"
+    flash[:notice] = "ログインしました"
+    top_page_login_url(protocol: 'https')
   end
 
   # If you have extra params to permit, append them to the sanitizer.
