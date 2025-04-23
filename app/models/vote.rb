@@ -13,7 +13,8 @@ class Vote < ApplicationRecord
   validate :cannot_vote_own_post
   validate :has_not_already_voted_today
 
-  scope :today, -> { where('created_at >= ?', Time.zone.now.beginning_of_day) }
+  # 1日に投票したレコードを取得するためのスコープ
+  scope :today, -> { where('created_at >= ?', Time.zone.today.beginning_of_day) }
 
   private
 

@@ -42,6 +42,6 @@ module Myapp
     config.time_zone = 'Asia/Tokyo'
 
     # DBに保存する時間をアプリケーションのタイムゾーンに設定
-    config.active_record.default_timezone = :local
+    config.active_record.default_timezone = :utc      # DB保存はUTCのまま（安全）
   end
 end
