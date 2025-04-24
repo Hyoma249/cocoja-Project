@@ -71,6 +71,8 @@ RSpec.configure do |config|
 
   #  RSpecにFactoryBotの構文（create, buildなど）を直接使えるようにする設定
   config.include FactoryBot::Syntax::Methods
+  # RSpecのテストで時間に関連するテストを容易に行うためのヘルパーメソッド
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 # RSpecでモデルのバリデーションや関連を簡単にテストできるマッチャー集
