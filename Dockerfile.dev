@@ -7,16 +7,28 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/* \
  && npm install --global yarn
 
+# 既存のbundlerをアンインストールし、特定のバージョンをインストール
+RUN gem uninstall bundler -a -x \
+    && gem install bundler -v 2.6.3
+
+# GemのインストールパスとRubyGemsの設定を追加
+ENV BUNDLE_PATH=/myapp/vendor/bundle
+ENV GEM_HOME=/usr/local/bundle
+ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
+
 # コンテナの作業ディレクトリを指定
 RUN mkdir /myapp
 WORKDIR /myapp
+
+# bundlerの設定を明示的に行う
+RUN bundle config set path '/myapp/vendor/bundle'
 
 # ホストのGemfileとGemfile.lockをコンテナにコピー
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
-# bundle installを実行
-RUN bundle install
+# 特定のバージョンでbundle installを実行
+RUN bundle _2.6.3_ install
 
 # カレントディレクトリのファイルをコンテナにコピー
 ADD . /myapp

@@ -30,6 +30,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REDIS_URL: ${REDIS_URL}
       RAILS_ENV: development
+      BUNDLE_PATH: /myapp/vendor/bundle
+      GEM_HOME: /usr/local/bundle
     volumes:
       - .:/myapp
       - bundle_data:/myapp/vendor/bundle
@@ -49,11 +51,14 @@ services:
     env_file:
       - .env
     environment:
+      RAILS_MASTER_KEY: ${TEST_RAILS_MASTER_KEY} # test.keyの内容を使用
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST: db
       REDIS_URL: ${REDIS_URL}
       RAILS_ENV: test
+      BUNDLE_PATH: /myapp/vendor/bundle
+      GEM_HOME: /usr/local/bundle
     volumes:
       - .:/myapp
       - bundle_data:/myapp/vendor/bundle
@@ -73,6 +78,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REDIS_URL: ${REDIS_URL}
       RAILS_ENV: development
+      BUNDLE_PATH: /myapp/vendor/bundle
+      GEM_HOME: /usr/local/bundle
     volumes:
       - .:/myapp
       - bundle_data:/myapp/vendor/bundle
