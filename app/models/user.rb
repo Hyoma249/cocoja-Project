@@ -5,10 +5,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # アソシエーション
   # ユーザーは たくさんの投稿 を持てる
   has_many :posts, dependent: :destroy
   has_many :votes, dependent: :destroy
 
+  # メソッド一覧
   # 今日投票したポイントの合計
   def daily_votes_count
     votes.today.sum(:points)
@@ -25,7 +27,7 @@ class User < ApplicationRecord
   # Active Storageの代わりにCarrierWaveを使用
   mount_uploader :profile_image_url, ProfileImageUploader
 
-  # バリデーションの修正
+  # バリデーション
   validates :username, presence: true,
                       length: { minimum: 1, maximum: 20 },
                       uniqueness: true,
