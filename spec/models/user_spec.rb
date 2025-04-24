@@ -50,4 +50,12 @@ RSpec.describe User, type: :model do
       it { should allow_value(nil).for(:bio) }
     end
   end
+
+  describe 'associations' do
+    # postsとの関連付けテスト
+    it { should have_many(:posts).dependent(:destroy) }
+    
+    # votesとの関連付けテスト
+    it { should have_many(:votes).dependent(:destroy) }
+  end
 end
