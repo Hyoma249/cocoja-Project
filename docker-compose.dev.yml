@@ -22,7 +22,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    # 古いサーバーのPIDファイルを削除 / 必要なgemをインストール / サーバーを起動
     command: bash -c "rm -f tmp/pids/server.pid && bundle install && bin/dev"
     env_file:
       - .env
@@ -30,6 +29,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: development
     volumes:
       - .:/myapp
       - bundle_data:/myapp/vendor/bundle
@@ -37,6 +37,26 @@ services:
       - "3000:3000"
     tty: true
     stdin_open: true
+    depends_on:
+      - db
+      - redis
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "bundle install && bundle exec rspec"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+      REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: test
+    volumes:
+      - .:/myapp
+      - bundle_data:/myapp/vendor/bundle
     depends_on:
       - db
       - redis
