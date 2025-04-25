@@ -74,6 +74,9 @@ RSpec.configure do |config|
   # RSpecのテストで時間に関連するテストを容易に行うためのヘルパーメソッド
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ActionDispatch::TestProcess
+  # Deviseのテストヘルパーを追加
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
 
 # RSpecでモデルのバリデーションや関連を簡単にテストできるマッチャー集

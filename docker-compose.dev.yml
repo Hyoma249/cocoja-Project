@@ -47,7 +47,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bash -c "bundle install && bundle exec rspec"
+    command: bash -c "bundle install && bundle exec rails db:test:prepare && bundle exec rspec"
     env_file:
       - .env
     environment:
@@ -59,6 +59,7 @@ services:
       RAILS_ENV: test
       BUNDLE_PATH: /myapp/vendor/bundle
       GEM_HOME: /usr/local/bundle
+      DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
     volumes:
       - .:/myapp
       - bundle_data:/myapp/vendor/bundle
