@@ -40,6 +40,7 @@ group :test do
   gem 'capybara', '~> 3.40'           # ブラウザ操作をシミュレート
   gem 'webdrivers', '~> 5.3'          # Selenium WebDriverの自動インストール
   gem 'simplecov', '~> 0.22', require: false  # コードカバレッジ計測
+  gem 'rails-controller-testing'
 end
 
 # 追加 ⬇️
