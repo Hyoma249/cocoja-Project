@@ -73,6 +73,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   # RSpecのテストで時間に関連するテストを容易に行うためのヘルパーメソッド
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActionDispatch::TestProcess
 end
 
 # RSpecでモデルのバリデーションや関連を簡単にテストできるマッチャー集
