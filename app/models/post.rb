@@ -25,14 +25,7 @@ class Post < ApplicationRecord
   validate :post_images_count_within_limit
 
   # 投稿内容に # がついている場合、それをハッシュタグとして登録する
-  after_create do
-    hashtags = self.content.scan(/[#＃][\w\p{Han}ぁ-ヶｦ-ﾟー]+/)
-    self.hashtags.clear
-    hashtags.uniq.each do |hashtag|
-      tag = Hashtag.find_or_create_by(name: hashtag.downcase.delete('#＃'))
-      self.hashtags << tag
-    end
-  end
+  after_create :create_hashtags
 
   # JSON応答用に日付をフォーマットするメソッド
   def created_at_formatted
@@ -45,6 +38,14 @@ class Post < ApplicationRecord
     max_images = 10
     if post_images.size > max_images
       errors.add(:post_images, "は#{max_images}枚まで投稿できます")
+    end
+  end
+
+  def create_hashtags
+    hashtags = content.scan(/#([^\s]+)/).flatten.map(&:downcase).uniq
+    hashtags.each do |tag|
+      hashtag = Hashtag.find_or_create_by(name: tag)
+      post_hashtags.create(hashtag: hashtag)
     end
   end
 end
