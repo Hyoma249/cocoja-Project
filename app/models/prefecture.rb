@@ -4,7 +4,9 @@ class Prefecture < ApplicationRecord
   has_many :weekly_rankings, dependent: :destroy
 
   # バリデーション
-  validates :name, presence: true, uniqueness: true
+  validates :name,
+            presence: true,
+            uniqueness: { case_sensitive: false }
 
   # この都道府県にあるすべての投稿に対して、指定された期間内の投票ポイントの合計
   def weekly_points(start_date, end_date)
