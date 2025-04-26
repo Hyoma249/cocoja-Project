@@ -77,6 +77,20 @@ RSpec.configure do |config|
   # Deviseのテストヘルパーを追加
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # システムスペック用のDeviseヘルパーを追加
+  config.include Warden::Test::Helpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
+  # システムスペック用の設定
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
+
+  # JSテストは当面必要ないため、この設定は一時的にコメントアウト
+  # config.before(:each, type: :system, js: true) do
+  #   driven_by :selenium_chrome_headless
+  # end
 end
 
 # RSpecでモデルのバリデーションや関連を簡単にテストできるマッチャー集
