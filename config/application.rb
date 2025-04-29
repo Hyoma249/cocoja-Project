@@ -43,8 +43,5 @@ module Myapp
 
     # DBに保存する時間をアプリケーションのタイムゾーンに設定
     config.active_record.default_timezone = :utc      # DB保存はUTCのまま（安全）
-
-    # secretsの代わりにcredentialsを使用
-    config.require_master_key = true
   end
 end
