@@ -16,7 +16,7 @@ RSpec.describe PostImage, type: :model do
     it 'accepts valid image files' do
       post_image = build(:post_image)
       post_image.image = fixture_file_upload(
-        Rails.root.join('spec', 'fixtures', 'test_image.jpg'),
+        Rails.root.join('spec', 'fixtures', 'test_image1.jpg'),
         'image/jpeg'
       )
       expect(post_image).to be_valid
