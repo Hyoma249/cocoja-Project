@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe VotesController do
-  # テストで使用する変数を定義
   let(:user) { create(:user) }
   let(:post_item) { create(:post) }
 
-  # 未ログインユーザーのテスト
   describe 'POST #create' do
     context '未ログインの場合' do
       it 'ログインページにリダイレクトされること' do
@@ -14,7 +12,6 @@ RSpec.describe VotesController do
       end
     end
 
-    # ログインユーザーのテスト
     context 'ログイン済みの場合' do
       before { sign_in user }
 
@@ -50,7 +47,7 @@ RSpec.describe VotesController do
         let(:invalid_params) do
           {
             post_id: post_item.id,
-            vote: { points: 0 }, # nilではなく不正な値（0）を使用
+            vote: { points: 0 },
             format: :turbo_stream
           }
         end
@@ -65,31 +62,30 @@ RSpec.describe VotesController do
           post :create, params: invalid_params
           expect(flash.now[:alert]).to be_present
         end
+      end
 
-        context '1日の投票上限を超えた場合' do
-          before do
-            # 1日の上限が5ポイントなので、4ポイントを使用
-            create(:vote, user: user, points: 4, post: create(:post))
-          end
+      context '1日の投票上限を超えた場合' do
+        before do
+          create(:vote, user: user, points: 4, post: create(:post))
+        end
 
-          it '投票が作成されないこと' do
-            expect {
-              post :create, params: {
-                post_id: post_item.id,
-                vote: { points: 2 }, # 残り1ポイントに対して2ポイントを投票しようとする
-                format: :turbo_stream
-              }
-            }.not_to change(Vote, :count)
-          end
+        let(:over_limit_params) do
+          {
+            post_id: post_item.id,
+            vote: { points: 2 },
+            format: :turbo_stream
+          }
+        end
 
-          it 'エラーメッセージが設定されること' do
-            post :create, params: {
-              post_id: post_item.id,
-              vote: { points: 2 },
-              format: :turbo_stream
-            }
-            expect(flash.now[:alert]).to include("1日の投票ポイント上限")
-          end
+        it '投票が作成されないこと' do
+          expect {
+            post :create, params: over_limit_params
+          }.not_to change(Vote, :count)
+        end
+
+        it 'エラーメッセージが設定されること' do
+          post :create, params: over_limit_params
+          expect(flash.now[:alert]).to include("1日の投票ポイント上限")
         end
       end
     end

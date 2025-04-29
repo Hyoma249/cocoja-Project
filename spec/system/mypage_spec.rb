@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'マイページ機能' do
   let(:user) { create(:user, username: 'テストユーザー', uid: 'testuser', bio: '自己紹介文です') }
-  let!(:post) { create(:post, user: user) }
 
   describe 'マイページの表示' do
     before do
+      create(:post, user: user) # 投稿の作成をbeforeブロックに移動
       login_as(user, scope: :user)
       visit mypage_path
     end

@@ -6,17 +6,16 @@ RSpec.describe 'ランキング機能' do
   let!(:other_prefecture) { create(:prefecture, name: '大阪府') }
 
   describe 'ランキング表示' do
-    before do
-      # 各都道府県の投稿を作成
-      @tokyo_post = create(:post, user: user, prefecture: prefecture)
-      @osaka_post = create(:post, user: user, prefecture: other_prefecture)
+    let(:tokyo_post) { create(:post, user: user, prefecture: prefecture) }
+    let(:osaka_post) { create(:post, user: user, prefecture: other_prefecture) }
 
-      # 異なる日付で投票を作成（上限バリデーションを回避）
+    before do
+      # 各都道府県の投稿を作成し、異なる日付で投票を作成（上限バリデーションを回避）
       3.times do |i|
         voter = create(:user)
         travel_to (i + 1).day.ago do
-          create(:vote, user: voter, post: @tokyo_post, points: 2)
-          create(:vote, user: voter, post: @osaka_post, points: 1)
+          create(:vote, user: voter, post: tokyo_post, points: 2)
+          create(:vote, user: voter, post: osaka_post, points: 1)
         end
       end
 

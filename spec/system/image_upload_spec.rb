@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe '画像アップロード機能' do
   let(:user) { create(:user) }
-  let(:test_image_path1) { Rails.root.join('spec/fixtures/test_image1.jpg') }
-  let(:test_image_path2) { Rails.root.join('spec/fixtures/test_image2.jpg') }
+  let(:single_image_path) { Rails.root.join('spec/fixtures/test_image1.jpg') }
+  let(:additional_image_path) { Rails.root.join('spec/fixtures/test_image2.jpg') }
 
   before do
     # テスト用の画像ファイルを準備
-    FileUtils.mkdir_p(File.dirname(test_image_path1))
-    [ test_image_path1, test_image_path2 ].each do |path|
+    FileUtils.mkdir_p(File.dirname(single_image_path))
+    [ single_image_path, additional_image_path ].each do |path|
       FileUtils.touch(path)
     end
 
@@ -33,7 +33,7 @@ RSpec.describe '画像アップロード機能' do
       fill_in 'post[content]', with: 'テスト投稿です'
 
       # 画像の添付（1枚目）
-      attach_file 'pi', test_image_path1
+      attach_file 'pi', single_image_path
 
       click_button '投稿する'
 
@@ -48,7 +48,7 @@ RSpec.describe '画像アップロード機能' do
       fill_in 'post[content]', with: 'テスト投稿です'
 
       # 複数画像の添付
-      attach_file 'pi', [ test_image_path1, test_image_path2 ]
+      attach_file 'pi', [ single_image_path, additional_image_path ]
 
       click_button '投稿する'
 
@@ -64,7 +64,7 @@ RSpec.describe '画像アップロード機能' do
 
       # プロフィール更新
       fill_in 'ユーザー名', with: user.username
-      attach_file 'user[profile_image_url]', test_image_path1
+      attach_file 'user[profile_image_url]', single_image_path
       click_button '保存する'
 
       # 更新の確認

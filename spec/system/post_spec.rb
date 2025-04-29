@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe '投稿機能' do
   let(:user) { create(:user) }
   let!(:prefecture) { create(:prefecture, name: '東京都') } # 固定の都道府県名を設定
-  let!(:prefectures) { create_list(:prefecture, 46) } # その他の都道府県も作成
 
   describe '新規投稿' do
     before do

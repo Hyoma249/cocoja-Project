@@ -6,19 +6,19 @@ RSpec.describe PrefecturesController do
     let(:user) { create(:user) }
 
     context '投票のある投稿が存在する場合' do
-      let!(:post1) { create(:post, prefecture: prefecture) }
-      let!(:post2) { create(:post, prefecture: prefecture) }
-      let!(:post3) { create(:post, prefecture: prefecture) }
+      let!(:high_voted_post) { create(:post, prefecture: prefecture) }
+      let!(:low_voted_post) { create(:post, prefecture: prefecture) }
+      let!(:no_votes_post) { create(:post, prefecture: prefecture) }
 
       before do
-        # post1に5ポイント
-        create(:vote, post: post1, points: 3)
-        create(:vote, post: post1, points: 2)
+        # high_voted_postに5ポイント
+        create(:vote, post: high_voted_post, points: 3)
+        create(:vote, post: high_voted_post, points: 2)
 
-        # post2に3ポイント
-        create(:vote, post: post2, points: 3)
+        # low_voted_postに3ポイント
+        create(:vote, post: low_voted_post, points: 3)
 
-        # post3には投票なし
+        # no_votes_postには投票なし
       end
 
       it '正常にレスポンスを返すこと' do
@@ -36,8 +36,8 @@ RSpec.describe PrefecturesController do
         posts = assigns(:posts)
 
         # 投票のある投稿のみが含まれていることを確認
-        expect(posts).to include(post1, post2)
-        expect(posts).not_to include(post3)
+        expect(posts).to include(high_voted_post, low_voted_post)
+        expect(posts).not_to include(no_votes_post)
 
         # 得点順に並んでいることを確認
         total_points = posts.map { |p| p.total_points_sum.to_i }

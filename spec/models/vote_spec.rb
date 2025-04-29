@@ -7,7 +7,9 @@ RSpec.describe Vote do
   end
 
   describe 'validations' do
-    it { expect(subject).to validate_numericality_of(:points)
+    subject(:vote) { described_class.new }
+
+    it { is_expected.to validate_numericality_of(:points)
           .only_integer
           .is_greater_than(0)
           .is_less_than_or_equal_to(5) }

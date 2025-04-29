@@ -26,8 +26,8 @@ RSpec.describe MypagesController do
     before { sign_in user }
 
     describe 'GET #show' do
-      let!(:post1) { create(:post, user: user, created_at: 1.day.ago) }
-      let!(:post2) { create(:post, user: user, created_at: 2.days.ago) }
+      let!(:newer_post) { create(:post, user: user, created_at: 1.day.ago) }
+      let!(:older_post) { create(:post, user: user, created_at: 2.days.ago) }
 
       it '正常にレスポンスを返すこと' do
         get :show
@@ -36,7 +36,7 @@ RSpec.describe MypagesController do
 
       it 'ユーザーの投稿を作成日時の降順で取得すること' do
         get :show
-        expect(assigns(:posts)).to eq([ post1, post2 ])
+        expect(assigns(:posts)).to eq([ newer_post, older_post ])
       end
 
       context 'JSONフォーマットでリクエストされた場合' do
