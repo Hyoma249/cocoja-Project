@@ -2,14 +2,16 @@ require 'rails_helper'
 
 RSpec.describe Vote do
   describe 'associations' do
-    it { is_expected.to belong_to(:user) }
-    it { is_expected.to belong_to(:post) }
+    subject(:vote) { described_class.new }
+
+    it { expect(vote).to belong_to(:user) }
+    it { expect(vote).to belong_to(:post) }
   end
 
   describe 'validations' do
     subject(:vote) { described_class.new }
 
-    it { is_expected.to validate_numericality_of(:points)
+    it { expect(vote).to validate_numericality_of(:points)
           .only_integer
           .is_greater_than(0)
           .is_less_than_or_equal_to(5) }

@@ -6,8 +6,10 @@ RSpec.describe RankingsController do
     let!(:osaka) { create(:prefecture, name: '大阪府') }
 
     shared_context 'prefecture posts' do
-      let!(:tokyo_post) { create(:post, prefecture: tokyo) }
-      let!(:osaka_post) { create(:post, prefecture: osaka) }
+      before do
+        tokyo_post = create(:post, prefecture: tokyo)
+        osaka_post = create(:post, prefecture: osaka)
+      end
     end
 
     context '現在の週のランキングが存在する場合' do
@@ -40,7 +42,7 @@ RSpec.describe RankingsController do
 
       it 'ランキング順に並んでいること' do
         get :index
-        expect(assigns(:current_rankings).to_a).to eq([top_ranking, second_ranking])
+        expect(assigns(:current_rankings).to_a).to eq([ top_ranking, second_ranking ])
       end
     end
 
