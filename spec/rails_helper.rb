@@ -88,7 +88,7 @@ RSpec.configure do |config|
   end
 
   # JSテストは当面必要ないため、この設定は一時的にコメントアウト
-  config.before(:each, type: :system, js: true) do
+  config.before(:each, :js, type: :system) do
     driven_by :selenium_chrome_headless
   end
 end

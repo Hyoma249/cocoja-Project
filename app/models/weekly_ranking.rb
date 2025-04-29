@@ -11,7 +11,7 @@ class WeeklyRanking < ApplicationRecord
   scope :current_week, -> {
     now = Time.zone.now
     year = now.year
-    week = now.strftime('%U').to_i
+    week = now.strftime("%U").to_i
     where(year: year, week: week)
   }
 
@@ -19,7 +19,7 @@ class WeeklyRanking < ApplicationRecord
   scope :previous_week, -> {
     prev_week = Time.zone.now - 1.week
     year = prev_week.year
-    week = prev_week.strftime('%U').to_i
+    week = prev_week.strftime("%U").to_i
     where(year: year, week: week)
   }
 
@@ -27,7 +27,7 @@ class WeeklyRanking < ApplicationRecord
   def rank_change_from_previous
     prev_week = Time.zone.now - 1.week
     prev_year = prev_week.year
-    prev_week_num = prev_week.strftime('%U').to_i
+    prev_week_num = prev_week.strftime("%U").to_i
 
     prev_ranking = WeeklyRanking.find_by(
       prefecture_id: prefecture_id,

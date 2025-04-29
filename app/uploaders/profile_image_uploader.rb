@@ -7,21 +7,21 @@ class ProfileImageUploader < CarrierWave::Uploader::Base
   end
 
   # プロフィール画像をリサイズする
-  process resize_to_limit: [800, 800]
+  process resize_to_limit: [ 800, 800 ]
 
   # サムネイル用のバージョンを作成
   version :thumb do
-    process resize_to_fill: [200, 200]
+    process resize_to_fill: [ 200, 200 ]
   end
 
   # モバイル用の小さいサムネイル
   version :small do
-    process resize_to_fill: [100, 100]
+    process resize_to_fill: [ 100, 100 ]
   end
 
   # 許可する拡張子
   def extension_allowlist
-    %w(jpg jpeg gif png heic)
+    %w[jpg jpeg gif png heic]
   end
 
   # デフォルト画像

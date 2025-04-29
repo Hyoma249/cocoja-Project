@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe StaticPagesGuestController, type: :controller do
+RSpec.describe StaticPagesGuestController do
   describe 'GET #top' do
     context '未ログインの場合' do
       it '正常にレスポンスを返すこと' do

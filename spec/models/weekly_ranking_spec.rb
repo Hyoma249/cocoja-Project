@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe WeeklyRanking, type: :model do
+RSpec.describe WeeklyRanking do
   describe 'associations' do
-    it { should belong_to(:prefecture) }
+    it { is_expected.to belong_to(:prefecture) }
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:year) }
-    it { should validate_presence_of(:week) }
-    it { should validate_presence_of(:rank) }
-    it { should validate_presence_of(:points) }
+    it { is_expected.to validate_presence_of(:year) }
+    it { is_expected.to validate_presence_of(:week) }
+    it { is_expected.to validate_presence_of(:rank) }
+    it { is_expected.to validate_presence_of(:points) }
   end
 
   describe 'scopes' do
@@ -36,17 +36,17 @@ RSpec.describe WeeklyRanking, type: :model do
 
     describe '.current_week' do
       it 'returns rankings from current week' do
-        expect(WeeklyRanking.current_week).to include(current_ranking)
-        expect(WeeklyRanking.current_week).not_to include(previous_ranking)
-        expect(WeeklyRanking.current_week).not_to include(old_ranking)
+        expect(described_class.current_week).to include(current_ranking)
+        expect(described_class.current_week).not_to include(previous_ranking)
+        expect(described_class.current_week).not_to include(old_ranking)
       end
     end
 
     describe '.previous_week' do
       it 'returns rankings from previous week' do
-        expect(WeeklyRanking.previous_week).to include(previous_ranking)
-        expect(WeeklyRanking.previous_week).not_to include(current_ranking)
-        expect(WeeklyRanking.previous_week).not_to include(old_ranking)
+        expect(described_class.previous_week).to include(previous_ranking)
+        expect(described_class.previous_week).not_to include(current_ranking)
+        expect(described_class.previous_week).not_to include(old_ranking)
       end
     end
   end

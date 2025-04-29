@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe PostHashtag, type: :model do
+RSpec.describe PostHashtag do
   describe 'associations' do
-    it { should belong_to(:post) }
-    it { should belong_to(:hashtag) }
+    it { is_expected.to belong_to(:post) }
+    it { is_expected.to belong_to(:hashtag) }
   end
 
   describe 'database constraints' do
@@ -39,7 +39,7 @@ RSpec.describe PostHashtag, type: :model do
       # 保存時にレコード数が1増えることを確認
       expect {
         post_hashtag.save
-      }.to change(PostHashtag, :count).by(1)
+      }.to change(described_class, :count).by(1)
     end
   end
 end

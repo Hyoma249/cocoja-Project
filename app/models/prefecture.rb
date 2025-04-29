@@ -12,7 +12,7 @@ class Prefecture < ApplicationRecord
   def weekly_points(start_date, end_date)
     posts.joins(:votes)
          .where(votes: { created_at: start_date..end_date })
-         .sum('votes.points')
+         .sum("votes.points")
   end
   # 現在の週の投票ポイントの合計
   def current_week_points

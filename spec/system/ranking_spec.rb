@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'ランキング機能', type: :system do
+RSpec.describe 'ランキング機能' do
   let(:user) { create(:user) }
   let(:prefecture) { create(:prefecture, name: '東京都') }
   let!(:other_prefecture) { create(:prefecture, name: '大阪府') }

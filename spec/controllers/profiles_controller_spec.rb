@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ProfilesController, type: :controller do
+RSpec.describe ProfilesController do
   describe 'アクセス制御' do
     context '未ログインの場合' do
       it 'GET #setup はログインページにリダイレクトすること' do

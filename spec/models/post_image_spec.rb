@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe PostImage, type: :model do
+RSpec.describe PostImage do
   describe 'associations' do
-    it { should belong_to(:post).counter_cache(true) }
+    it { is_expected.to belong_to(:post).counter_cache(true) }
   end
 
   describe 'uploader' do
@@ -10,7 +10,7 @@ RSpec.describe PostImage, type: :model do
 
     it 'mounts PostImageUploader' do
       expect(post_image).to respond_to(:image)
-      expect(PostImage.uploaders[:image]).to eq(PostImageUploader)
+      expect(described_class.uploaders[:image]).to eq(PostImageUploader)
     end
 
     it 'accepts valid image files' do

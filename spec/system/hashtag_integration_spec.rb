@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'ハッシュタグ機能', type: :system do
+RSpec.describe 'ハッシュタグ機能' do
   let(:user) { create(:user) }
   let!(:prefecture) { create(:prefecture, name: '東京都') }
 
@@ -18,7 +18,7 @@ RSpec.describe 'ハッシュタグ機能', type: :system do
 
         # 投稿の保存を確認
         post = Post.last
-        expect(post.hashtags.pluck(:name)).to match_array(['観光', 'グルメ'])
+        expect(post.hashtags.pluck(:name)).to contain_exactly('観光', 'グルメ')
 
         # 投稿詳細で表示を確認
         visit post_path(post)

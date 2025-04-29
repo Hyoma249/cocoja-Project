@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "投票API", type: :request do
+RSpec.describe "投票API" do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:prefecture) { create(:prefecture) }

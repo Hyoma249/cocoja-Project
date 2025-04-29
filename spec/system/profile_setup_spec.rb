@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'プロフィール設定', type: :system do
+RSpec.describe 'プロフィール設定' do
   let(:user) { create(:user) }
 
   before do

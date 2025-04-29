@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplicationController, type: :controller do
+RSpec.describe ApplicationController do
   let(:user) { create(:user) }
 
   describe '#after_sign_in_path_for' do

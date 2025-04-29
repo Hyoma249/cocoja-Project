@@ -16,7 +16,7 @@ class Users::SessionsController < Devise::SessionsController
   # DELETE /resource/sign_out
   def destroy
     super do
-      return redirect_to root_url(protocol: 'https'), notice: "ログアウトしました"
+      return redirect_to root_url(protocol: "https"), notice: "ログアウトしました"
     end
   end
 
@@ -24,7 +24,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def after_sign_in_path_for(resource)
     flash[:notice] = "ログインしました"
-    top_page_login_url(protocol: 'https')
+    top_page_login_url(protocol: "https")
   end
 
   # If you have extra params to permit, append them to the sanitizer.

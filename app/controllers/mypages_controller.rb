@@ -1,6 +1,6 @@
 class MypagesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: [ :show, :edit, :update ]
 
   def show
     # 基本クエリを構築
@@ -19,7 +19,7 @@ class MypagesController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to mypage_url(protocol: 'https'), notice: 'プロフィールを更新しました'
+      redirect_to mypage_url(protocol: "https"), notice: "プロフィールを更新しました"
     else
       render :edit, status: :unprocessable_entity
     end

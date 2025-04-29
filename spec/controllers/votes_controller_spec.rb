@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe VotesController, type: :controller do
+RSpec.describe VotesController do
   # テストで使用する変数を定義
   let(:user) { create(:user) }
   let(:post_item) { create(:post) }

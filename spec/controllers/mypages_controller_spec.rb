@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MypagesController, type: :controller do
+RSpec.describe MypagesController do
   let(:user) { create(:user) }
 
   describe 'アクセス制御' do
@@ -36,7 +36,7 @@ RSpec.describe MypagesController, type: :controller do
 
       it 'ユーザーの投稿を作成日時の降順で取得すること' do
         get :show
-        expect(assigns(:posts)).to eq([post1, post2])
+        expect(assigns(:posts)).to eq([ post1, post2 ])
       end
 
       context 'JSONフォーマットでリクエストされた場合' do

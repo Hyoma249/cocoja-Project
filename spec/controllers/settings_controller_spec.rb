@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SettingsController, type: :controller do
+RSpec.describe SettingsController do
   describe 'GET #index' do
     context 'ログインしていない場合' do
       it 'ログインページにリダイレクトされること' do
@@ -28,7 +28,7 @@ RSpec.describe SettingsController, type: :controller do
 
       it '200ステータスコードを返すこと' do
         get :index
-        expect(response).to have_http_status "200"
+        expect(response).to have_http_status :ok
       end
     end
   end

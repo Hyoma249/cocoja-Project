@@ -17,7 +17,7 @@ class User < ApplicationRecord
   end
   # 今日の残り投票ポイント
   def remaining_daily_points
-    [0, 5 - daily_votes_count].max
+    [ 0, 5 - daily_votes_count ].max
   end
   # 今日の残り投票ポイントを加算しても大丈夫か
   def can_vote?(points_to_add)
@@ -34,7 +34,7 @@ class User < ApplicationRecord
                       on: :update
 
   validates :uid, presence: true,
-                 format: { with: /\A[a-zA-Z0-9]+\z/, message: 'は半角英数字のみ使用できます' },
+                 format: { with: /\A[a-zA-Z0-9]+\z/, message: "は半角英数字のみ使用できます" },
                  length: { minimum: 6, maximum: 15 },
                  uniqueness: true,
                  on: :update

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Users::SessionsController, type: :controller do
+RSpec.describe Users::SessionsController do
   before do
     @request.env['devise.mapping'] = Devise.mappings[:user]
   end
@@ -27,15 +27,15 @@ RSpec.describe Users::SessionsController, type: :controller do
     let(:user) { create(:user) }
 
     it 'ログインユーザー用トップページにリダイレクトすること' do
-      post :create, params: { 
-        user: { email: user.email, password: user.password } 
+      post :create, params: {
+        user: { email: user.email, password: user.password }
       }
       expect(response).to redirect_to(top_page_login_url(protocol: 'https'))
     end
 
     it 'ログインメッセージを表示すること' do
-      post :create, params: { 
-        user: { email: user.email, password: user.password } 
+      post :create, params: {
+        user: { email: user.email, password: user.password }
       }
       expect(flash[:notice]).to eq 'ログインしました'
     end

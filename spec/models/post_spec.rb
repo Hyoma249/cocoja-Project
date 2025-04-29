@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Post, type: :model do
+RSpec.describe Post do
   describe 'associations' do
-    it { should belong_to(:prefecture) }
-    it { should belong_to(:user) }
-    it { should have_many(:post_hashtags) }
-    it { should have_many(:hashtags).through(:post_hashtags) }
-    it { should have_many(:votes).dependent(:destroy) }
-    it { should have_many(:post_images).dependent(:destroy) }
-    it { should accept_nested_attributes_for(:post_images).allow_destroy(true) }
+    it { is_expected.to belong_to(:prefecture) }
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:post_hashtags) }
+    it { is_expected.to have_many(:hashtags).through(:post_hashtags) }
+    it { is_expected.to have_many(:votes).dependent(:destroy) }
+    it { is_expected.to have_many(:post_images).dependent(:destroy) }
+    it { is_expected.to accept_nested_attributes_for(:post_images).allow_destroy(true) }
   end
 
   describe 'validations' do

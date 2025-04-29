@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Vote, type: :model do
+RSpec.describe Vote do
   describe 'associations' do
-    it { should belong_to(:user) }
-    it { should belong_to(:post) }
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to belong_to(:post) }
   end
 
   describe 'validations' do
-    it { should validate_numericality_of(:points)
+    it { expect(subject).to validate_numericality_of(:points)
           .only_integer
           .is_greater_than(0)
           .is_less_than_or_equal_to(5) }
@@ -60,8 +60,8 @@ RSpec.describe Vote, type: :model do
         today_vote = create(:vote, created_at: Time.current)
         yesterday_vote = create(:vote, created_at: 1.day.ago)
 
-        expect(Vote.today).to include(today_vote)
-        expect(Vote.today).not_to include(yesterday_vote)
+        expect(described_class.today).to include(today_vote)
+        expect(described_class.today).not_to include(yesterday_vote)
       end
     end
   end

@@ -14,7 +14,7 @@ class Vote < ApplicationRecord
   validate :has_not_already_voted_today
 
   # 1日に投票したレコードを取得するためのスコープ
-  scope :today, -> { where('created_at >= ?', Time.zone.today.beginning_of_day) }
+  scope :today, -> { where("created_at >= ?", Time.zone.today.beginning_of_day) }
 
   private
 

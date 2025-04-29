@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'マイページ機能', type: :system do
+RSpec.describe 'マイページ機能' do
   let(:user) { create(:user, username: 'テストユーザー', uid: 'testuser', bio: '自己紹介文です') }
   let!(:post) { create(:post, user: user) }
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PrefecturesController, type: :controller do
+RSpec.describe PrefecturesController do
   describe 'GET #show' do
     let(:prefecture) { create(:prefecture) }
     let(:user) { create(:user) }

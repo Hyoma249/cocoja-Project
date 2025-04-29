@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PostsController, type: :controller do
+RSpec.describe PostsController do
   let(:user) { create(:user) }
   let(:prefecture) { create(:prefecture) }
 
@@ -34,7 +34,7 @@ RSpec.describe PostsController, type: :controller do
 
       context 'ハッシュタグでフィルタリングする場合' do
         let!(:hashtag) { create(:hashtag, name: 'test') }
-        let!(:post_with_tag) { create(:post, user: user, hashtags: [hashtag]) }
+        let!(:post_with_tag) { create(:post, user: user, hashtags: [ hashtag ]) }
         let!(:post_without_tag) { create(:post, user: user) }
 
         it 'タグに関連する投稿のみを表示すること' do
@@ -113,7 +113,7 @@ RSpec.describe PostsController, type: :controller do
 
         it 'newテンプレートを再表示すること' do
           expect(response).to render_template(:new)
-          expect(response.status).to eq(422)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it 'エラーメッセージを設定すること' do

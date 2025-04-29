@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe Hashtag, type: :model do
+RSpec.describe Hashtag do
   describe 'associations' do
-    it { should have_many(:post_hashtags) }
-    it { should have_many(:posts).through(:post_hashtags) }
+    it { is_expected.to have_many(:post_hashtags) }
+    it { is_expected.to have_many(:posts).through(:post_hashtags) }
   end
 
   describe 'validations' do
-    it { should validate_length_of(:name).is_at_most(99) }
+    it { is_expected.to validate_length_of(:name).is_at_most(99) }
 
     context 'when creating hashtags' do
       it 'allows valid hashtag names' do
-        valid_names = ['rails', 'ruby123', '東京', 'ruby_on_rails']
+        valid_names = [ 'rails', 'ruby123', '東京', 'ruby_on_rails' ]
         valid_names.each do |name|
           hashtag = build(:hashtag, name: name)
           expect(hashtag).to be_valid

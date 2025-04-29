@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RankingsController, type: :controller do
+RSpec.describe RankingsController do
   describe 'GET #index' do
     let!(:prefecture1) { create(:prefecture, name: '東京都') }
     let!(:prefecture2) { create(:prefecture, name: '大阪府') }
@@ -31,12 +31,12 @@ RSpec.describe RankingsController, type: :controller do
 
       it '現在の週のランキングを取得すること' do
         get :index
-        expect(assigns(:current_rankings)).to match_array([current_ranking1, current_ranking2])
+        expect(assigns(:current_rankings)).to contain_exactly(current_ranking1, current_ranking2)
       end
 
       it 'ランキング順に並んでいること' do
         get :index
-        expect(assigns(:current_rankings).to_a).to eq([current_ranking1, current_ranking2])
+        expect(assigns(:current_rankings).to_a).to eq([ current_ranking1, current_ranking2 ])
       end
     end
 

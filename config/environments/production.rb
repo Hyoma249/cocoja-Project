@@ -21,13 +21,13 @@ Rails.application.configure do
   }
   config.assets.compile = false
   config.assets.digest = true
-  config.assets.version = '1.0'
+  config.assets.version = "1.0"
 
   # SSL設定 - リダイレクトループを避けるためfalseに
   config.force_ssl = false
-  config.action_controller.default_url_options = { protocol: 'https' }
-  config.action_dispatch.trusted_proxies = %w(127.0.0.1 ::1).map { |proxy| IPAddr.new(proxy) }
-  config.ssl_options = { redirect: { exclude: -> request { request.get_header('HTTP_X_FORWARDED_PROTO') == 'https' } } }
+  config.action_controller.default_url_options = { protocol: "https" }
+  config.action_dispatch.trusted_proxies = %w[127.0.0.1 ::1].map { |proxy| IPAddr.new(proxy) }
+  config.ssl_options = { redirect: { exclude: ->(request) { request.get_header("HTTP_X_FORWARDED_PROTO") == "https" } } }
 
   # ログ設定 - パフォーマンス向上のため最適化
   config.log_tags = [ :request_id ]
@@ -45,5 +45,5 @@ Rails.application.configure do
 
   # Action Cable設定
   config.action_cable.disable_request_forgery_protection = false
-  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
+  config.action_cable.allowed_request_origins = [ /http:\/\/*/, /https:\/\/*/ ]
 end

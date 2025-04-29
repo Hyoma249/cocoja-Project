@@ -1,24 +1,25 @@
 # spec/models/user_spec.rb
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'validations' do
     # 既存のメールアドレスのバリデーション
-    it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email).case_insensitive }
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
 
     context 'on update' do
       # createを使用して永続化されたユーザーを作成
       subject { create(:user) }
+
       # usernameのバリデーション
-      it { should validate_presence_of(:username).on(:update) }
-      it { should validate_length_of(:username).is_at_least(1).is_at_most(20).on(:update) }
-      it { should validate_uniqueness_of(:username).on(:update) }
+      it { is_expected.to validate_presence_of(:username).on(:update) }
+      it { is_expected.to validate_length_of(:username).is_at_least(1).is_at_most(20).on(:update) }
+      it { is_expected.to validate_uniqueness_of(:username).on(:update) }
 
       # uidのバリデーション
-      it { should validate_presence_of(:uid).on(:update) }
-      it { should validate_length_of(:uid).is_at_least(6).is_at_most(15).on(:update) }
-      it { should validate_uniqueness_of(:uid).on(:update) }
+      it { is_expected.to validate_presence_of(:uid).on(:update) }
+      it { is_expected.to validate_length_of(:uid).is_at_least(6).is_at_most(15).on(:update) }
+      it { is_expected.to validate_uniqueness_of(:uid).on(:update) }
 
       it 'validates uid format' do
         # 一度保存されたユーザーを使用
@@ -45,18 +46,18 @@ RSpec.describe User, type: :model do
       end
 
       # bioのバリデーション
-      it { should validate_length_of(:bio).is_at_most(160) }
-      it { should allow_value('').for(:bio) }
-      it { should allow_value(nil).for(:bio) }
+      it { is_expected.to validate_length_of(:bio).is_at_most(160) }
+      it { is_expected.to allow_value('').for(:bio) }
+      it { is_expected.to allow_value(nil).for(:bio) }
     end
   end
 
   describe 'associations' do
     # postsとの関連付けテスト
-    it { should have_many(:posts).dependent(:destroy) }
+    it { is_expected.to have_many(:posts).dependent(:destroy) }
 
     # votesとの関連付けテスト
-    it { should have_many(:votes).dependent(:destroy) }
+    it { is_expected.to have_many(:votes).dependent(:destroy) }
   end
 
   describe 'methods' do

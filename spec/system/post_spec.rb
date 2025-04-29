@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe '投稿機能', type: :system do
+RSpec.describe '投稿機能' do
   let(:user) { create(:user) }
   let!(:prefecture) { create(:prefecture, name: '東京都') } # 固定の都道府県名を設定
   let!(:prefectures) { create_list(:prefecture, 46) } # その他の都道府県も作成
@@ -14,7 +14,7 @@ RSpec.describe '投稿機能', type: :system do
     context '正常な値の場合' do
       it '投稿の作成に成功すること' do
         # プロンプトテキストを確認してから選択
-        expect(page).to have_select('post[prefecture_id]', with_options: ['東京都'])
+        expect(page).to have_select('post[prefecture_id]', with_options: [ '東京都' ])
         select '東京都', from: 'post[prefecture_id]'
         fill_in 'post[content]', with: 'テスト投稿です'
         click_button '投稿する'

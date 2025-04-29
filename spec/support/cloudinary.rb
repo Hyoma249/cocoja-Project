@@ -1,7 +1,7 @@
 require 'cloudinary'
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before do
     # Cloudinaryのモック設定を強化
     Cloudinary.config do |c|
       c.cloud_name = 'test'
@@ -11,20 +11,16 @@ RSpec.configure do |config|
     end
 
     # アップロードのモックをより具体的に
-    allow(Cloudinary::Uploader).to receive(:upload) do |file, options|
-      {
+    allow(Cloudinary::Uploader).to receive(:upload).and_return({
         'public_id' => 'test_image',
         'url' => 'http://example.com/test_image.jpg',
         'secure_url' => 'https://example.com/test_image.jpg',
         'width' => 800,
         'height' => 600,
         'resource_type' => 'image'
-      }
-    end
+      })
 
     # 画像変換のモックも追加
-    allow(Cloudinary::Utils).to receive(:cloudinary_url) do |public_id, options|
-      'https://example.com/test_image.jpg'
-    end
+    allow(Cloudinary::Utils).to receive(:cloudinary_url).and_return('https://example.com/test_image.jpg')
   end
 end

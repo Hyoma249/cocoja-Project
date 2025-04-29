@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe '投票機能', type: :system do
+RSpec.describe '投票機能' do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:prefecture) { create(:prefecture) }

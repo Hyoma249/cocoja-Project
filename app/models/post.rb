@@ -29,7 +29,7 @@ class Post < ApplicationRecord
 
   # JSON応答用に日付をフォーマットするメソッド
   def created_at_formatted
-    created_at.strftime('%Y年%m月%d日')
+    created_at.strftime("%Y年%m月%d日")
   end
 
   private

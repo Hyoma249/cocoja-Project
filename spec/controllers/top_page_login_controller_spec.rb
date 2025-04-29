@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TopPageLoginController, type: :controller do
+RSpec.describe TopPageLoginController do
   describe 'GET #top' do
     context 'ログインしている場合' do
       let(:user) { create(:user) }

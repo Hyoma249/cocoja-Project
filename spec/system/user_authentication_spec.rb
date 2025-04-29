@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'ユーザー認証', type: :system do
+RSpec.describe 'ユーザー認証' do
   let(:user) { create(:user) }
 
   describe 'ログイン' do
