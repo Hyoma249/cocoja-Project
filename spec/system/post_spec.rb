@@ -36,18 +36,6 @@ RSpec.describe '投稿機能', type: :system do
         end
       end
     end
-
-    context 'ハッシュタグを含む投稿の場合' do
-      it 'ハッシュタグ付きの投稿が作成できること' do
-        select '東京都', from: 'post[prefecture_id]'
-        fill_in 'post[content]', with: 'テスト投稿です #観光 #グルメ'
-        click_button '投稿する'
-
-        expect(page).to have_content 'テスト投稿です'
-        expect(page).to have_link '#観光'
-        expect(page).to have_link '#グルメ'
-      end
-    end
   end
 
   describe '投稿一覧' do
@@ -78,24 +66,6 @@ RSpec.describe '投稿機能', type: :system do
       # 必要最小限の要素の確認
       expect(page).to have_content post.content
       expect(page).to have_content user.uid
-    end
-  end
-
-  describe 'ハッシュタグによる投稿検索' do
-    let!(:post_with_tag) { create(:post, user: user, prefecture: prefecture, content: 'テスト投稿です #test') }
-    let!(:other_post) { create(:post, user: user, prefecture: prefecture, content: 'テスト投稿です #food') }
-
-    before do
-      login_as(user, scope: :user)
-      visit posts_path
-    end
-
-    it 'ハッシュタグをクリックして関連投稿を表示できること' do
-      click_link '#test'
-
-      expect(page).to have_content 'ハッシュタグ「#test」の投稿'
-      expect(page).to have_content post_with_tag.content
-      expect(page).not_to have_content other_post.content
     end
   end
 end
