@@ -1,12 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'ユーザー認証' do
+RSpec.describe 'ユーザー認証', type: :system do
   let(:user) { create(:user) }
 
   describe 'ログイン' do
-    before { visit new_user_session_path }
+    before do
+      driven_by(:rack_test)
+      visit new_user_session_path
+    end
 
-    context '正常な値の場合' do
+    context 'when 正常な値の場合' do
       it 'ログインに成功すること' do
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: user.password
@@ -17,7 +22,7 @@ RSpec.describe 'ユーザー認証' do
       end
     end
 
-    context '異常な値の場合' do
+    context 'when 異常な値の場合' do
       it 'ログインに失敗すること' do
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: 'wrong_password'
@@ -31,15 +36,14 @@ RSpec.describe 'ユーザー認証' do
 
   describe 'ログアウト' do
     before do
-      login_as(user, scope: :user)
+      sign_in user
+      driven_by(:rack_test)
       visit settings_index_path
     end
 
     it 'ログアウトに成功すること' do
-      # data属性を使用して最初のログアウトボタンを特定
       find('button[data-modal-target="logout-modal"]').click
 
-      # モーダル内のログアウトボタンをフォームで特定
       within('#logout-modal') do
         find('button[type="submit"]').click
       end

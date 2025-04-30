@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe '画像アップロード機能' do
+RSpec.describe '画像アップロード機能', type: :system do
   let(:user) { create(:user) }
   let(:single_image_path) { Rails.root.join('spec/fixtures/test_image1.jpg') }
   let(:additional_image_path) { Rails.root.join('spec/fixtures/test_image2.jpg') }
@@ -8,7 +10,7 @@ RSpec.describe '画像アップロード機能' do
   before do
     # テスト用の画像ファイルを準備
     FileUtils.mkdir_p(File.dirname(single_image_path))
-    [ single_image_path, additional_image_path ].each do |path|
+    [single_image_path, additional_image_path].each do |path|
       FileUtils.touch(path)
     end
 
@@ -18,7 +20,8 @@ RSpec.describe '画像アップロード機能' do
       'url' => 'http://example.com/test_image.jpg'
     })
 
-    login_as(user)
+    sign_in user
+    driven_by(:rack_test)
   end
 
   describe '投稿画像機能' do
@@ -48,7 +51,7 @@ RSpec.describe '画像アップロード機能' do
       fill_in 'post[content]', with: 'テスト投稿です'
 
       # 複数画像の添付
-      attach_file 'pi', [ single_image_path, additional_image_path ]
+      attach_file 'pi', [single_image_path, additional_image_path]
 
       click_button '投稿する'
 

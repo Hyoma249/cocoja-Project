@@ -1,12 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'マイページ機能' do
+RSpec.describe 'マイページ機能', type: :system do
   let(:user) { create(:user, username: 'テストユーザー', uid: 'testuser', bio: '自己紹介文です') }
 
   describe 'マイページの表示' do
     before do
-      create(:post, user: user) # 投稿の作成をbeforeブロックに移動
-      login_as(user, scope: :user)
+      create(:post, user: user)
+      sign_in user
+      driven_by(:rack_test)
       visit mypage_path
     end
 
@@ -16,7 +19,7 @@ RSpec.describe 'マイページ機能' do
     end
 
     it '自分の投稿が表示されること' do
-      expect(page).to have_selector('.grid-cols-3') # 投稿グリッドの存在確認
+      expect(page).to have_selector('.grid-cols-3')
     end
 
     it 'プロフィール編集リンクが機能すること' do
@@ -27,11 +30,12 @@ RSpec.describe 'マイページ機能' do
 
   describe 'プロフィール編集' do
     before do
-      login_as(user, scope: :user)
+      sign_in user
+      driven_by(:rack_test)
       visit edit_mypage_path
     end
 
-    context '正常な入力の場合' do
+    context 'when 入力が有効な場合' do
       it 'プロフィールが更新されること' do
         fill_in 'ユーザー名', with: '新しい名前'
         fill_in '自己紹介', with: '新しい自己紹介'
@@ -43,20 +47,21 @@ RSpec.describe 'マイページ機能' do
       end
     end
 
-    context '無効な入力の場合' do
-      it '更新に失敗すること' do
-        fill_in 'ユーザー名', with: ''  # 必須項目を空に
+    context 'when 入力が無効な場合' do
+      before do
+        fill_in 'ユーザー名', with: ''
         click_button '保存する'
+      end
 
-        # パスの比較を削除し、より本質的なテストに注力
-        # 入力フォームの存在確認
+      it '必須フィールドが表示されていること' do
         expect(page).to have_field('ユーザー名')
         expect(page).to have_field('ユーザーID')
         expect(page).to have_field('自己紹介')
+      end
 
-        # フォームの状態確認
-        expect(page).to have_field('ユーザー名', with: '')
-        expect(page).to have_selector('form')  # フォームがまだ表示されていることを確認
+      it '更新フォームが再表示されること' do
+        expect(page).to have_selector('form')
+        expect(page).to have_button('保存する')
       end
     end
   end
