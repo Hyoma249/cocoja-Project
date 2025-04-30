@@ -98,7 +98,9 @@ require 'shoulda/matchers'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
-    with.test_framework :rspec      # RSpecと連携
-    with.library :rails             # Railsのバリデーション・関連などに対応
+    with.test_framework :rspec
+    with.library :active_record
+    with.library :active_model
+    with.library :rails
   end
 end

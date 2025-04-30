@@ -1,11 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe WeeklyRanking do
+RSpec.describe WeeklyRanking, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to(:prefecture) }
   end
 
   describe 'validations' do
+    subject(:weekly_ranking) { build(:weekly_ranking) }
+
     it { is_expected.to validate_presence_of(:year) }
     it { is_expected.to validate_presence_of(:week) }
     it { is_expected.to validate_presence_of(:rank) }
@@ -16,22 +20,19 @@ RSpec.describe WeeklyRanking do
     let!(:current_ranking) do
       create(:weekly_ranking,
         year: Time.current.year,
-        week: Time.current.strftime('%U').to_i
-      )
+        week: Time.current.strftime('%U').to_i)
     end
 
     let!(:previous_ranking) do
       create(:weekly_ranking,
         year: 1.week.ago.year,
-        week: 1.week.ago.strftime('%U').to_i
-      )
+        week: 1.week.ago.strftime('%U').to_i)
     end
 
     let!(:old_ranking) do
       create(:weekly_ranking,
         year: 2.weeks.ago.year,
-        week: 2.weeks.ago.strftime('%U').to_i
-      )
+        week: 2.weeks.ago.strftime('%U').to_i)
     end
 
     describe '.current_week' do
@@ -55,38 +56,47 @@ RSpec.describe WeeklyRanking do
     let(:prefecture) { create(:prefecture) }
 
     context 'when previous ranking exists' do
-      it 'returns positive value when rank improved' do
+      let(:previous_rank) { 5 }
+      let(:current_rank) { 3 }
+
+      before do
         create(:weekly_ranking,
           prefecture: prefecture,
           year: 1.week.ago.year,
           week: 1.week.ago.strftime('%U').to_i,
-          rank: 5
-        )
-        current = create(:weekly_ranking,
-          prefecture: prefecture,
-          year: Time.current.year,
-          week: Time.current.strftime('%U').to_i,
-          rank: 3
-        )
-
-        expect(current.rank_change_from_previous).to eq(2) # 5 - 3 = 2（2位上昇）
+          rank: previous_rank)
       end
 
-      it 'returns negative value when rank declined' do
-        create(:weekly_ranking,
-          prefecture: prefecture,
-          year: 1.week.ago.year,
-          week: 1.week.ago.strftime('%U').to_i,
-          rank: 3
-        )
+      it 'calculates rank improvement correctly' do
         current = create(:weekly_ranking,
           prefecture: prefecture,
           year: Time.current.year,
           week: Time.current.strftime('%U').to_i,
-          rank: 5
-        )
+          rank: current_rank)
 
-        expect(current.rank_change_from_previous).to eq(-2) # 3 - 5 = -2（2位下降）
+        expect(current.rank_change_from_previous).to eq(2)
+      end
+
+      context 'when rank declines' do
+        let(:current_ranking) do
+          described_class.destroy_all
+
+          create(:weekly_ranking,
+            prefecture: prefecture,
+            year: 1.week.ago.year,
+            week: 1.week.ago.strftime('%U').to_i,
+            rank: 3)
+
+          create(:weekly_ranking,
+            prefecture: prefecture,
+            year: Time.current.year,
+            week: Time.current.strftime('%U').to_i,
+            rank: 5)
+        end
+
+        it 'returns negative rank change' do
+          expect(current_ranking.rank_change_from_previous).to eq(-2)
+        end
       end
     end
 
@@ -95,8 +105,7 @@ RSpec.describe WeeklyRanking do
         current = create(:weekly_ranking,
           prefecture: prefecture,
           year: Time.current.year,
-          week: Time.current.strftime('%U').to_i
-        )
+          week: Time.current.strftime('%U').to_i)
 
         expect(current.rank_change_from_previous).to be_nil
       end

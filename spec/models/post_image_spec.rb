@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe PostImage do
+RSpec.describe PostImage, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to(:post).counter_cache(true) }
   end
@@ -16,7 +18,7 @@ RSpec.describe PostImage do
     it 'accepts valid image files' do
       post_image = build(:post_image)
       post_image.image = fixture_file_upload(
-        Rails.root.join('spec', 'fixtures', 'test_image1.jpg'),
+        Rails.root.join('spec/fixtures/test_image1.jpg'),
         'image/jpeg'
       )
       expect(post_image).to be_valid
@@ -26,9 +28,9 @@ RSpec.describe PostImage do
   describe 'counter_cache' do
     it 'updates post_images_count on post' do
       post = create(:post)
-      expect {
+      expect do
         create(:post_image, post: post)
-      }.to change { post.reload.post_images_count }.by(1)
+      end.to change { post.reload.post_images_count }.by(1)
     end
   end
 end

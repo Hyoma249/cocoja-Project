@@ -1,20 +1,22 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Vote do
+RSpec.describe Vote, type: :model do
   describe 'associations' do
-    subject(:vote) { described_class.new }
-
-    it { expect(vote).to belong_to(:user) }
-    it { expect(vote).to belong_to(:post) }
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to belong_to(:post) }
   end
 
   describe 'validations' do
-    subject(:vote) { described_class.new }
+    subject(:vote) { build(:vote) }
 
-    it { expect(vote).to validate_numericality_of(:points)
-          .only_integer
-          .is_greater_than(0)
-          .is_less_than_or_equal_to(5) }
+    it 'validates numericality of points' do
+      expect(vote).to validate_numericality_of(:points)
+        .only_integer
+        .is_greater_than(0)
+        .is_less_than_or_equal_to(5)
+    end
 
     describe 'daily_point_limit' do
       let(:user) { create(:user) }
@@ -26,9 +28,9 @@ RSpec.describe Vote do
       end
 
       it 'prevents voting over daily limit' do
-        create(:vote, user: user, points: 4)  # 既に4ポイント使用
-        vote = build(:vote, user: user, post: post, points: 2)  # 2ポイント追加しようとする
-        expect(vote).not_to be_valid  # 合計が6ポイントになるため無効
+        create(:vote, user: user, points: 4)
+        vote = build(:vote, user: user, post: post, points: 2)
+        expect(vote).not_to be_valid
         expect(vote.errors[:points]).to include('1日の投票ポイント上限（5ポイント）を超えています。残り1ポイントです。')
       end
     end
@@ -59,8 +61,9 @@ RSpec.describe Vote do
 
   describe 'scopes' do
     describe '.today' do
+      let(:user) { create(:user) }
+
       it 'returns only votes from today' do
-        user = create(:user)
         today_vote = create(:vote, created_at: Time.current)
         yesterday_vote = create(:vote, created_at: 1.day.ago)
 
