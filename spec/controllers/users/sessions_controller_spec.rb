@@ -1,16 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Users::SessionsController do
+RSpec.describe Users::SessionsController, type: :controller do
+  let(:user) { create(:user) }
+
   before do
-    request.env['devise.mapping'] = Devise.mappings[:user]
+    @request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
   describe '#destroy' do
-    let(:user) { create(:user) }
-
-    before do
-      sign_in user
-    end
+    before { sign_in user }
 
     it 'ログアウト後にrootページにリダイレクトすること' do
       delete :destroy
@@ -24,19 +24,13 @@ RSpec.describe Users::SessionsController do
   end
 
   describe '#after_sign_in_path_for' do
-    let(:user) { create(:user) }
-
     it 'ログインユーザー用トップページにリダイレクトすること' do
-      post :create, params: {
-        user: { email: user.email, password: user.password }
-      }
+      post :create, params: { user: { email: user.email, password: user.password } }
       expect(response).to redirect_to(top_page_login_url(protocol: 'https'))
     end
 
     it 'ログインメッセージを表示すること' do
-      post :create, params: {
-        user: { email: user.email, password: user.password }
-      }
+      post :create, params: { user: { email: user.email, password: user.password } }
       expect(flash[:notice]).to eq 'ログインしました'
     end
   end

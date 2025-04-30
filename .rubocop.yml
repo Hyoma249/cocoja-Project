@@ -1,112 +1,73 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
-
 plugins:
   - rubocop-rails
   - rubocop-rspec
-  - rubocop-rspec_rails # 追加
+  - rubocop-rspec_rails
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.3
-  Exclude:
-    - "bin/**/*"
-    - "db/schema.rb"
-    - "vendor/**/*"
-    - "node_modules/**/*"
-
-Style/Documentation:
-  Enabled: false
-
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-
-Layout/SpaceInsideArrayLiteralBrackets:
-  EnforcedStyle: space
-
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: true
-
-Layout/TrailingEmptyLines:
-  EnforcedStyle: final_newline
-
-Layout/TrailingWhitespace:
-  Enabled: true
-
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    "%w": "[]"
-    "%W": "[]"
+  SuggestExtensions: false
 
 Metrics/BlockLength:
+  Enabled: true
   Exclude:
-    - "spec/**/*"
-    - "config/routes.rb"
+    - "spec/**/*_spec.rb"
 
 Style/BlockDelimiters:
+  Enabled: true
   Exclude:
-    - "spec/**/*"
+    - "spec/**/*_spec.rb"
 
-# 追加の設定
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: always
 
-Layout/LineLength:
-  Max: 120
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+Layout/ArgumentAlignment:
+  Enabled: true
+  EnforcedStyle: with_fixed_indentation
+
+Lint/AmbiguousBlockAssociation:
   Exclude:
-    - "spec/**/*"
+    - "spec/**/*_spec.rb"
 
-Metrics/MethodLength:
-  Max: 20
-  Exclude:
-    - "spec/**/*"
-
-RSpec/ExampleLength:
-  Max: 20
-
-RSpec/MultipleExpectations:
+# RSpecの設定
+RSpec/MultipleMemoizedHelpers:
+  Enabled: true
   Max: 10
 
 RSpec/NestedGroups:
-  Max: 4
-
-Style/HashSyntax:
-  EnforcedStyle: ruby19_no_mixed_keys
-
-Style/SymbolArray:
-  EnforcedStyle: percent
-  MinSize: 2
-
-Style/WordArray:
-  EnforcedStyle: percent
-  MinSize: 2
-
-# 追加の緩和ルール
-Rails/I18nLocaleTexts:
-  Enabled: false
-
-RSpec/DescribedClass:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Metrics/AbcSize:
-  Max: 30
-  Exclude:
-    - "spec/**/*"
-
-Metrics/CyclomaticComplexity:
-  Max: 10
-
-Layout/MultilineOperationIndentation:
-  Enabled: false
-
-Rails/FilePath:
-  Enabled: false
-
-Style/NumericLiterals:
-  Enabled: false
+  Max: 5
 
 RSpec/ContextWording:
+  Enabled: true
+  Prefixes:
+    - when
+    - with
+    - without
+    - if
+    - unless
+    - for
+
+RSpec/MultipleExpectations:
+  Max: 3
+
+RSpec/ExampleLength:
+  Max: 10
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+RSpec/InstanceVariable:
+  Enabled: true
+  Exclude:
+    - "spec/controllers/**/*_spec.rb"
+
+RSpecRails/InferredSpecType:
   Enabled: false

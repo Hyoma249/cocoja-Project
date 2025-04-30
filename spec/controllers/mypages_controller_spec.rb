@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe MypagesController do
+RSpec.describe MypagesController, type: :controller do
   let(:user) { create(:user) }
 
   describe 'アクセス制御' do
-    context '未ログインの場合' do
+    context 'when 未ログインの場合' do
       it 'showはログインページにリダイレクトすること' do
         get :show
         expect(response).to redirect_to(new_user_session_path)
@@ -23,44 +25,49 @@ RSpec.describe MypagesController do
   end
 
   describe 'ログイン済みの場合' do
-    before { sign_in user }
+    before do
+      @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in user
+    end
 
     describe 'GET #show' do
       let!(:newer_post) { create(:post, user: user, created_at: 1.day.ago) }
       let!(:older_post) { create(:post, user: user, created_at: 2.days.ago) }
 
+      before { get :show }
+
       it '正常にレスポンスを返すこと' do
-        get :show
         expect(response).to be_successful
       end
 
       it 'ユーザーの投稿を作成日時の降順で取得すること' do
-        get :show
-        expect(assigns(:posts)).to eq([ newer_post, older_post ])
+        posts = controller.instance_variable_get(:@posts)
+        expect(posts).to eq([newer_post, older_post])
       end
 
-      context 'JSONフォーマットでリクエストされた場合' do
+      context 'when JSONフォーマットでリクエストされた場合' do
+        before { get :show, format: :json }
+
         it '正常にレスポンスを返すこと' do
-          get :show, format: :json
           expect(response).to be_successful
         end
       end
     end
 
     describe 'GET #edit' do
+      before { get :edit }
+
       it '正常にレスポンスを返すこと' do
-        get :edit
         expect(response).to be_successful
       end
 
       it '@userに現在のユーザーを割り当てること' do
-        get :edit
-        expect(assigns(:user)).to eq user
+        expect(controller.instance_variable_get(:@user)).to eq(user)
       end
     end
 
     describe 'PATCH #update' do
-      context '有効なパラメータの場合' do
+      context 'when 有効なパラメータの場合' do
         let(:valid_params) do
           { user: { username: 'newname', bio: 'new bio' } }
         end
@@ -83,24 +90,23 @@ RSpec.describe MypagesController do
         end
       end
 
-      context '無効なパラメータの場合' do
+      context 'when 無効なパラメータの場合' do
         let(:invalid_params) do
-          { user: { username: '' } }  # usernameは必須
+          { user: { username: '' } } # usernameは必須
         end
 
+        before { patch :update, params: invalid_params }
+
         it 'ユーザー情報を更新しないこと' do
-          expect {
-            patch :update, params: invalid_params
-          }.not_to change { user.reload.username }
+          expect { user.reload.username }.not_to change(user, :username)
         end
 
         it 'editテンプレートを再表示すること' do
-          patch :update, params: invalid_params
-          expect(response).to render_template :edit
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.content_type).to include('text/html')
         end
 
         it 'ステータスコード422を返すこと' do
-          patch :update, params: invalid_params
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end

@@ -1,11 +1,18 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe ApplicationController do
+RSpec.describe ApplicationController, type: :controller do
   let(:user) { create(:user) }
 
   describe '#after_sign_in_path_for' do
+    before do
+      @request.env['HTTP_HOST'] = 'test.host'
+    end
+
     it 'ログイン後にログインユーザー用トップページにリダイレクトすること' do
-      expect(controller.after_sign_in_path_for(user)).to eq top_page_login_url(protocol: 'https')
+      expect(controller.after_sign_in_path_for(user))
+        .to eq top_page_login_url(protocol: 'https')
     end
   end
 
@@ -18,10 +25,13 @@ RSpec.describe ApplicationController do
       end
     end
 
-    context 'ログインしている場合' do
-      before do
-        sign_in user
-      end
+    before do
+      routes.draw { get 'index' => 'anonymous#index' }
+      @request.env['HTTP_HOST'] = 'test.host'
+    end
+
+    context 'when ログインしている' do
+      before { sign_in user }
 
       it 'ログインユーザー用トップページにリダイレクトすること' do
         get :index
@@ -29,7 +39,7 @@ RSpec.describe ApplicationController do
       end
     end
 
-    context 'ログインしていない場合' do
+    context 'when ログインしていない' do
       it 'リダイレクトしないこと' do
         get :index
         expect(response).to have_http_status(:ok)

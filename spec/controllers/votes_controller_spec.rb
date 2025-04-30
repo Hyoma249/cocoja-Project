@@ -1,21 +1,26 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe VotesController do
+RSpec.describe VotesController, type: :controller do
   let(:user) { create(:user) }
   let(:post_item) { create(:post) }
 
   describe 'POST #create' do
-    context '未ログインの場合' do
+    context 'when 未ログインの場合' do
       it 'ログインページにリダイレクトされること' do
         post :create, params: { post_id: post_item.id, vote: { points: 1 } }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
 
-    context 'ログイン済みの場合' do
-      before { sign_in user }
+    context 'when ログイン済みの場合' do
+      before do
+        @request.env['devise.mapping'] = Devise.mappings[:user]
+        sign_in user
+      end
 
-      context '正常なパラメータの場合' do
+      context 'when 正常なパラメータの場合' do
         let(:valid_params) do
           {
             post_id: post_item.id,
@@ -25,9 +30,9 @@ RSpec.describe VotesController do
         end
 
         it '投票が作成されること' do
-          expect {
+          expect do
             post :create, params: valid_params
-          }.to change(Vote, :count).by(1)
+          end.to change(Vote, :count).by(1)
         end
 
         it '投票が正しく保存されること' do
@@ -39,11 +44,11 @@ RSpec.describe VotesController do
 
         it 'フラッシュメッセージが設定されること' do
           post :create, params: valid_params
-          expect(flash.now[:notice]).to eq "3ポイントを付与しました"
+          expect(flash.now[:notice]).to eq '3ポイントを付与しました'
         end
       end
 
-      context '不正なパラメータの場合' do
+      context 'when 不正なパラメータの場合' do
         let(:invalid_params) do
           {
             post_id: post_item.id,
@@ -64,7 +69,7 @@ RSpec.describe VotesController do
         end
       end
 
-      context '1日の投票上限を超えた場合' do
+      context 'when 1日の投票上限を超えた場合' do
         before do
           create(:vote, user: user, points: 4, post: create(:post))
         end
@@ -85,7 +90,7 @@ RSpec.describe VotesController do
 
         it 'エラーメッセージが設定されること' do
           post :create, params: over_limit_params
-          expect(flash.now[:alert]).to include("1日の投票ポイント上限")
+          expect(flash.now[:alert]).to include('1日の投票ポイント上限')
         end
       end
     end

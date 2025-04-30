@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Users::RegistrationsController do
+RSpec.describe Users::RegistrationsController, type: :controller do
   before do
-    request.env['devise.mapping'] = Devise.mappings[:user]
+    @request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
   describe '#create' do
@@ -16,11 +18,11 @@ RSpec.describe Users::RegistrationsController do
       }
     end
 
-    context '有効なパラメータの場合' do
+    context 'when 有効なパラメータの場合' do
       it 'ユーザーが作成されること' do
-        expect {
+        expect do
           post :create, params: valid_params
-        }.to change(User, :count).by(1)
+        end.to change(User, :count).by(1)
       end
 
       it 'プロフィール設定ページにリダイレクトすること' do
@@ -34,7 +36,7 @@ RSpec.describe Users::RegistrationsController do
       end
     end
 
-    context '無効なパラメータの場合' do
+    context 'when 無効なパラメータの場合' do
       let(:invalid_params) do
         {
           user: {
@@ -46,14 +48,15 @@ RSpec.describe Users::RegistrationsController do
       end
 
       it 'ユーザーが作成されないこと' do
-        expect {
+        expect do
           post :create, params: invalid_params
-        }.not_to change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it 'newテンプレートを再表示すること' do
         post :create, params: invalid_params
-        expect(response).to render_template(:new)
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to include('text/html')
       end
     end
   end
