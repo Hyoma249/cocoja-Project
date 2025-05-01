@@ -1,3 +1,4 @@
+<div class="follow-form">
 <% unless current_user == @user %>
   <%= turbo_frame_tag "follow_form" do %>
     <% if current_user.following?(@user) %>
@@ -19,3 +20,4 @@
     <% end %>
   <% end %>
 <% end %>
+</div>
