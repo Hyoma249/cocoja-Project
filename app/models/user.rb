@@ -9,6 +9,14 @@ class User < ApplicationRecord
   # ユーザーは たくさんの投稿 を持てる
   has_many :posts, dependent: :destroy
   has_many :votes, dependent: :destroy
+  # フォローしている関連付け
+  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  # フォローされている関連付け
+  has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  # フォローしているユーザーを取得
+  has_many :followings, through: :active_relationships, source: :followed
+  # フォロワーを取得
+  has_many :followers, through: :passive_relationships, source: :follower
 
   # メソッド一覧
   # 今日投票したポイントの合計
@@ -22,6 +30,22 @@ class User < ApplicationRecord
   # 今日の残り投票ポイントを加算しても大丈夫か
   def can_vote?(points_to_add)
     remaining_daily_points >= points_to_add
+  end
+
+  # 指定したユーザーをフォローする
+  def follow(user)
+    return if following?(user)  # 既にフォローしている場合は何もしない
+    active_relationships.create(followed_id: user.id)
+  end
+
+  # 指定したユーザーのフォローを解除する
+  def unfollow(user)
+    active_relationships.find_by(followed_id: user.id).destroy
+  end
+
+  # 指定したユーザーをフォローしているかどうかを判定
+  def following?(user)
+    followings.include?(user)
   end
 
   # Active Storageの代わりにCarrierWaveを使用

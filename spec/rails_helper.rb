@@ -9,6 +9,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # return unless Rails.env.test?
 require 'rspec/rails'
 require 'database_cleaner/active_record'
+require 'capybara/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -90,6 +91,15 @@ RSpec.configure do |config|
   # JSテストは当面必要ないため、この設定は一時的にコメントアウト
   config.before(:each, :js, type: :system) do
     driven_by :selenium_chrome_headless
+  end
+
+  config.include Warden::Test::Helpers
+  config.after :each do
+    Warden.test_reset!
+  end
+
+  config.before(:each, type: :system) do
+    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
   end
 end
 

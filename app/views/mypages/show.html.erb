@@ -12,7 +12,24 @@
           </div>
           <div class="flex-grow text-center md:text-left">
             <h2 class="text-2xl font-bold mb-2"><%= current_user.username %></h2>
-            <p class="text-gray-600 text-sm mb-4"><%= current_user.bio %></p>
+            <p class="text-gray-600 text-sm mb-6"><%= current_user.bio %></p>
+
+            <%# 統計情報の追加 %>
+            <div class="flex justify-center md:justify-start space-x-12">
+              <div class="text-center md:pl-0 pl-10">
+                <span class="block font-bold text-xl text-gray-900"><%= current_user.posts.count %></span>
+                <span class="text-gray-500 text-sm font-medium">投稿</span>
+              </div>
+              <%= link_to following_user_path(current_user), class: "text-center group" do %>
+                <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followings.count %></span>
+                <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロー中</span>
+              <% end %>
+              <%= link_to followers_user_path(current_user), class: "text-center group" do %>
+                <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followers.count %></span>
+                <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロワー</span>
+              <% end %>
+            </div>
+
             <%= link_to "プロフィール編集", edit_mypage_path,
                 class: "mt-8 text-sm inline-block bg-white border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-50 transition-colors duration-200" %>
           </div>

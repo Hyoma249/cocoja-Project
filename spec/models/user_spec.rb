@@ -87,4 +87,57 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'フォロー関連' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    describe '#follow' do
+      it 'ユーザーをフォローできること' do
+        expect {
+          user.follow(other_user)
+        }.to change(Relationship, :count).by(1)
+      end
+
+      it '同じユーザーを2回フォローできないこと' do
+        user.follow(other_user)
+        expect {
+          user.follow(other_user)
+        }.not_to change(Relationship, :count)
+      end
+    end
+
+    describe '#unfollow' do
+      before { user.follow(other_user) }
+
+      it 'フォローを解除できること' do
+        expect {
+          user.unfollow(other_user)
+        }.to change(Relationship, :count).by(-1)
+      end
+    end
+
+    describe '#following?' do
+      it 'フォローしていない場合はfalseを返すこと' do
+        expect(user).not_to be_following(other_user)
+      end
+
+      it 'フォローしている場合はtrueを返すこと' do
+        user.follow(other_user)
+        expect(user).to be_following(other_user)
+      end
+    end
+
+    describe 'フォロー/フォロワー関連' do
+      it 'フォローしているユーザーを取得できること' do
+        user.follow(other_user)
+        expect(user.followings).to include(other_user)
+      end
+
+      it 'フォロワーを取得できること' do
+        other_user.follow(user)
+        expect(user.followers).to include(other_user)
+      end
+    end
+  end
 end
