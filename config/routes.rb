@@ -22,9 +22,16 @@ Rails.application.routes.draw do
   # deviseのルーティング
   devise_for :users, controllers: {
     registrations: "users/registrations",
-    # confirmations: 'users/confirmations',
     sessions: "users/sessions"
   }
+
+  # ユーザーリソースとフォロー機能のルーティング
+  resources :users, only: [:show] do
+    member do
+      get :following, :followers
+    end
+    resource :relationships, only: [:create, :destroy]
+  end
 
   # 投稿関連
   resources :posts, only: [ :index, :new, :create, :show ] do
