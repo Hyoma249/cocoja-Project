@@ -54,8 +54,8 @@ jobs:
           cp config/database.yml.ci config/database.yml
           bundle exec rails db:create db:schema:load RAILS_ENV=test
 
-      # - name: Run RSpec # テストの実行
-      #   run: bundle exec rspec
+      - name: Run RSpec # テストの実行
+        run: bundle exec rspec
 
       - name: Run Rubocop # コードスタイルチェック
         run: bundle exec rubocop
