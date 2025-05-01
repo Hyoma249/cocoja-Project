@@ -9,7 +9,7 @@ class CreateVotes < ActiveRecord::Migration[7.1]
     end
 
     # 同じユーザーが同じ投稿に対して一度だけ投票できるようにインデックスを追加
-    add_index :votes, [:user_id, :post_id], unique: true, 
+    add_index :votes, [ :user_id, :post_id ], unique: true,
               name: 'index_votes_on_user_id_and_post_id'
 
     # 日付チェックはアプリケーションのバリデーションで行う

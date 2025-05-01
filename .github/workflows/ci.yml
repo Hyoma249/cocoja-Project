@@ -3,21 +3,62 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  scan_ruby:
+  test:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cocoja_test
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-      - name: Set up Ruby
+      redis:
+        image: redis
+        ports: ["6379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4 # コードのチェックアウト
+
+      - name: Set up Ruby # Ruby環境のセットアップ
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
-          bundler-cache: true
+          bundler-cache: true # Gemのキャッシュ利用
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: BRAKEMAN_IGNORE_VERSION=true bin/brakeman --no-pager || true
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build assets
+        run: |
+          bundle exec rails assets:precompile
+          bundle exec rails javascript:build
+          bundle exec rails css:build
+
+      - name: Setup Database # テスト用DBのセットアップ
+        run: |
+          cp config/database.yml.ci config/database.yml
+          bundle exec rails db:create db:schema:load RAILS_ENV=test
+
+      - name: Run RSpec # テストの実行
+        run: bundle exec rspec
+
+      # - name: Run Rubocop # コードスタイルチェック
+      #   run: bundle exec rubocop
+
+      - name: Security Check # セキュリティチェック
+        run: bundle exec brakeman --no-pager

@@ -8,4 +8,5 @@ ja:
         uid: "ユーザーID"
   errors:
     messages:
-      max_size_error: "のファイルサイズが大きすぎます。%{max_size}以下にしてください。"
+      max_size_error: "のサイズが大きすぎます。%{max_size}以下にしてください。"
+      min_size_error: "のサイズが小さすぎます"

@@ -5,7 +5,7 @@ class UpdateWeeklyRankingJob < ApplicationJob
     # 前週の週番号と年を取得
     prev_week = Time.zone.now.beginning_of_week - 1.day
     year = prev_week.year
-    week_number = prev_week.strftime('%U').to_i
+    week_number = prev_week.strftime("%U").to_i
 
     # 集計期間の設定
     start_date = prev_week.beginning_of_week

@@ -47,7 +47,7 @@ class PostsController < ApplicationController
     # 画像数のチェック
     max_images = 10
     if params[:post_images] && params[:post_images][:image].present?
-      if params[:post_images][:image].select {|img| img.present? }.count > max_images
+      if params[:post_images][:image].select { |img| img.present? }.count > max_images
         @prefectures = Prefecture.all
         flash.now[:notice] = "画像は最大#{max_images}枚までになります"
         render :new, status: :unprocessable_entity
@@ -60,7 +60,7 @@ class PostsController < ApplicationController
       if @post.save
         if params[:post_images] && params[:post_images][:image].present?
           # 画像を一括でメモリに読み込み、順次処理
-          images_to_process = params[:post_images][:image].select {|img| img.present? }
+          images_to_process = params[:post_images][:image].select { |img| img.present? }
 
           images_to_process.each do |image|
             # 画像を最適化してから保存（先に読み込むことでI/O待ちを減らす）
@@ -69,7 +69,7 @@ class PostsController < ApplicationController
         end
 
         flash[:notice] = "投稿が作成されました"
-        redirect_to posts_url(protocol: 'https')
+        redirect_to posts_url(protocol: "https")
       else
         @prefectures = Prefecture.all
         flash.now[:notice] = "投稿の作成に失敗しました"
@@ -96,25 +96,25 @@ class PostsController < ApplicationController
           render json: {
             posts: @posts.as_json(
               include: [
-                { user: { only: [:uid], methods: [:profile_image_url] } },
-                { prefecture: { only: [:name] } },
-                { hashtags: { only: [:name] } },
-                { post_images: { only: [], methods: [:image] } }
+                { user: { only: [ :uid ], methods: [ :profile_image_url ] } },
+                { prefecture: { only: [ :name ] } },
+                { hashtags: { only: [ :name ] } },
+                { post_images: { only: [], methods: [ :image ] } }
               ],
-              methods: [:created_at_formatted]
+              methods: [ :created_at_formatted ]
             ),
             next_page: @posts.next_page.present?
           }
         end
       end
     else
-      redirect_to posts_url(protocol: 'https'), notice: "該当する投稿がありません"
+      redirect_to posts_url(protocol: "https"), notice: "該当する投稿がありません"
     end
   end
 
   private
 
   def post_params
-    params.require(:post).permit(:prefecture_id, :content, post_images_attributes: [:image] )
+    params.require(:post).permit(:prefecture_id, :content, post_images_attributes: [ :image ])
   end
 end

@@ -5,17 +5,19 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # アソシエーション
   # ユーザーは たくさんの投稿 を持てる
   has_many :posts, dependent: :destroy
   has_many :votes, dependent: :destroy
 
+  # メソッド一覧
   # 今日投票したポイントの合計
   def daily_votes_count
     votes.today.sum(:points)
   end
   # 今日の残り投票ポイント
   def remaining_daily_points
-    [0, 5 - daily_votes_count].max
+    [ 0, 5 - daily_votes_count ].max
   end
   # 今日の残り投票ポイントを加算しても大丈夫か
   def can_vote?(points_to_add)
@@ -25,14 +27,14 @@ class User < ApplicationRecord
   # Active Storageの代わりにCarrierWaveを使用
   mount_uploader :profile_image_url, ProfileImageUploader
 
-  # バリデーションの修正
+  # バリデーション
   validates :username, presence: true,
                       length: { minimum: 1, maximum: 20 },
                       uniqueness: true,
                       on: :update
 
   validates :uid, presence: true,
-                 format: { with: /\A[a-zA-Z0-9]+\z/, message: 'は半角英数字のみ使用できます' },
+                 format: { with: /\A[a-zA-Z0-9]+\z/, message: "は半角英数字のみ使用できます" },
                  length: { minimum: 6, maximum: 15 },
                  uniqueness: true,
                  on: :update

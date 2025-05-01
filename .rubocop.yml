@@ -1,8 +1,73 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-rspec_rails
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - "spec/**/*_spec.rb"
+
+Style/BlockDelimiters:
+  Enabled: true
+  Exclude:
+    - "spec/**/*_spec.rb"
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+Layout/ArgumentAlignment:
+  Enabled: true
+  EnforcedStyle: with_fixed_indentation
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*_spec.rb"
+
+# RSpecの設定
+RSpec/MultipleMemoizedHelpers:
+  Enabled: true
+  Max: 10
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/ContextWording:
+  Enabled: true
+  Prefixes:
+    - when
+    - with
+    - without
+    - if
+    - unless
+    - for
+
+RSpec/MultipleExpectations:
+  Max: 3
+
+RSpec/ExampleLength:
+  Max: 10
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+RSpec/InstanceVariable:
+  Enabled: true
+  Exclude:
+    - "spec/controllers/**/*_spec.rb"
+
+RSpecRails/InferredSpecType:
+  Enabled: false

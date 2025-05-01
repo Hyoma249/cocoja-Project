@@ -17,7 +17,7 @@ class AddPrefectureData < ActiveRecord::Migration[7.1]
 
       # バルクインサートで効率化
       prefectures.each_slice(10) do |prefecture_group|
-        group_data = prefecture_group.map { |name| {name: name} }
+        group_data = prefecture_group.map { |name| { name: name } }
         Prefecture.insert_all(group_data)
       end
     end

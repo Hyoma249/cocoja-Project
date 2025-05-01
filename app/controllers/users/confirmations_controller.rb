@@ -24,10 +24,10 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   # end
 
   # メール確認後の処理をオーバーライド
-  def after_confirmation_path_for(resource_name, resource)
-    # sign_inメソッドで自動ログイン
-    sign_in(resource)
-    # プロフィール登録ページへリダイレクト
-    profile_setup_path
-  end
+  # def after_confirmation_path_for(resource_name, resource)
+  #   # sign_inメソッドで自動ログイン
+  #   sign_in(resource)
+  #   # プロフィール登録ページへリダイレクト
+  #   profile_setup_path
+  # end
 end

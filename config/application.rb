@@ -27,19 +27,19 @@ module Myapp
 
     config.assets.initialize_on_precompile = false
     config.assets.enabled = true
-    config.assets.version = '1.0'
+    config.assets.version = "1.0"
 
     # 追加項目⬇️
     # デフォルト言語を日本語に設定
     config.i18n.default_locale = :ja
     # i18n の翻訳ファイルのパスを追加
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}").to_s]
 
     # CSRF保護のオリジンチェックを無効化（HTTP/HTTPS不一致問題を解決）
     config.action_controller.forgery_protection_origin_check = false
 
     # タイムゾーンを日本時間に設定
-    config.time_zone = 'Asia/Tokyo'
+    config.time_zone = "Asia/Tokyo"
 
     # DBに保存する時間をアプリケーションのタイムゾーンに設定
     config.active_record.default_timezone = :utc      # DB保存はUTCのまま（安全）

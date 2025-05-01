@@ -11,7 +11,7 @@ class CreateWeeklyRankings < ActiveRecord::Migration[7.1]
     end
 
     # 同じ年・週に対して都道府県が重複しないようにするためのユニーク制約
-    add_index :weekly_rankings, [:prefecture_id, :year, :week], unique: true,
+    add_index :weekly_rankings, [ :prefecture_id, :year, :week ], unique: true,
                name: "index_weekly_rankings_on_prefecture_year_week"
   end
 end
