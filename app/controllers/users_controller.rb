@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @posts = @user.posts.order(created_at: :desc).page(params[:page])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "ユーザーが見つかりません"
-    redirect_to users_path
+    redirect_to user_path
   end
 
   def following
@@ -28,6 +28,6 @@ class UsersController < ApplicationController
     @user = User.find_by!(id: params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "ユーザーが見つかりません"
-    redirect_to users_path
+    redirect_to user_path
   end
 end
