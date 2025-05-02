@@ -1,3 +1,5 @@
+# フォロー関係（Relationship）に関する操作を担当するコントローラー
+# ユーザー間のフォロー・アンフォロー機能を提供します
 class RelationshipsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
@@ -6,7 +8,7 @@ class RelationshipsController < ApplicationController
     current_user.follow(@user) unless current_user.following?(@user)
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to @user, notice: 'フォローしました' }
+      format.html { redirect_to @user, notice: t('controllers.relationships.create.success') }
     end
   end
 
@@ -14,7 +16,7 @@ class RelationshipsController < ApplicationController
     current_user.unfollow(@user) if current_user.following?(@user)
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to @user, notice: 'フォローを解除しました' }
+      format.html { redirect_to @user, notice: t('controllers.relationships.destroy.success') }
     end
   end
 

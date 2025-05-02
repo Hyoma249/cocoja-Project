@@ -27,3 +27,8 @@ ja:
       update:
         success: "プロフィールが登録されました"
         failure: "プロフィール登録に失敗しました"
+    relationships:
+      create:
+        success: "フォローしました"
+      destroy:
+        success: "フォローを解除しました"
