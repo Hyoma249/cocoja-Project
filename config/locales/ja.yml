@@ -38,6 +38,9 @@ ja:
         title: "フォロー中"
       followers:
         title: "フォロワー"
+      sessions:
+        signed_in: 'ログインしました'
+        signed_out: 'ログアウトしました'
     votes:
       create:
         success: "%{points}ポイントを付与しました"
