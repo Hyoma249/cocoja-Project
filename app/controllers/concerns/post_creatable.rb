@@ -1,3 +1,5 @@
+# 投稿作成に関連する機能を提供するモジュール
+# 投稿の保存、画像処理、エラーハンドリング機能を担当します
 module PostCreatable
   extend ActiveSupport::Concern
 
