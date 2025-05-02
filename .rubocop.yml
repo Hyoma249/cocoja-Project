@@ -11,6 +11,8 @@ Metrics/BlockLength:
   Enabled: true
   Exclude:
     - "spec/**/*_spec.rb"
+    - "config/routes.rb"
+    - "config/environments/*.rb"
 
 Style/BlockDelimiters:
   Enabled: true
@@ -18,8 +20,7 @@ Style/BlockDelimiters:
     - "spec/**/*_spec.rb"
 
 Style/FrozenStringLiteralComment:
-  Enabled: true
-  EnforcedStyle: always
+  Enabled: false
 
 Layout/SpaceInsideArrayLiteralBrackets:
   Enabled: true

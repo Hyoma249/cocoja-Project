@@ -57,8 +57,8 @@ jobs:
       - name: Run RSpec # テストの実行
         run: bundle exec rspec
 
-      # - name: Run Rubocop # コードスタイルチェック
-      #   run: bundle exec rubocop
+      - name: Run Rubocop # コードスタイルチェック
+        run: bundle exec rubocop
 
       - name: Security Check # セキュリティチェック
         run: bundle exec brakeman --no-pager

@@ -10,7 +10,7 @@ RSpec.describe RelationshipsController, type: :controller do
     before { sign_in user }
 
     describe 'POST #create' do
-      context '正常な場合' do
+      context 'when 正常な場合' do
         it 'フォロー関係を作成できること' do
           expect do
             post :create, params: { user_id: other_user.id }, format: :turbo_stream
@@ -27,7 +27,7 @@ RSpec.describe RelationshipsController, type: :controller do
     describe 'DELETE #destroy' do
       before { user.follow(other_user) }
 
-      context '正常な場合' do
+      context 'when 正常な場合' do
         it 'フォロー関係を削除できること' do
           expect do
             delete :destroy, params: { user_id: other_user.id }, format: :turbo_stream

@@ -1,3 +1,4 @@
+# 週間ランキング情報を管理するモデル
 class WeeklyRanking < ApplicationRecord
   belongs_to :prefecture
 
@@ -8,26 +9,26 @@ class WeeklyRanking < ApplicationRecord
   validates :points, presence: true
 
   # 現在の週のランキングを取得するスコープ
-  scope :current_week, -> {
+  scope :current_week, lambda {
     now = Time.zone.now
     year = now.year
-    week = now.strftime("%U").to_i
+    week = now.strftime('%U').to_i
     where(year: year, week: week)
   }
 
   # 前週のランキングを取得するスコープ
-  scope :previous_week, -> {
-    prev_week = Time.zone.now - 1.week
+  scope :previous_week, lambda {
+    prev_week = 1.week.ago
     year = prev_week.year
-    week = prev_week.strftime("%U").to_i
+    week = prev_week.strftime('%U').to_i
     where(year: year, week: week)
   }
 
   # ランキングの順位変動を計算するメソッド
   def rank_change_from_previous
-    prev_week = Time.zone.now - 1.week
+    prev_week = 1.week.ago
     prev_year = prev_week.year
-    prev_week_num = prev_week.strftime("%U").to_i
+    prev_week_num = prev_week.strftime('%U').to_i
 
     prev_ranking = WeeklyRanking.find_by(
       prefecture_id: prefecture_id,

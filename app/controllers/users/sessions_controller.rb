@@ -1,34 +1,20 @@
-# frozen_string_literal: true
+# ユーザー認証（セッション）に関する操作を担当するコントローラー
+# ログイン、ログアウト機能を提供します
+module Users
+  # Deviseのセッションコントローラーを拡張し、カスタムログイン/ログアウト機能を提供します
+  class SessionsController < Devise::SessionsController
+    # DELETE /resource/sign_out
+    def destroy
+      super do
+        return redirect_to root_url(protocol: 'https'), notice: t('controllers.users.sessions.signed_out')
+      end
+    end
 
-class Users::SessionsController < Devise::SessionsController
-  # before_action :configure_sign_in_params, only: [:create]
+    protected
 
-  # GET /resource/sign_in
-  # def new
-  #   super
-  # end
-
-  # POST /resource/sign_in
-  # def create
-  #   super
-  # end
-
-  # DELETE /resource/sign_out
-  def destroy
-    super do
-      return redirect_to root_url(protocol: "https"), notice: "ログアウトしました"
+    def after_sign_in_path_for(_resource)
+      flash[:notice] = t('controllers.users.sessions.signed_in')
+      top_page_login_url(protocol: 'https')
     end
   end
-
-  protected
-
-  def after_sign_in_path_for(resource)
-    flash[:notice] = "ログインしました"
-    top_page_login_url(protocol: "https")
-  end
-
-  # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_in_params
-  #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
-  # end
 end

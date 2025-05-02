@@ -1,12 +1,56 @@
 ja:
   activerecord:
     models:
-      profile: "プロフィール"  # モデル名がProfileの場合
+      profile: "プロフィール" # モデル名がProfileの場合
+      user: "ユーザー"
     attributes:
-      profile:  # または実際のモデル名
+      profile: # または実際のモデル名
         username: "ユーザー名"
         uid: "ユーザーID"
+      user:
+        uid: "ユーザーID"
+    errors:
+      models:
+        user:
+          attributes:
+            uid:
+              invalid_format: "は半角英数字のみ使用できます"
   errors:
     messages:
       max_size_error: "のサイズが大きすぎます。%{max_size}以下にしてください。"
       min_size_error: "のサイズが小さすぎます"
+
+  # コントローラー関連の翻訳を追加
+  controllers:
+    mypages:
+      update:
+        success: "プロフィールを更新しました"
+    posts:
+      create:
+        success: "投稿が作成されました"
+        failure: "投稿の作成に失敗しました"
+        max_images: "画像は最大%{count}枚までになります"
+      hashtag:
+        not_found: "該当する投稿がありません"
+    profiles:
+      update:
+        success: "プロフィールが登録されました"
+        failure: "プロフィール登録に失敗しました"
+    relationships:
+      create:
+        success: "フォローしました"
+      destroy:
+        success: "フォローを解除しました"
+    users:
+      not_found: "ユーザーが見つかりません"
+      following:
+        title: "フォロー中"
+      followers:
+        title: "フォロワー"
+      sessions:
+        signed_in: "ログインしました"
+        signed_out: "ログアウトしました"
+    votes:
+      create:
+        success: "%{points}ポイントを付与しました"
+        failure: "投票に失敗しました"

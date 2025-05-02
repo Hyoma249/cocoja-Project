@@ -1,3 +1,4 @@
+# 投稿を管理するモデル
 class Post < ApplicationRecord
   # 投稿は 1つの都道府県 にひもづく
   belongs_to :prefecture
@@ -6,7 +7,7 @@ class Post < ApplicationRecord
   belongs_to :user
 
   # ハッシュタグとの関連付け
-  has_many :post_hashtags
+  has_many :post_hashtags, dependent: :destroy
   has_many :hashtags, through: :post_hashtags
 
   has_many :votes, dependent: :destroy
@@ -29,16 +30,16 @@ class Post < ApplicationRecord
 
   # JSON応答用に日付をフォーマットするメソッド
   def created_at_formatted
-    created_at.strftime("%Y年%m月%d日")
+    created_at.strftime('%Y年%m月%d日')
   end
 
   private
 
   def post_images_count_within_limit
     max_images = 10
-    if post_images.size > max_images
-      errors.add(:post_images, "は#{max_images}枚まで投稿できます")
-    end
+    return unless post_images.size > max_images
+
+    errors.add(:post_images, "は#{max_images}枚まで投稿できます")
   end
 
   def create_hashtags
