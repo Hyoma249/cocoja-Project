@@ -3,6 +3,9 @@
 module PostCreatable
   extend ActiveSupport::Concern
 
+  # 定数の定義
+  MAX_IMAGES = 10
+
   private
 
   def save_post_with_images

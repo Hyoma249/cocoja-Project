@@ -7,8 +7,7 @@ class PostsController < ApplicationController
   include PostsJsonBuildable
   include PostCreatable
 
-  # 定数の定義
-  MAX_IMAGES = 10
+  # 定数の定義 (MAX_IMAGESはPostCreatableモジュールで定義)
   POSTS_PER_PAGE = 12
 
   def index
