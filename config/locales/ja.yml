@@ -38,3 +38,7 @@ ja:
         title: "フォロー中"
       followers:
         title: "フォロワー"
+    votes:
+      create:
+        success: "%{points}ポイントを付与しました"
+        failure: "投票に失敗しました"
