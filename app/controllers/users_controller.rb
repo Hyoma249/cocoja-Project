@@ -1,23 +1,25 @@
+# ユーザー（User）に関する操作を担当するコントローラー
+# ユーザープロフィール表示、フォロー/フォロワー管理機能を提供します
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :following, :followers]
+  before_action :set_user, only: %i[show following followers]
 
   def show
-    @user = User.find_by!(id: params[:id])
+    @user = User.find(params[:id])
     @posts = @user.posts.order(created_at: :desc).page(params[:page])
   rescue ActiveRecord::RecordNotFound
-    flash[:alert] = "ユーザーが見つかりません"
+    flash[:alert] = t('controllers.users.not_found')
     redirect_to user_path
   end
 
   def following
-    @title = "フォロー中"
+    @title = t('controllers.users.following.title')
     @users = @user.followings.page(params[:page])
     render 'show_follow'
   end
 
   def followers
-    @title = "フォロワー"
+    @title = t('controllers.users.followers.title')
     @users = @user.followers.page(params[:page])
     render 'show_follow'
   end
@@ -25,9 +27,9 @@ class UsersController < ApplicationController
   private
 
   def set_user
-    @user = User.find_by!(id: params[:id])
+    @user = User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    flash[:alert] = "ユーザーが見つかりません"
+    flash[:alert] = t('controllers.users.not_found')
     redirect_to user_path
   end
 end

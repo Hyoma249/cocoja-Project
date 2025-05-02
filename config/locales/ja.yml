@@ -32,3 +32,9 @@ ja:
         success: "フォローしました"
       destroy:
         success: "フォローを解除しました"
+    users:
+      not_found: "ユーザーが見つかりません"
+      following:
+        title: "フォロー中"
+      followers:
+        title: "フォロワー"
