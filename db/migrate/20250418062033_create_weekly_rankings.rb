@@ -1,3 +1,4 @@
+# 週間ランキングテーブルを作成するマイグレーション
 class CreateWeeklyRankings < ActiveRecord::Migration[7.1]
   def change
     create_table :weekly_rankings do |t|
@@ -10,8 +11,6 @@ class CreateWeeklyRankings < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    # 同じ年・週に対して都道府県が重複しないようにするためのユニーク制約
-    add_index :weekly_rankings, [ :prefecture_id, :year, :week ], unique: true,
-               name: "index_weekly_rankings_on_prefecture_year_week"
+    add_index :weekly_rankings, %i[year week rank], unique: true
   end
 end
