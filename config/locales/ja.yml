@@ -16,3 +16,10 @@ ja:
     mypages:
       update:
         success: "プロフィールを更新しました"
+    posts:
+      create:
+        success: "投稿が作成されました"
+        failure: "投稿の作成に失敗しました"
+        max_images: "画像は最大%{count}枚までになります"
+      hashtag:
+        not_found: "該当する投稿がありません"

@@ -1,24 +1,19 @@
+# 投稿（Post）に関する操作を担当するコントローラー
+# 投稿の表示、作成、編集、削除やハッシュタグ検索機能を提供します
 class PostsController < ApplicationController
   # ログインユーザーによってのみ実行可能となる
   before_action :authenticate_user!
   include PostsHelper
+  include PostsJsonBuildable
+  include PostCreatable
+
+  # 定数の定義
+  MAX_IMAGES = 10
+  POSTS_PER_PAGE = 12
 
   def index
     @user = current_user
-    # 基本のクエリを構築
-    base_query = Post.includes(:prefecture, :user, :hashtags, :post_images)
-                   .order(created_at: :desc)
-
-    # タグフィルタリング
-    if params[:name].present?
-      @tag = Hashtag.find_by(name: params[:name])
-      if @tag
-        base_query = base_query.joins(:hashtags).where(hashtags: { name: params[:name] })
-      end
-    end
-
-    # slideパラメータを使用してページネーション
-    @posts = base_query.page(params[:slide]).per(12)
+    load_posts_with_filters
 
     respond_to do |format|
       format.html
@@ -42,40 +37,11 @@ class PostsController < ApplicationController
 
   # submitボタンを押したときに実行される
   def create
-    # ログインしているユーザーの投稿を作成する
     @post = current_user.posts.build(post_params)
-    # 画像数のチェック
-    max_images = 10
-    if params[:post_images] && params[:post_images][:image].present?
-      if params[:post_images][:image].select { |img| img.present? }.count > max_images
-        @prefectures = Prefecture.all
-        flash.now[:notice] = "画像は最大#{max_images}枚までになります"
-        render :new, status: :unprocessable_entity
-        return
-      end
-    end
 
-    # トランザクションでまとめて処理
-    ActiveRecord::Base.transaction do
-      if @post.save
-        if params[:post_images] && params[:post_images][:image].present?
-          # 画像を一括でメモリに読み込み、順次処理
-          images_to_process = params[:post_images][:image].select { |img| img.present? }
+    return handle_max_images_exceeded if max_images_exceeded?
 
-          images_to_process.each do |image|
-            # 画像を最適化してから保存（先に読み込むことでI/O待ちを減らす）
-            @post.post_images.create!(image: image)
-          end
-        end
-
-        flash[:notice] = "投稿が作成されました"
-        redirect_to posts_url(protocol: "https")
-      else
-        @prefectures = Prefecture.all
-        flash.now[:notice] = "投稿の作成に失敗しました"
-        render :new, status: :unprocessable_entity
-      end
-    end
+    save_post_with_images
   end
 
   def hashtag
@@ -83,38 +49,51 @@ class PostsController < ApplicationController
     @tag = Hashtag.find_by(name: params[:name])
 
     if @tag
-      # 基本クエリを構築
-      base_query = @tag.posts.includes(:prefecture, :user, :hashtags, :post_images)
-                       .order(created_at: :desc)
-
-      # ページネーションを適用
-      @posts = base_query.page(params[:page]).per(12)
-
-      respond_to do |format|
-        format.html
-        format.json do
-          render json: {
-            posts: @posts.as_json(
-              include: [
-                { user: { only: [ :uid ], methods: [ :profile_image_url ] } },
-                { prefecture: { only: [ :name ] } },
-                { hashtags: { only: [ :name ] } },
-                { post_images: { only: [], methods: [ :image ] } }
-              ],
-              methods: [ :created_at_formatted ]
-            ),
-            next_page: @posts.next_page.present?
-          }
-        end
-      end
+      load_hashtag_posts
+      render_response
     else
-      redirect_to posts_url(protocol: "https"), notice: "該当する投稿がありません"
+      redirect_to posts_url(protocol: 'https'), notice: t('controllers.posts.hashtag.not_found')
     end
   end
 
   private
 
   def post_params
-    params.require(:post).permit(:prefecture_id, :content, post_images_attributes: [ :image ])
+    params.require(:post).permit(:prefecture_id, :content, post_images_attributes: [:image])
+  end
+
+  def load_posts_with_filters
+    @posts = build_base_query
+    filter_by_hashtag if params[:name].present?
+    apply_pagination
+  end
+
+  def build_base_query
+    Post.includes(:prefecture, :user, :hashtags, :post_images)
+        .order(created_at: :desc)
+  end
+
+  def filter_by_hashtag
+    @tag = Hashtag.find_by(name: params[:name])
+    @posts = @posts.joins(:hashtags).where(hashtags: { name: params[:name] }) if @tag
+  end
+
+  def apply_pagination
+    @posts = @posts.page(params[:slide]).per(POSTS_PER_PAGE)
+  end
+
+  def load_hashtag_posts
+    @posts = @tag.posts
+                 .includes(:prefecture, :user, :hashtags, :post_images)
+                 .order(created_at: :desc)
+                 .page(params[:page])
+                 .per(POSTS_PER_PAGE)
+  end
+
+  def render_response
+    respond_to do |format|
+      format.html
+      format.json { render json: build_posts_json }
+    end
   end
 end
