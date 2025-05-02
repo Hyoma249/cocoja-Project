@@ -6,6 +6,14 @@ ja:
       profile: # または実際のモデル名
         username: "ユーザー名"
         uid: "ユーザーID"
+      user:
+        uid: "ユーザーID"
+    errors:
+      models:
+        user:
+          attributes:
+            uid:
+              invalid_format: "は半角英数字のみ使用できます"
   errors:
     messages:
       max_size_error: "のサイズが大きすぎます。%{max_size}以下にしてください。"
@@ -39,8 +47,8 @@ ja:
       followers:
         title: "フォロワー"
       sessions:
-        signed_in: 'ログインしました'
-        signed_out: 'ログアウトしました'
+        signed_in: "ログインしました"
+        signed_out: "ログアウトしました"
     votes:
       create:
         success: "%{points}ポイントを付与しました"

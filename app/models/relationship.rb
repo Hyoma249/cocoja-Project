@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # ユーザー間のフォロー関係を管理するモデル
 class Relationship < ApplicationRecord
   # アソシエーション
