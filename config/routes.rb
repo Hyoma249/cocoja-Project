@@ -1,54 +1,53 @@
 Rails.application.routes.draw do
   # OPTIONSリクエストを許可
-  match "*path", to: proc { [ 204, {}, [] ] }, via: :options, constraints: { path: /.*/ }
+  match '*path', to: proc { [204, {}, []] }, via: :options, constraints: { path: /.*/ }
 
-  get "settings/index"
+  get 'settings/index'
   # ヘルスチェック
-  get "up" => "rails/health#show", :as => :rails_health_check
+  get 'up' => 'rails/health#show', :as => :rails_health_check
 
   # 未ログインのトップページ
-  root "static_pages_guest#top"
+  root 'static_pages_guest#top'
 
   # ログイントップページ
-  get "top_page_login", to: "top_page_login#top"
+  get 'top_page_login', to: 'top_page_login#top'
 
   # プロフィール登録
-  get "profile/setup", to: "profiles#setup"
-  patch "profile/update", to: "profiles#update"
+  get 'profile/setup', to: 'profiles#setup'
+  patch 'profile/update', to: 'profiles#update'
 
   # ハッシュタグ
-  get "/posts/hashtag/:name", to: "posts#hashtag", as: "hashtag_posts"
+  get '/posts/hashtag/:name', to: 'posts#hashtag', as: 'hashtag_posts'
 
   # deviseのルーティング
   devise_for :users, controllers: {
-    registrations: "users/registrations",
-    sessions: "users/sessions"
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
 
   # ユーザーリソースとフォロー機能のルーティング
   resources :users, only: [:show] do
     member do
-      get :following, :followers
+      get :following
+      get :followers
     end
-    resource :relationships, only: [:create, :destroy]
+    resource :relationships, only: %i[create destroy]
   end
 
   # 投稿関連
-  resources :posts, only: [ :index, :new, :create, :show ] do
-    resources :votes, only: [ :create ]
+  resources :posts, only: %i[index new create show] do
+    resources :votes, only: [:create]
   end
 
   # 都道府県
-  resources :prefectures, only: [ :index, :show ]
+  resources :prefectures, only: %i[index show]
 
   # ランキング
-  resources :rankings, only: [ :index ]
+  resources :rankings, only: [:index]
 
   # マイページ
-  resource :mypage, only: [ :show, :edit, :update ]
+  resource :mypage, only: %i[show edit update]
 
   # letter_opener_webのルーティング（開発環境のみ）
-  if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

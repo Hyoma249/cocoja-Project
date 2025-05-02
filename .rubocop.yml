@@ -11,6 +11,8 @@ Metrics/BlockLength:
   Enabled: true
   Exclude:
     - "spec/**/*_spec.rb"
+    - "config/routes.rb"
+    - "config/environments/*.rb"
 
 Style/BlockDelimiters:
   Enabled: true

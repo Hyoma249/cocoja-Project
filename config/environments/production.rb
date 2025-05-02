@@ -1,5 +1,6 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
+# 本番環境の設定
 Rails.application.configure do
   # 基本設定
   config.cache_classes = true
@@ -8,8 +9,8 @@ Rails.application.configure do
 
   # キャッシュ設定 - Redisを使用してパフォーマンス向上
   config.cache_store = :redis_cache_store, {
-    url: ENV.fetch("REDIS_URL") { raise "REDIS_URL environment variable is required" },
-    namespace: "cache",
+    url: ENV.fetch('REDIS_URL') { raise 'REDIS_URL environment variable is required' },
+    namespace: 'cache',
     expires_in: 1.day,
     compression: true,
     compress_threshold: 1.kilobyte
@@ -17,22 +18,24 @@ Rails.application.configure do
 
   # アセット設定
   config.public_file_server.headers = {
-    "Cache-Control" => "public, max-age=31536000, immutable"
+    'Cache-Control' => 'public, max-age=31536000, immutable'
   }
   config.assets.compile = false
   config.assets.digest = true
-  config.assets.version = "1.0"
+  config.assets.version = '1.0'
 
   # SSL設定 - リダイレクトループを避けるためfalseに
   config.force_ssl = false
-  config.action_controller.default_url_options = { protocol: "https" }
+  config.action_controller.default_url_options = { protocol: 'https' }
   config.action_dispatch.trusted_proxies = %w[127.0.0.1 ::1].map { |proxy| IPAddr.new(proxy) }
-  config.ssl_options = { redirect: { exclude: ->(request) { request.get_header("HTTP_X_FORWARDED_PROTO") == "https" } } }
+  config.ssl_options = { redirect: { exclude: lambda { |request|
+    request.get_header('HTTP_X_FORWARDED_PROTO') == 'https'
+  } } }
 
   # ログ設定 - パフォーマンス向上のため最適化
-  config.log_tags = [ :request_id ]
-  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", :warn).to_sym
+  config.log_tags = [:request_id]
+  config.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', :warn).to_sym
 
   # i18n
   config.i18n.fallbacks = true
@@ -45,5 +48,5 @@ Rails.application.configure do
 
   # Action Cable設定
   config.action_cable.disable_request_forgery_protection = false
-  config.action_cable.allowed_request_origins = [ /http:\/\/*/, /https:\/\/*/ ]
+  config.action_cable.allowed_request_origins = [%r{http://*}, %r{https://*}]
 end
