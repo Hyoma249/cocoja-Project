@@ -18,8 +18,7 @@ Style/BlockDelimiters:
     - "spec/**/*_spec.rb"
 
 Style/FrozenStringLiteralComment:
-  Enabled: true
-  EnforcedStyle: always
+  Enabled: false
 
 Layout/SpaceInsideArrayLiteralBrackets:
   Enabled: true
