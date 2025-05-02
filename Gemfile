@@ -40,7 +40,7 @@ group :test do
   gem 'capybara', '~> 3.40' # ブラウザ操作をシミュレート
   gem 'database_cleaner-active_record', '~> 2.1' # テスト前後にDBをクリーンアップ
   gem 'rails-controller-testing'
-  gem 'shoulda-matchers', '~> 6.1' # アサーション簡略化（モデルのバリデーション・アソシエーションを超簡単にテストできる）
+  gem 'shoulda-matchers', '~> 6.5' # アサーション簡略化（モデルのバリデーション・アソシエーションを超簡単にテストできる）
   gem 'simplecov', '~> 0.22', require: false # コードカバレッジ計測
   gem 'webdrivers', '~> 5.3' # Selenium WebDriverの自動インストール
 end
