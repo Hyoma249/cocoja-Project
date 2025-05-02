@@ -38,7 +38,7 @@ RSpec.describe 'プロフィール設定', type: :system do
         click_button 'はじめる'
 
         expect(page).to have_content 'プロフィール登録に失敗しました'
-        expect(page).to have_content 'Uidは半角英数字のみ使用できます'
+        expect(page).to have_content 'ユーザーIDは半角英数字のみ使用できます'
         expect(current_path).to eq profile_update_path
       end
     end
