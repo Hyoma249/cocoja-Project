@@ -1,22 +1,23 @@
+# 投稿画像のアップロードと加工を担当するアップローダー
 class PostImageUploader < CarrierWave::Uploader::Base
   include Cloudinary::CarrierWave
 
   # キャッシュディレクトリを明示的に指定
   def cache_dir
-    "#{Rails.root}/tmp/uploads"
+    Rails.root.join('tmp/uploads')
   end
 
   # 画像をリサイズする（サムネイル用）
-  process resize_to_limit: [ 1200, 1200 ]
+  process resize_to_limit: [1200, 1200]
 
   # 品質設定とフォーマット最適化
-  process quality: "auto:good"
+  process quality: 'auto:good'
   process fetch_format: :auto
 
   # サムネイル用のバージョンを作成
   version :thumb do
-    process resize_to_fill: [ 400, 400 ]
-    process quality: "auto:good"
+    process resize_to_fill: [400, 400]
+    process quality: 'auto:good'
     process fetch_format: :auto
   end
 
@@ -27,6 +28,6 @@ class PostImageUploader < CarrierWave::Uploader::Base
 
   # 画像サイズの上限を指定
   def size_range
-    1.byte..5.megabytes
+    (1.byte)..(5.megabytes)
   end
 end
