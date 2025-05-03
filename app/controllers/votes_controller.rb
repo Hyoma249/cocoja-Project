@@ -5,34 +5,24 @@ class VotesController < ApplicationController
   before_action :set_post
 
   def create
-    begin
-      @vote = build_vote
+    @vote = build_vote
 
-      respond_to do |format|
-        if @vote.save
-          handle_successful_vote(format)
-        else
-          handle_failed_vote(format)
-        end
+    respond_to do |format|
+      if @vote.save
+        handle_successful_vote(format)
+      else
+        handle_failed_vote(format)
       end
-    rescue ActiveRecord::RecordNotUnique => e
-      # 重複エラーが発生した場合の詳細情報をログに記録
-      Rails.logger.error "=== 投票重複エラー ==="
-      Rails.logger.error "ユーザーID: #{current_user.id}"
-      Rails.logger.error "投稿ID: #{@post.id}"
-      Rails.logger.error "既存の投票: #{current_user.votes.where(post_id: @post.id).to_a}"
-      Rails.logger.error "エラー詳細: #{e.message}"
-      Rails.logger.error "=== エラー終了 ==="
+    end
+  rescue ActiveRecord::RecordNotUnique => e
+    # ユーザーにエラーメッセージを表示
+    error_message = "この投稿にはすでに投票済みです"
 
-      # ユーザーにエラーメッセージを表示
-      error_message = "この投稿にはすでに投票済みです"
-
-      respond_to do |format|
-        format.html { redirect_to @post, alert: error_message }
-        format.turbo_stream do
-          flash.now[:alert] = error_message
-          render_turbo_stream_response
-        end
+    respond_to do |format|
+      format.html { redirect_to @post, alert: error_message }
+      format.turbo_stream do
+        flash.now[:alert] = error_message
+        render_turbo_stream_response
       end
     end
   end
@@ -57,6 +47,10 @@ class VotesController < ApplicationController
 
   def handle_successful_vote(format)
     success_message = t('controllers.votes.create.success', points: @vote.points)
+
+    # ユーザーと投稿を再読み込みして最新の状態を取得
+    @post.reload
+    current_user.reload
 
     format.html { redirect_to @post, notice: success_message }
     format.turbo_stream do

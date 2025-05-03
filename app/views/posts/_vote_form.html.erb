@@ -1,3 +1,8 @@
+<%
+# キャッシュを使わず明示的にチェック
+already_voted_today = current_user && current_user.votes.today.where(post_id: post.id).exists?
+%>
+
 <div id="vote_form" class="mt-6 border-t pt-4">
   <h3 class="text-lg font-medium mb-2">この投稿にポイントを付ける</h3>
 
@@ -8,7 +13,7 @@
     </p>
   <% elsif current_user == post.user %>
     <p class="text-gray-600">自分の投稿にはポイントを付けられません</p>
-  <% elsif current_user.votes.today.exists?(post: post) %>
+  <% elsif already_voted_today %>
     <p class="text-yellow-600">この投稿には既に今日ポイントを付けています</p>
   <% elsif current_user.remaining_daily_points <= 0 %>
     <p class="text-red-600">本日のポイント上限（5ポイント）に達しています</p>
