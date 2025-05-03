@@ -5,24 +5,30 @@ class VotesController < ApplicationController
   before_action :set_post
 
   def create
-    @vote = build_vote
+    # 「今ログインしてるユーザー」が「投票」データを新しく作る
+    @vote = current_user.votes.build(vote_params)
+    # 投票対象の「投稿」をセットします
+    @vote.post = @post
 
     respond_to do |format|
       if @vote.save
-        handle_successful_vote(format)
+        format.html { redirect_to @post, notice: "#{@vote.points}ポイントを付与しました" }
+        format.turbo_stream {
+          flash.now[:notice] = "#{@vote.points}ポイントを付与しました"
+          render turbo_stream: [
+            turbo_stream.replace("vote_form", partial: "posts/vote_form", locals: { post: @post }),
+            turbo_stream.replace("flash", partial: "shared/flash")
+          ]
+        }
       else
-        handle_failed_vote(format)
-      end
-    end
-  rescue ActiveRecord::RecordNotUnique => e
-    # ユーザーにエラーメッセージを表示
-    error_message = "この投稿にはすでに投票済みです"
-
-    respond_to do |format|
-      format.html { redirect_to @post, alert: error_message }
-      format.turbo_stream do
-        flash.now[:alert] = error_message
-        render_turbo_stream_response
+        format.html { redirect_to @post, alert: @vote.errors.full_messages.join(", ") }
+        format.turbo_stream {
+          flash.now[:alert] = @vote.errors.full_messages.join(", ")
+          render turbo_stream: [
+            turbo_stream.replace("vote_form", partial: "posts/vote_form", locals: { post: @post }),
+            turbo_stream.replace("flash", partial: "shared/flash")
+          ]
+        }
       end
     end
   end
@@ -35,44 +41,5 @@ class VotesController < ApplicationController
 
   def vote_params
     params.require(:vote).permit(:points)
-  end
-
-  def build_vote
-    # 既存の投票を探し、なければ新規作成
-    vote = current_user.votes.find_or_initialize_by(post_id: @post.id)
-    # 新しいポイント値を設定
-    vote.points = vote_params[:points]
-    vote
-  end
-
-  def handle_successful_vote(format)
-    success_message = t('controllers.votes.create.success', points: @vote.points)
-
-    # ユーザーと投稿を再読み込みして最新の状態を取得
-    @post.reload
-    current_user.reload
-
-    format.html { redirect_to @post, notice: success_message }
-    format.turbo_stream do
-      flash.now[:notice] = success_message
-      render_turbo_stream_response
-    end
-  end
-
-  def handle_failed_vote(format)
-    error_message = @vote.errors.full_messages.join(', ')
-
-    format.html { redirect_to @post, alert: error_message }
-    format.turbo_stream do
-      flash.now[:alert] = error_message
-      render_turbo_stream_response
-    end
-  end
-
-  def render_turbo_stream_response
-    render turbo_stream: [
-      turbo_stream.replace('vote_form', partial: 'posts/vote_form', locals: { post: @post }),
-      turbo_stream.replace('flash', partial: 'shared/flash')
-    ]
   end
 end

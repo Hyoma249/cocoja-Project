@@ -13,7 +13,7 @@ already_voted_today = current_user && current_user.votes.today.where(post_id: po
     </p>
   <% elsif current_user == post.user %>
     <p class="text-gray-600">自分の投稿にはポイントを付けられません</p>
-  <% elsif already_voted_today %>
+  <% elsif current_user.votes.today.exists?(post: post) %>
     <p class="text-yellow-600">この投稿には既に今日ポイントを付けています</p>
   <% elsif current_user.remaining_daily_points <= 0 %>
     <p class="text-red-600">本日のポイント上限（5ポイント）に達しています</p>
