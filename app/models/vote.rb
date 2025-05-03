@@ -45,7 +45,6 @@ class Vote < ApplicationRecord
   def not_already_voted_today
     return unless user && post
 
-    # 修正: WhereExists修正
     # 同じ日に同じ投稿に対して既に投票しているかチェック
     return unless user.votes.today.exists?(post_id: post.id) # 既に投票している場合
 

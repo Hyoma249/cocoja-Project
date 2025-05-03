@@ -48,8 +48,10 @@ class VotesController < ApplicationController
   end
 
   def build_vote
-    vote = current_user.votes.build(vote_params)
-    vote.post = @post
+    # 既存の投票を探し、なければ新規作成
+    vote = current_user.votes.find_or_initialize_by(post_id: @post.id)
+    # 新しいポイント値を設定
+    vote.points = vote_params[:points]
     vote
   end
 
