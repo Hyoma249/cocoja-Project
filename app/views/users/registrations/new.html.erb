@@ -1,111 +1,109 @@
-<%= turbo_frame_tag "main_content" do %>
-  <div class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <%= render "shared/header/guest_header" %>
+<div class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <%= render "shared/header/guest_header" %>
 
-    <main class="flex-grow flex flex-col items-center px-4 py-8">
-      <h1 class="text-2xl font-bold text-center text-black mb-10">新規会員登録</h1>
+  <main class="flex-grow flex flex-col items-center px-4 py-8">
+    <h1 class="text-2xl font-bold text-center text-black mb-10">新規会員登録</h1>
 
-      <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), html: { class: "w-full max-w-md space-y-8", data: { turbo: false } }) do |f| %>
-        <%# Deviseのエラーメッセージパーシャルを表示 %>
-        <%= render "users/shared/error_messages", resource: resource %>
+    <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), html: { class: "w-full max-w-md space-y-8", data: { turbo: false } }) do |f| %>
+      <%# Deviseのエラーメッセージパーシャルを表示 %>
+      <%= render "users/shared/error_messages", resource: resource %>
 
-        <div class="space-y-6">
-          <!-- メールアドレス入力欄 -->
-          <div>
-            <%= f.label :email, "メールアドレス", class: "block text-sm font-semibold text-gray-800" %>
-            <%= f.email_field :email, class: "w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
-          </div>
-
-          <!-- パスワード入力欄 -->
-          <div class="relative">
-            <%= f.label :password, "パスワード", class: "block text-sm font-semibold text-gray-800" %>
-            <% if @minimum_password_length %>
-              <small class="text-[74%] text-gray-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください</small>
-            <% end %>
-            <div data-controller="password-visibility">
-              <%= f.password_field :password, 
-                  class: "password-field w-full px-4 pr-12 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none",
-                  data: { password_visibility_target: "field" } %>
-              <button type="button" 
-                      class="toggle-password absolute top-[4rem] right-3 flex items-center text-gray-600"
-                      data-action="click->password-visibility#toggle"
-                      aria-label="パスワードを表示">
-                <svg class="show-password hidden" 
-                     data-password-visibility-target="showIcon"
-                     xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M9 3.75C4.22727 3.75 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C13.7727 14.25 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <svg class="hide-password" 
-                     data-password-visibility-target="hideIcon"
-                     xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M15 11.1251C15.9811 9.9988 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75C8.74408 3.75 8.49405 3.76509 8.25 3.79366C7.99334 3.82371 7.7433 3.86866 7.5 3.92664M9 6.75C9.26298 6.75 9.51542 6.79512 9.75 6.87803C10.3893 7.10399 10.896 7.61069 11.122 8.25C11.2049 8.48458 11.25 8.73702 11.25 9M2.25 2.25L15.75 15.75M9 11.25C8.73702 11.25 8.48458 11.2049 8.25 11.122C7.61069 10.896 7.10399 10.3893 6.87803 9.75C6.8354 9.62939 6.80276 9.50406 6.78111 9.375M3.11026 6.75C2.87907 7.00838 2.67176 7.26181 2.48898 7.5C1.83965 8.34618 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C9.25592 14.25 9.50595 14.2349 9.75 14.2063" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- パスワード確認入力欄 -->
-          <div class="relative">
-            <%= f.label :password_confirmation, "パスワードの確認", class: "block text-sm font-semibold text-gray-800" %>
-            <div data-controller="password-visibility">
-              <%= f.password_field :password_confirmation, 
-                  class: "password-field w-full px-4 pr-12 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none",
-                  data: { password_visibility_target: "field" } %>
-              <button type="button" 
-                      class="toggle-password absolute top-[2.5rem] right-3 flex items-center text-gray-600"
-                      data-action="click->password-visibility#toggle"
-                      aria-label="パスワードを表示">
-                <svg class="show-password hidden" 
-                     data-password-visibility-target="showIcon"
-                     xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M9 3.75C4.22727 3.75 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C13.7727 14.25 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <svg class="hide-password" 
-                     data-password-visibility-target="hideIcon"
-                     xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M15 11.1251C15.9811 9.9988 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75C8.74408 3.75 8.49405 3.76509 8.25 3.79366C7.99334 3.82371 7.7433 3.86866 7.5 3.92664M9 6.75C9.26298 6.75 9.51542 6.79512 9.75 6.87803C10.3893 7.10399 10.896 7.61069 11.122 8.25C11.2049 8.48458 11.25 8.73702 11.25 9M2.25 2.25L15.75 15.75M9 11.25C8.73702 11.25 8.48458 11.2049 8.25 11.122C7.61069 10.896 7.10399 10.3893 6.87803 9.75C6.8354 9.62939 6.80276 9.50406 6.78111 9.375M3.11026 6.75C2.87907 7.00838 2.67176 7.26181 2.48898 7.5C1.83965 8.34618 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C9.25592 14.25 9.50595 14.2349 9.75 14.2063" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 利用規約とプライバシーポリシー同意チェックボックス (コメントアウトされている) -->
-          <!-- <div class="flex flex-col space-y-4">
-            <div class="flex items-center">
-              <%= f.check_box :terms_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
-              <label class="ml-2 block text-[0.8rem] text-gray-800">
-                <a href="/terms" class="text-blue-500 hover:text-blue-700">利用規約</a> に同意します
-              </label>
-            </div>
-
-            <div class="flex items-center">
-              <%= f.check_box :privacy_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
-              <label class="ml-2 block text-[0.8rem] text-gray-800">
-                <a href="/privacy" class="text-blue-500 hover:text-blue-700">プライバシーポリシー</a> に同意します
-              </label>
-            </div>
-          </div> -->
+      <div class="space-y-6">
+        <!-- メールアドレス入力欄 -->
+        <div>
+          <%= f.label :email, "メールアドレス", class: "block text-sm font-semibold text-gray-800" %>
+          <%= f.email_field :email, class: "w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
         </div>
 
-        <!-- 登録ボタン -->
-        <div class="pt-12 flex justify-center">
-          <%= f.submit "登録する", class: "w-[240px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" %>
+        <!-- パスワード入力欄 -->
+        <div class="relative">
+          <%= f.label :password, "パスワード", class: "block text-sm font-semibold text-gray-800" %>
+          <% if @minimum_password_length %>
+            <small class="text-[74%] text-gray-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください</small>
+          <% end %>
+          <div data-controller="password-visibility">
+            <%= f.password_field :password, 
+                class: "password-field w-full px-4 pr-12 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none",
+                data: { password_visibility_target: "field" } %>
+            <button type="button" 
+                    class="toggle-password absolute top-[4rem] right-3 flex items-center text-gray-600"
+                    data-action="click->password-visibility#toggle"
+                    aria-label="パスワードを表示">
+              <svg class="show-password hidden" 
+                   data-password-visibility-target="showIcon"
+                   xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M9 3.75C4.22727 3.75 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C13.7727 14.25 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <svg class="hide-password" 
+                   data-password-visibility-target="hideIcon"
+                   xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M15 11.1251C15.9811 9.9988 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75C8.74408 3.75 8.49405 3.76509 8.25 3.79366C7.99334 3.82371 7.7433 3.86866 7.5 3.92664M9 6.75C9.26298 6.75 9.51542 6.79512 9.75 6.87803C10.3893 7.10399 10.896 7.61069 11.122 8.25C11.2049 8.48458 11.25 8.73702 11.25 9M2.25 2.25L15.75 15.75M9 11.25C8.73702 11.25 8.48458 11.2049 8.25 11.122C7.61069 10.896 7.10399 10.3893 6.87803 9.75C6.8354 9.62939 6.80276 9.50406 6.78111 9.375M3.11026 6.75C2.87907 7.00838 2.67176 7.26181 2.48898 7.5C1.83965 8.34618 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C9.25592 14.25 9.50595 14.2349 9.75 14.2063" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
-      <% end %>
 
-      <!-- ログインリンク -->
-      <div class="mt-8 text-center">
-        <p class="text-sm text-gray-600">
-          アカウントをお持ちの方は
-          <a href="/users/sign_in" class="text-blue-500 hover:text-blue-700 transition duration-200">ログイン</a>
-        </p>
+        <!-- パスワード確認入力欄 -->
+        <div class="relative">
+          <%= f.label :password_confirmation, "パスワードの確認", class: "block text-sm font-semibold text-gray-800" %>
+          <div data-controller="password-visibility">
+            <%= f.password_field :password_confirmation, 
+                class: "password-field w-full px-4 pr-12 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none",
+                data: { password_visibility_target: "field" } %>
+            <button type="button" 
+                    class="toggle-password absolute top-[2.5rem] right-3 flex items-center text-gray-600"
+                    data-action="click->password-visibility#toggle"
+                    aria-label="パスワードを表示">
+              <svg class="show-password hidden" 
+                   data-password-visibility-target="showIcon"
+                   xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M9 3.75C4.22727 3.75 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C13.7727 14.25 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <svg class="hide-password" 
+                   data-password-visibility-target="hideIcon"
+                   xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M15 11.1251C15.9811 9.9988 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75C8.74408 3.75 8.49405 3.76509 8.25 3.79366C7.99334 3.82371 7.7433 3.86866 7.5 3.92664M9 6.75C9.26298 6.75 9.51542 6.79512 9.75 6.87803C10.3893 7.10399 10.896 7.61069 11.122 8.25C11.2049 8.48458 11.25 8.73702 11.25 9M2.25 2.25L15.75 15.75M9 11.25C8.73702 11.25 8.48458 11.2049 8.25 11.122C7.61069 10.896 7.10399 10.3893 6.87803 9.75C6.8354 9.62939 6.80276 9.50406 6.78111 9.375M3.11026 6.75C2.87907 7.00838 2.67176 7.26181 2.48898 7.5C1.83965 8.34618 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C9.25592 14.25 9.50595 14.2349 9.75 14.2063" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 利用規約とプライバシーポリシー同意チェックボックス (コメントアウトされている) -->
+        <!-- <div class="flex flex-col space-y-4">
+          <div class="flex items-center">
+            <%= f.check_box :terms_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
+            <label class="ml-2 block text-[0.8rem] text-gray-800">
+              <a href="/terms" class="text-blue-500 hover:text-blue-700">利用規約</a> に同意します
+            </label>
+          </div>
+
+          <div class="flex items-center">
+            <%= f.check_box :privacy_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
+            <label class="ml-2 block text-[0.8rem] text-gray-800">
+              <a href="/privacy" class="text-blue-500 hover:text-blue-700">プライバシーポリシー</a> に同意します
+            </label>
+          </div>
+        </div> -->
       </div>
-    </main>
 
-    <!-- Footer -->
-    <small class="block text-center text-xs text-gray-400 m-4">© 2025 cocoja</small>
-  </div>
-<% end %>
+      <!-- 登録ボタン -->
+      <div class="pt-12 flex justify-center">
+        <%= f.submit "登録する", class: "w-[240px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" %>
+      </div>
+    <% end %>
+
+    <!-- ログインリンク -->
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-600">
+        アカウントをお持ちの方は
+        <a href="/users/sign_in" class="text-blue-500 hover:text-blue-700 transition duration-200">ログイン</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <small class="block text-center text-xs text-gray-400 m-4">© 2025 cocoja</small>
+</div>

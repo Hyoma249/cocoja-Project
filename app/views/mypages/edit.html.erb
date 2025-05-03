@@ -1,75 +1,73 @@
-<%= turbo_frame_tag "main_content" do %>
-  <div class="min-h-screen flex flex-col">
-    <%= render "shared/header/setting_header" %>
+<div class="min-h-screen flex flex-col">
+  <%= render "shared/header/setting_header" %>
 
-    <!-- ヘッダー -->
-    <header class="mt-4 py-4 px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-      <div class="max-w-4xl mx-auto w-full">
-        <div class="flex items-center justify-center">
-          <h2 class="text-lg font-bold text-center text-gray-900">プロフィールを編集</h2>
-        </div>
-      </div>
-    </header>
-
-    <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-      <div class="max-w-4xl mx-auto w-full">
-        <%= form_with(model: @user, url: mypage_path(@user), method: :patch, local: true) do |f| %>
-          <div class="space-y-6 max-w-2xl mx-auto pb-20">
-            <!-- プロフィール画像 -->
-            <div class="flex flex-col items-center space-y-4" data-controller="image-input">
-              <div class="w-24 h-24 rounded-full overflow-hidden">
-                <%= image_tag @user.profile_image_url.present? ? @user.profile_image_url.url : 'sample_icon1.svg',
-                    class: "w-full h-full object-cover",
-                    data: { image_input_target: "preview" } %>
-              </div>
-              <div class="flex items-center">
-                <%= f.file_field :profile_image_url,
-                    class: "hidden",
-                    data: {
-                      image_input_target: "input",
-                      action: "change->image-input#preview"
-                    },
-                    accept: "image/*" %>
-                <button type="button"
-                    class="bg-[#F6F6F6] text-black px-4 py-2 rounded-[12px] hover:bg-gray-200 cursor-pointer"
-                    data-action="click->image-input#select">
-                  写真を変更
-                </button>
-              </div>
-            </div>
-
-            <!-- ユーザー名 -->
-            <div class="space-y-2">
-              <%= f.label :username, "ユーザー名", class: "block text-sm font-medium text-gray-700" %>
-              <%= f.text_field :username,
-                  class: "p-2 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-            </div>
-
-            <!-- ユーザーID -->
-            <div class="space-y-2">
-              <%= f.label :uid, "ユーザーID", class: "block text-sm font-medium text-gray-700" %>
-              <%= f.text_field :uid,
-                  class: "p-2 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-            </div>
-
-            <!-- 自己紹介 -->
-            <div class="space-y-2">
-              <%= f.label :bio, "自己紹介", class: "block text-sm font-medium text-gray-700" %>
-              <%= f.text_area :bio,
-                  rows: 4,
-                  class: "p-2 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-            </div>
-
-            <!-- 保存ボタン -->
-            <div class="flex justify-center">
-              <%= f.submit "保存する",
-                  class: "mb-3 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600" %>
-            </div>
-          </div>
-        <% end %>
+  <!-- ヘッダー -->
+  <header class="mt-4 py-4 px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+    <div class="max-w-4xl mx-auto w-full">
+      <div class="flex items-center justify-center">
+        <h2 class="text-lg font-bold text-center text-gray-900">プロフィールを編集</h2>
       </div>
     </div>
+  </header>
 
-    <%= render "shared/footer/login_footer" %>
+  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+    <div class="max-w-4xl mx-auto w-full">
+      <%= form_with(model: @user, url: mypage_path(@user), method: :patch, local: true) do |f| %>
+        <div class="space-y-6 max-w-2xl mx-auto pb-20">
+          <!-- プロフィール画像 -->
+          <div class="flex flex-col items-center space-y-4" data-controller="image-input">
+            <div class="w-24 h-24 rounded-full overflow-hidden">
+              <%= image_tag @user.profile_image_url.present? ? @user.profile_image_url.url : 'sample_icon1.svg',
+                  class: "w-full h-full object-cover",
+                  data: { image_input_target: "preview" } %>
+            </div>
+            <div class="flex items-center">
+              <%= f.file_field :profile_image_url,
+                  class: "hidden",
+                  data: {
+                    image_input_target: "input",
+                    action: "change->image-input#preview"
+                  },
+                  accept: "image/*" %>
+              <button type="button"
+                  class="bg-[#F6F6F6] text-black px-4 py-2 rounded-[12px] hover:bg-gray-200 cursor-pointer"
+                  data-action="click->image-input#select">
+                写真を変更
+              </button>
+            </div>
+          </div>
+
+          <!-- ユーザー名 -->
+          <div class="space-y-2">
+            <%= f.label :username, "ユーザー名", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.text_field :username,
+                class: "p-2 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+          </div>
+
+          <!-- ユーザーID -->
+          <div class="space-y-2">
+            <%= f.label :uid, "ユーザーID", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.text_field :uid,
+                class: "p-2 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+          </div>
+
+          <!-- 自己紹介 -->
+          <div class="space-y-2">
+            <%= f.label :bio, "自己紹介", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.text_area :bio,
+                rows: 4,
+                class: "p-2 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+          </div>
+
+          <!-- 保存ボタン -->
+          <div class="flex justify-center">
+            <%= f.submit "保存する",
+                class: "mb-3 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
+
+  <%= render "shared/footer/login_footer" %>
+</div>

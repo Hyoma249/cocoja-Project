@@ -28,6 +28,3 @@ application.register("vote", VoteController);
 
 import InfiniteScrollController from "./infinite_scroll_controller";
 application.register("infinite-scroll", InfiniteScrollController);
-
-import TurboFrameCacheController from "./turbo_frame_cache_controller";
-application.register("turbo-frame-cache", TurboFrameCacheController);

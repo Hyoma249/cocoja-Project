@@ -1,84 +1,82 @@
 <!-- app/views/rankings/index.html.erb -->
-<%= turbo_frame_tag "main_content" do %>
-  <div class="mx-auto min-h-screen pb-16 bg-gray-50">
-    <%= render "shared/header/login_header" %>
+<div class="mx-auto min-h-screen pb-16 bg-gray-50">
+  <%= render "shared/header/login_header" %>
 
-    <div class="max-w-4xl mx-auto px-4 md:pl-[calc(288px+2rem)] md:pr-8">
-      <h1 class="text-xl font-bold py-4">都道府県魅力度ランキング</h1>
+  <div class="max-w-4xl mx-auto px-4 md:pl-[calc(288px+2rem)] md:pr-8">
+    <h1 class="text-xl font-bold py-4">都道府県魅力度ランキング</h1>
 
-      <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div class="p-4 bg-indigo-600 text-white">
-          <h2 class="text-lg font-semibold">今週のランキング</h2>
-          <p class="text-xs text-gray-100">
-            <%= Time.zone.now.beginning_of_week.strftime('%Y年%m月%d日') %> 〜 
-            <%= Time.zone.now.end_of_week.strftime('%Y年%m月%d日') %>
-          </p>
-        </div>
-
-        <div class="divide-y divide-gray-100">
-          <% @current_rankings.each do |ranking| %>
-            <%= link_to prefecture_path(ranking.prefecture), class: "block p-4 flex items-center hover:bg-gray-50 transition-colors duration-150" do %>
-              <div class="w-16 text-center">
-                <% if ranking.rank <= 3 %>
-                  <span class="inline-flex items-center justify-center w-10 h-10 rounded-full
-                              <%= ranking.rank == 1 ? 'bg-yellow-100 text-yellow-800' :
-                                ranking.rank == 2 ? 'bg-gray-100 text-gray-800' :
-                                                  'bg-orange-100 text-orange-800' %>
-                              text-xl font-bold">
-                    <%= ranking.rank %>
-                  </span>
-                <% else %>
-                  <span class="text-2xl font-bold text-gray-600"><%= ranking.rank %></span>
-                <% end %>
-              </div>
-
-              <div class="flex-1 ml-4">
-                <h3 class="text-lg font-medium">
-                  <%= ranking.prefecture.name %>
-                </h3>
-                <p class="text-sm text-gray-600">
-                  <%= ranking.points %>ポイント
-                </p>
-              </div>
-
-              <% if ranking.respond_to?(:rank_change_from_previous) && ranking.rank_change_from_previous.present? %>
-                <div class="w-20 text-right">
-                  <% change = ranking.rank_change_from_previous %>
-                  <% if change > 0 %>
-                    <span class="inline-flex items-center text-green-600">
-                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-                      </svg>
-                      <%= change %>
-                    </span>
-                  <% elsif change < 0 %>
-                    <span class="inline-flex items-center text-red-600">
-                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                      </svg>
-                      <%= change.abs %>
-                    </span>
-                  <% else %>
-                    <span class="inline-flex items-center text-gray-500">
-                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path>
-                      </svg>
-                    </span>
-                  <% end %>
-                </div>
-              <% end %>
-            <% end %>
-          <% end %>
-        </div>
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div class="p-4 bg-indigo-600 text-white">
+        <h2 class="text-lg font-semibold">今週のランキング</h2>
+        <p class="text-xs text-gray-100">
+          <%= Time.zone.now.beginning_of_week.strftime('%Y年%m月%d日') %> 〜 
+          <%= Time.zone.now.end_of_week.strftime('%Y年%m月%d日') %>
+        </p>
       </div>
 
-      <div class="mt-6 text-center">
-        <p class="text-sm text-gray-600">
-          次回のランキング更新: <%= (Time.zone.now.end_of_week + 1.day).strftime('%Y年%m月%d日') %> 0:00
-        </p>
+      <div class="divide-y divide-gray-100">
+        <% @current_rankings.each do |ranking| %>
+          <%= link_to prefecture_path(ranking.prefecture), class: "block p-4 flex items-center hover:bg-gray-50 transition-colors duration-150" do %>
+            <div class="w-16 text-center">
+              <% if ranking.rank <= 3 %>
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full
+                            <%= ranking.rank == 1 ? 'bg-yellow-100 text-yellow-800' :
+                              ranking.rank == 2 ? 'bg-gray-100 text-gray-800' :
+                                                'bg-orange-100 text-orange-800' %>
+                            text-xl font-bold">
+                  <%= ranking.rank %>
+                </span>
+              <% else %>
+                <span class="text-2xl font-bold text-gray-600"><%= ranking.rank %></span>
+              <% end %>
+            </div>
+
+            <div class="flex-1 ml-4">
+              <h3 class="text-lg font-medium">
+                <%= ranking.prefecture.name %>
+              </h3>
+              <p class="text-sm text-gray-600">
+                <%= ranking.points %>ポイント
+              </p>
+            </div>
+
+            <% if ranking.respond_to?(:rank_change_from_previous) && ranking.rank_change_from_previous.present? %>
+              <div class="w-20 text-right">
+                <% change = ranking.rank_change_from_previous %>
+                <% if change > 0 %>
+                  <span class="inline-flex items-center text-green-600">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                    </svg>
+                    <%= change %>
+                  </span>
+                <% elsif change < 0 %>
+                  <span class="inline-flex items-center text-red-600">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                    <%= change.abs %>
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center text-gray-500">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path>
+                    </svg>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
     </div>
 
-    <%= render "shared/footer/login_footer" %>
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600">
+        次回のランキング更新: <%= (Time.zone.now.end_of_week + 1.day).strftime('%Y年%m月%d日') %> 0:00
+      </p>
+    </div>
   </div>
-<% end %>
+
+  <%= render "shared/footer/login_footer" %>
+</div>

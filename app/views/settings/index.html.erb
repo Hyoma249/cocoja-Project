@@ -1,58 +1,56 @@
-<%= turbo_frame_tag "main_content" do %>
-  <div class="min-h-screen flex flex-col">
-    <%= render "shared/header/setting_header" %>
+<div class="min-h-screen flex flex-col">
+  <%= render "shared/header/setting_header" %>
 
-    <!-- ヘッダー -->
-    <header class="mt-4 py-4 px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-      <div class="max-w-4xl mx-auto w-full">
-        <div class="flex items-center justify-center">
-          <h2 class="text-lg font-bold text-center text-gray-900">設定</h2>
-        </div>
-      </div>
-    </header>
-
-    <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-      <div class="max-w-4xl mx-auto w-full">
-        <div class="flex justify-center">
-          <button data-modal-target="logout-modal" data-action="click->modal#open" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
-            ログアウト
-          </button>
-        </div>
+  <!-- ヘッダー -->
+  <header class="mt-4 py-4 px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+    <div class="max-w-4xl mx-auto w-full">
+      <div class="flex items-center justify-center">
+        <h2 class="text-lg font-bold text-center text-gray-900">設定</h2>
       </div>
     </div>
+  </header>
 
-    <!-- モーダル部分を追加 -->
-    <div id="logout-modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-      <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">ログアウトの確認</h3>
-        <p class="text-gray-500 mb-6">本当にログアウトしますか？</p>
-        <div class="flex justify-end space-x-4">
-          <button onclick="closeLogoutModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded">
-            キャンセル
-          </button>
-          <%= button_to "ログアウト", destroy_user_session_url(protocol: 'https'), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
-        </div>
+  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+    <div class="max-w-4xl mx-auto w-full">
+      <div class="flex justify-center">
+        <button data-modal-target="logout-modal" data-action="click->modal#open" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+          ログアウト
+        </button>
       </div>
     </div>
-
-    <script>
-      function closeLogoutModal() {
-        document.getElementById('logout-modal').classList.add('hidden');
-      }
-
-      // モーダルを開く関数
-      document.querySelector('[data-modal-target="logout-modal"]').addEventListener('click', function() {
-        document.getElementById('logout-modal').classList.remove('hidden');
-      });
-
-      // モーダルの外側をクリックして閉じる
-      document.getElementById('logout-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-          closeLogoutModal();
-        }
-      });
-    </script>
-
-    <%= render "shared/footer/login_footer" %>
   </div>
-<% end %>
+
+  <!-- モーダル部分を追加 -->
+  <div id="logout-modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">ログアウトの確認</h3>
+      <p class="text-gray-500 mb-6">本当にログアウトしますか？</p>
+      <div class="flex justify-end space-x-4">
+        <button onclick="closeLogoutModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded">
+          キャンセル
+        </button>
+        <%= button_to "ログアウト", destroy_user_session_url(protocol: 'https'), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function closeLogoutModal() {
+      document.getElementById('logout-modal').classList.add('hidden');
+    }
+
+    // モーダルを開く関数
+    document.querySelector('[data-modal-target="logout-modal"]').addEventListener('click', function() {
+      document.getElementById('logout-modal').classList.remove('hidden');
+    });
+
+    // モーダルの外側をクリックして閉じる
+    document.getElementById('logout-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLogoutModal();
+      }
+    });
+  </script>
+
+  <%= render "shared/footer/login_footer" %>
+</div>
