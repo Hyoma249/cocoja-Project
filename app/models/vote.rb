@@ -14,8 +14,11 @@ class Vote < ApplicationRecord
   validate :not_already_voted_today
 
   # 1日に投票したレコードを取得するためのスコープ
-  # 修正: WhereRange修正
-  scope :today, -> { where(created_at: Time.zone.today.beginning_of_day..) }
+  # 明示的にUTCで日付計算を行う
+  scope :today, -> {
+    utc_beginning = Time.zone.today.beginning_of_day.in_time_zone('UTC')
+    where(created_at: utc_beginning..)
+  }
 
   private
 
