@@ -1,68 +1,71 @@
-<div class="flex flex-col min-h-screen bg-gray-50">
-  <%= render "shared/header/mypage_header" %>
+<%= turbo_frame_tag "main_content" do %>
+  <div class="flex flex-col min-h-screen bg-gray-50">
+    <%= render "shared/header/mypage_header" %>
 
-  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-    <div class="max-w-4xl mx-auto w-full">
-      <%# プロフィールセクション %>
-      <div class="bg-white shadow rounded-xl p-6 md:p-8 mt-8">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-          <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
-            <%= image_tag current_user.profile_image_url.present? ? current_user.profile_image_url.url : 'sample_icon1.svg',
-                class: "w-full h-full object-cover" %>
-          </div>
-          <div class="flex-grow text-center md:text-left">
-            <h2 class="text-2xl font-bold mb-2"><%= current_user.username %></h2>
-            <p class="text-gray-600 text-sm mb-6"><%= current_user.bio %></p>
-
-            <%# 統計情報の追加 %>
-            <div class="flex justify-center md:justify-start space-x-12">
-              <div class="text-center md:pl-0 pl-10">
-                <span class="block font-bold text-xl text-gray-900"><%= current_user.posts.count %></span>
-                <span class="text-gray-500 text-sm font-medium">投稿</span>
-              </div>
-              <%= link_to following_user_path(current_user), class: "text-center group" do %>
-                <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followings.count %></span>
-                <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロー中</span>
-              <% end %>
-              <%= link_to followers_user_path(current_user), class: "text-center group" do %>
-                <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followers.count %></span>
-                <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロワー</span>
-              <% end %>
+    <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+      <div class="max-w-4xl mx-auto w-full">
+        <%# プロフィールセクション %>
+        <div class="bg-white shadow rounded-xl p-6 md:p-8 mt-8">
+          <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+              <%= image_tag current_user.profile_image_url.present? ? current_user.profile_image_url.url : 'sample_icon1.svg',
+                  class: "w-full h-full object-cover" %>
             </div>
+            <div class="flex-grow text-center md:text-left">
+              <h2 class="text-2xl font-bold mb-2"><%= current_user.username %></h2>
+              <p class="text-gray-600 text-sm mb-6"><%= current_user.bio %></p>
 
-            <%= link_to "プロフィール編集", edit_mypage_path,
-                class: "mt-8 text-sm inline-block bg-white border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-50 transition-colors duration-200" %>
-          </div>
-        </div>
-      </div>
-
-      <%# 投稿グリッド - インフィニットスクロール用に変更 %>
-      <div class="mt-8" data-controller="infinite-scroll" data-infinite-scroll-url-value="<%= mypage_path %>" data-infinite-scroll-next-slide-value="2">
-        <div class="grid grid-cols-3 gap-1" data-infinite-scroll-target="container">
-          <% @posts.each do |post| %>
-            <% if post.post_images.present? %>
-              <div class="aspect-square overflow-hidden relative group">
-                <%= image_tag post.post_images.first.image.url(:thumb),
-                  class: "w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" if post.post_images.first.image.present? %>
-                <% if post.post_images_count > 1 %>
-                  <div class="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-md p-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
-                    </svg>
-                  </div>
+              <%# 統計情報の追加 %>
+              <div class="flex justify-center md:justify-start space-x-12">
+                <div class="text-center md:pl-0 pl-10">
+                  <span class="block font-bold text-xl text-gray-900"><%= current_user.posts.count %></span>
+                  <span class="text-gray-500 text-sm font-medium">投稿</span>
+                </div>
+                <%= link_to following_user_path(current_user), class: "text-center group", data: { turbo_frame: "main_content", turbo_action: "advance" } do %>
+                  <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followings.count %></span>
+                  <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロー中</span>
+                <% end %>
+                <%= link_to followers_user_path(current_user), class: "text-center group", data: { turbo_frame: "main_content", turbo_action: "advance" } do %>
+                  <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followers.count %></span>
+                  <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロワー</span>
                 <% end %>
               </div>
-            <% end %>
-          <% end %>
+
+              <%= link_to "プロフィール編集", edit_mypage_path,
+                  class: "mt-8 text-sm inline-block bg-white border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-50 transition-colors duration-200", 
+                  data: { turbo_frame: "main_content", turbo_action: "advance" } %>
+            </div>
+          </div>
         </div>
 
-        <!-- ローディングインジケーター -->
-        <div class="flex justify-center my-8 hidden" data-infinite-scroll-target="loader">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+        <%# 投稿グリッド - インフィニットスクロール用に変更 %>
+        <div class="mt-8" data-controller="infinite-scroll" data-infinite-scroll-url-value="<%= mypage_path %>" data-infinite-scroll-next-slide-value="2">
+          <div class="grid grid-cols-3 gap-1" data-infinite-scroll-target="container">
+            <% @posts.each do |post| %>
+              <% if post.post_images.present? %>
+                <div class="aspect-square overflow-hidden relative group">
+                  <%= image_tag post.post_images.first.image.url(:thumb),
+                    class: "w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" if post.post_images.first.image.present? %>
+                  <% if post.post_images_count > 1 %>
+                    <div class="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-md p-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
+                      </svg>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+          <!-- ローディングインジケーター -->
+          <div class="flex justify-center my-8 hidden" data-infinite-scroll-target="loader">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <%= render "shared/footer/login_footer" %>
-</div>
+    <%= render "shared/footer/login_footer" %>
+  </div>
+<% end %>

@@ -5,8 +5,12 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show following followers]
 
   def show
-    @user = User.find(params[:id])
-    @posts = @user.posts.order(created_at: :desc).page(params[:page])
+    @posts = @user.posts.includes(:post_images).order(created_at: :desc).page(params[:page]).per(9)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: { posts: @posts } }
+    end
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = t('controllers.users.not_found')
     redirect_to user_path

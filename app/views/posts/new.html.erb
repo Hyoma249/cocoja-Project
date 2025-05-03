@@ -1,22 +1,23 @@
-<!-- 投稿作成ページ全体のコンテナ -->
-<div class="min-h-screen flex flex-col">
-  <%= render "shared/header/login_header" %>
+<%= turbo_frame_tag "main_content" do %>
+  <div class="min-h-screen flex flex-col">
+    <%= render "shared/header/login_header" %>
 
-  <!-- ヘッダー -->
-  <header class="mt-4 py-4 px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-    <div class="max-w-4xl mx-auto w-full">
-      <div class="flex items-center justify-center">
-        <h1 class="text-lg font-bold text-center text-blue-600">新規投稿作成</h1>
-        <div class="w-6"></div><!-- 左右のバランスを取るための空div -->
+    <!-- ヘッダー -->
+    <header class="mt-4 py-4 px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+      <div class="max-w-4xl mx-auto w-full">
+        <div class="flex items-center justify-center">
+          <h1 class="text-lg font-bold text-center text-blue-600">新規投稿作成</h1>
+          <div class="w-6"></div><!-- 左右のバランスを取るための空div -->
+        </div>
+      </div>
+    </header>
+
+    <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+      <div class="max-w-4xl mx-auto w-full">
+        <%= render "posts/form" %>
       </div>
     </div>
-  </header>
 
-  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
-    <div class="max-w-4xl mx-auto w-full">
-      <%= render "posts/form" %>
-    </div>
+    <%= render "shared/footer/login_footer" %>
   </div>
-
-  <%= render "shared/footer/login_footer" %>
-</div>
+<% end %>
