@@ -32,10 +32,10 @@ Rails.application.configure do
     request.get_header('HTTP_X_FORWARDED_PROTO') == 'https'
   } } }
 
-  # ログ設定 - パフォーマンス向上のため最適化
+  # ログ設定 - デバッグのため詳細なログを出力
   config.log_tags = [:request_id]
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
-  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', :warn).to_sym
+  config.log_level = :debug  # 一時的にデバッグレベルに変更
 
   # i18n
   config.i18n.fallbacks = true

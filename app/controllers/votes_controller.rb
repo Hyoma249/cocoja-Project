@@ -5,13 +5,34 @@ class VotesController < ApplicationController
   before_action :set_post
 
   def create
-    @vote = build_vote
+    begin
+      @vote = build_vote
 
-    respond_to do |format|
-      if @vote.save
-        handle_successful_vote(format)
-      else
-        handle_failed_vote(format)
+      respond_to do |format|
+        if @vote.save
+          handle_successful_vote(format)
+        else
+          handle_failed_vote(format)
+        end
+      end
+    rescue ActiveRecord::RecordNotUnique => e
+      # 重複エラーが発生した場合の詳細情報をログに記録
+      Rails.logger.error "=== 投票重複エラー ==="
+      Rails.logger.error "ユーザーID: #{current_user.id}"
+      Rails.logger.error "投稿ID: #{@post.id}"
+      Rails.logger.error "既存の投票: #{current_user.votes.where(post_id: @post.id).to_a}"
+      Rails.logger.error "エラー詳細: #{e.message}"
+      Rails.logger.error "=== エラー終了 ==="
+
+      # ユーザーにエラーメッセージを表示
+      error_message = "この投稿にはすでに投票済みです"
+
+      respond_to do |format|
+        format.html { redirect_to @post, alert: error_message }
+        format.turbo_stream do
+          flash.now[:alert] = error_message
+          render_turbo_stream_response
+        end
       end
     end
   end
