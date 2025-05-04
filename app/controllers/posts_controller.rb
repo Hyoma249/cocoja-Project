@@ -18,25 +18,12 @@ class PostsController < ApplicationController
       format.html
       format.json do
         page = params[:slide].to_i
-        # ActiveStorageの参照を削除
-        next_posts = Post.includes(:user, :prefecture, :hashtags, :post_images)
-                      .order(created_at: :desc)
-                      .page(page)
-                      .per(12)
+        @posts = Post.includes(:user, :prefecture, :hashtags, :post_images)
+                  .order(created_at: :desc)
+                  .page(page)
+                  .per(POSTS_PER_PAGE)
 
-        render json: {
-          posts: next_posts.as_json(
-            include: [
-              { user: { methods: [:profile_image_url] } },
-              { prefecture: { only: [:name] } },
-              { hashtags: { only: [:name] } },
-              # CarrierWaveの場合はimageメソッドは不要
-              { post_images: { methods: [:image_url] } }
-            ],
-            methods: [:created_at_formatted]
-          ),
-          next_page: next_posts.next_page.present?
-        }
+        render json: build_posts_json
       end
     end
   end

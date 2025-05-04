@@ -56,11 +56,14 @@ export default class extends Controller {
     }
 
     this.pageValue++;
+    const url = `${this.urlValue}?slide=${this.pageValue}`;
 
     // URLパスからページタイプを判別
     const isMypage = window.location.pathname.includes("/mypage");
 
-    fetch(`${this.urlValue}?slide=${this.pageValue}`, {
+    console.log(`Fetching: ${url}`);
+
+    fetch(url, {
       headers: {
         Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
@@ -68,6 +71,7 @@ export default class extends Controller {
     })
       .then((response) => {
         if (!response.ok) {
+          console.error(`HTTP error: ${response.status}`);
           throw new Error(`Network response was not ok: ${response.status}`);
         }
         return response.json();
@@ -79,6 +83,10 @@ export default class extends Controller {
         }
 
         console.log(`Received ${data.posts ? data.posts.length : 0} posts`);
+        console.log(
+          "First post data:",
+          data.posts && data.posts.length > 0 ? data.posts[0] : "No posts"
+        );
 
         if (data.posts && data.posts.length > 0) {
           // URLに基づいて異なるHTMLビルダーを使用
