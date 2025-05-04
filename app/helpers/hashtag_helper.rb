@@ -1,3 +1,5 @@
+# ハッシュタグ関連の機能を提供するヘルパーモジュール
+# テキスト中のハッシュタグをリンクに変換したり抽出したりする機能を担当します
 module HashtagHelper
   # ハッシュタグをクリック可能なリンクに変換
   def format_content_with_hashtags(content, linkable: true)
@@ -9,10 +11,10 @@ module HashtagHelper
     if linkable
       # リンク付きのハッシュタグ
       result = content.gsub(pattern) do |tag|
-        tag_name = $1
-        link_to tag, "/posts/hashtag/#{tag_name}", class: "text-blue-600 hover:underline"
+        tag_name = ::Regexp.last_match(1)
+        link_to tag, "/posts/hashtag/#{tag_name}", class: 'text-blue-600 hover:underline'
       end
-      sanitize(result, tags: ['a'], attributes: ['href', 'class'])
+      sanitize(result, tags: %w[a], attributes: %w[href class])
     else
       # スタイル付きのハッシュタグ（リンクなし）
       content_with_tags = content.gsub(pattern) do |tag|
@@ -25,6 +27,7 @@ module HashtagHelper
   # ハッシュタグを抽出する
   def extract_hashtags(content)
     return [] if content.blank?
+
     content.scan(/[#＃]([^\s#＃]+)/).flatten.map(&:downcase).uniq
   end
 end

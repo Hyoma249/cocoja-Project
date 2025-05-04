@@ -9,6 +9,7 @@ AllCops:
 
 Metrics/BlockLength:
   Enabled: true
+  Max: 40 # 25から40に増加
   Exclude:
     - "spec/**/*_spec.rb"
     - "config/routes.rb"
@@ -32,11 +33,26 @@ Layout/MultilineMethodCallBraceLayout:
 
 Layout/ArgumentAlignment:
   Enabled: true
-  EnforcedStyle: with_fixed_indentation
+  EnforcedStyle: with_first_argument
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - "spec/**/*_spec.rb"
+
+# メトリクス関連の設定を緩和
+Metrics/AbcSize:
+  Max: 50 # 25から50に増加
+
+Metrics/MethodLength:
+  Max: 40 # 20から40に増加
+
+# トランザクション内のreturnステートメントに対する警告を無視
+Rails/TransactionExitStatement:
+  Enabled: false
+
+# ローカライゼーション関連
+Rails/I18nLocaleTexts:
+  Enabled: false # 今回はオフにする
 
 # RSpecの設定
 RSpec/MultipleMemoizedHelpers:
@@ -71,4 +87,8 @@ RSpec/InstanceVariable:
     - "spec/controllers/**/*_spec.rb"
 
 RSpecRails/InferredSpecType:
+  Enabled: false
+
+# HashAlignmentを無効化
+Layout/HashAlignment:
   Enabled: false

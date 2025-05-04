@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
 
     if @user.update(profile_params)
       redirect_to top_page_login_url(protocol: 'https'),
-        notice: t('controllers.profiles.update.success')
+                  notice: t('controllers.profiles.update.success')
     else
       flash.now[:notice] = t('controllers.profiles.update.failure')
       render :setup, status: :unprocessable_entity

@@ -4,8 +4,8 @@ class Hashtag < ApplicationRecord
   has_many :posts, through: :post_hashtags
 
   validates :name, presence: true,
-    length: { maximum: 99 },
-    uniqueness: { case_sensitive: false }
+                   length: { maximum: 99 },
+                   uniqueness: { case_sensitive: false }
 
   # 保存前に名前を小文字に変換
   before_save :downcase_name

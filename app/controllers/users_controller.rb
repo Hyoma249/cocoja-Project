@@ -7,7 +7,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @posts = @user.posts.order(created_at: :desc).page(params[:page])
-
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = t('controllers.users.not_found')
     redirect_to user_path

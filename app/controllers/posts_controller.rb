@@ -19,9 +19,9 @@ class PostsController < ApplicationController
       format.json do
         page = params[:slide].to_i
         @posts = Post.includes(:user, :prefecture, :hashtags, :post_images)
-                  .order(created_at: :desc)
-                  .page(page)
-                  .per(POSTS_PER_PAGE)
+                     .order(created_at: :desc)
+                     .page(page)
+                     .per(POSTS_PER_PAGE)
 
         render json: build_posts_json
       end

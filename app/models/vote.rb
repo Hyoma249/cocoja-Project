@@ -9,18 +9,18 @@ class Vote < ApplicationRecord
     greater_than: 0, # 0より大きい
     less_than_or_equal_to: 5 # 5以下
   }
-  
+
   # 一意制約をアプリケーションレベルでもチェック
-  validates :user_id, uniqueness: { 
-    scope: :post_id, 
-    message: '同じ投稿には一度しかポイントを付けられません' 
+  validates :user_id, uniqueness: {
+    scope: :post_id,
+    message: '同じ投稿には一度しかポイントを付けられません'
   }
-  
+
   validate :daily_point_limit
   validate :cannot_vote_own_post
 
   # 今日の投票を取得するスコープ
-  scope :today, -> {
+  scope :today, lambda {
     where("DATE(created_at AT TIME ZONE 'UTC') = ?", Time.zone.today)
   }
 

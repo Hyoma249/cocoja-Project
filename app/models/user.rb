@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   # :confirmable メール認証を有効にする場合はコメントアウトを外す
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable
 
   # アソシエーション
   # ユーザーは たくさんの投稿 を持てる
@@ -12,10 +12,14 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
   # フォローしている関連付け
   has_many :active_relationships, class_name: 'Relationship',
-    foreign_key: 'follower_id', dependent: :destroy, inverse_of: :follower
+                                 foreign_key: 'follower_id',
+                                 dependent: :destroy,
+                                 inverse_of: :follower
   # フォローされている関連付け
   has_many :passive_relationships, class_name: 'Relationship',
-    foreign_key: 'followed_id', dependent: :destroy, inverse_of: :followed
+                                  foreign_key: 'followed_id',
+                                  dependent: :destroy,
+                                  inverse_of: :followed
   # フォローしているユーザーを取得
   has_many :followings, through: :active_relationships, source: :followed
   # フォロワーを取得
@@ -73,15 +77,15 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :username, presence: true,
-    length: { minimum: 1, maximum: 20 },
-    uniqueness: true,
-    on: :update
+                      length: { minimum: 1, maximum: 20 },
+                      uniqueness: true,
+                      on: :update
 
   validates :uid, presence: true,
-    format: { with: /\A[a-zA-Z0-9]+\z/, message: :invalid_format },
-    length: { minimum: 6, maximum: 15 },
-    uniqueness: true,
-    on: :update
+                 format: { with: /\A[a-zA-Z0-9]+\z/, message: :invalid_format },
+                 length: { minimum: 6, maximum: 15 },
+                 uniqueness: true,
+                 on: :update
 
   validates :bio, length: { maximum: 160 }, allow_blank: true
 end
