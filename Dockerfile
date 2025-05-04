@@ -54,7 +54,8 @@ RUN bundle install && \
 
 # Install node modules
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+ENV NODE_OPTIONS="--max-old-space-size=512"
+RUN yarn install --frozen-lockfile --production=true
 
 # Copy application code
 COPY . .
@@ -62,9 +63,9 @@ COPY . .
 # RAILS_MASTER_KEYの確認と資産のプリコンパイル
 RUN if [ -z "$RAILS_MASTER_KEY" ]; then \
       echo "Warning: RAILS_MASTER_KEY is not set during build"; \
-      SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile; \
+      SECRET_KEY_BASE_DUMMY=1 NODE_OPTIONS="--max-old-space-size=512" ./bin/rails assets:precompile; \
     else \
-      ./bin/rails assets:precompile; \
+      NODE_OPTIONS="--max-old-space-size=512" ./bin/rails assets:precompile; \
     fi
 
 # Precompile bootsnap code for faster boot times
