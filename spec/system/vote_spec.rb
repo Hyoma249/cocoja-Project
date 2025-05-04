@@ -77,24 +77,31 @@ RSpec.describe '投票機能', type: :system do
           expect {
             Vote.create!(user: user, post: post_item, points: 3)
           }.to change(Vote, :count).by(1)
-          
+
           # 作成された投票を確認
           vote = Vote.last
           expect(vote.points).to eq(3)
+        end
+
+        it '投票が適切なユーザーと投稿に関連付けられること' do
+          Vote.create!(user: user, post: post_item, points: 3)
+          vote = Vote.last
           expect(vote.user).to eq(user)
           expect(vote.post).to eq(post_item)
-          
-          # ポイント消費を確認
+        end
+
+        it 'ポイント消費が正しく計算されること' do
+          Vote.create!(user: user, post: post_item, points: 3)
           expect(user.reload.remaining_daily_points).to eq(2)
         end
 
         it '投票後はUIが変わること' do
           # あらかじめ投票を作成
           Vote.create!(user: user, post: post_item, points: 3)
-          
+
           # 再読み込みして表示を確認
           visit post_path(post_item)
-          
+
           expect(page).to have_content 'この投稿にはすでにポイントを付けています'
           expect(page).not_to have_button '1'
         end

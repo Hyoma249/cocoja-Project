@@ -34,6 +34,8 @@ Layout/MultilineMethodCallBraceLayout:
 Layout/ArgumentAlignment:
   Enabled: true
   EnforcedStyle: with_first_argument
+  Exclude:
+    - "spec/**/*_spec.rb"
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -73,7 +75,7 @@ RSpec/ContextWording:
     - for
 
 RSpec/MultipleExpectations:
-  Max: 3
+  Max: 5 # 3から5に増加
 
 RSpec/ExampleLength:
   Max: 10
@@ -91,4 +93,8 @@ RSpecRails/InferredSpecType:
 
 # HashAlignmentを無効化
 Layout/HashAlignment:
+  Enabled: false
+
+# ハッシュのインデントを無効化
+Layout/FirstHashElementIndentation:
   Enabled: false
