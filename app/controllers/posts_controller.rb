@@ -3,7 +3,7 @@
 class PostsController < ApplicationController
   # ログインユーザーによってのみ実行可能となる
   before_action :authenticate_user!
-  include PostsHelper
+  include HashtagHelper
   include PostsJsonBuildable
   include PostCreatable
 
@@ -18,7 +18,8 @@ class PostsController < ApplicationController
       format.html
       format.json do
         page = params[:slide].to_i
-        next_posts = Post.includes(:user, :prefecture, :hashtags, post_images: [image_attachment: :blob])
+        # ActiveStorageの参照を削除
+        next_posts = Post.includes(:user, :prefecture, :hashtags, :post_images)
                       .order(created_at: :desc)
                       .page(page)
                       .per(12)
@@ -29,7 +30,8 @@ class PostsController < ApplicationController
               { user: { methods: [:profile_image_url] } },
               { prefecture: { only: [:name] } },
               { hashtags: { only: [:name] } },
-              { post_images: { methods: [:image] } }
+              # CarrierWaveの場合はimageメソッドは不要
+              { post_images: { methods: [:image_url] } }
             ],
             methods: [:created_at_formatted]
           ),

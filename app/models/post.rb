@@ -43,7 +43,8 @@ class Post < ApplicationRecord
   end
 
   def create_hashtags
-    hashtags = content.scan(/#([^\s]+)/).flatten.map(&:downcase).uniq
+    # 半角(#)と全角(＃)の両方に対応し、空白を無視しない正規表現
+    hashtags = content.scan(/[#＃]([^\s#＃]+)/).flatten.map(&:downcase).uniq
     hashtags.each do |tag|
       hashtag = Hashtag.find_or_create_by(name: tag)
       post_hashtags.create(hashtag: hashtag)
