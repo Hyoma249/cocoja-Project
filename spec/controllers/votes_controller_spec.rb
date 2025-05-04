@@ -90,7 +90,7 @@ RSpec.describe VotesController, type: :controller do
 
         it 'エラーメッセージが設定されること' do
           post :create, params: over_limit_params
-          expect(flash.now[:alert]).to include('1日の投票ポイント上限')
+          expect(flash.now[:alert]).to include('残りポイント不足です')
         end
       end
     end

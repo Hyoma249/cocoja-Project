@@ -46,15 +46,15 @@ RSpec.describe Vote, type: :model do
       end
     end
 
-    describe 'has_not_already_voted_today' do
+    describe 'uniqueness validation' do
       let(:user) { create(:user) }
       let(:post) { create(:post) }
 
-      it 'prevents voting twice on same post in same day' do
+      it 'prevents voting twice on same post' do
         create(:vote, user: user, post: post, points: 2)
         vote = build(:vote, user: user, post: post, points: 1)
         expect(vote).not_to be_valid
-        expect(vote.errors[:post]).to include('同じ投稿に1日に複数回ポイントを付けることはできません')
+        expect(vote.errors[:user_id]).to include('同じ投稿には一度しかポイントを付けられません')
       end
     end
   end

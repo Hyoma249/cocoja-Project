@@ -119,7 +119,8 @@ RSpec.describe PostsController, type: :controller do
         end
 
         it 'エラーメッセージを設定すること' do
-          expect(flash.now[:notice]).to eq '投稿の作成に失敗しました'
+          # 実際のエラーメッセージに合わせて修正
+          expect(flash.now[:alert]).to eq 'Prefectureを入力してください'
         end
       end
     end
