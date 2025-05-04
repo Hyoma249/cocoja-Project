@@ -10,18 +10,20 @@ export default class extends Controller {
 
   connect() {
     this.submitButtonTarget.disabled = true;
-    this.pointDisplayTarget.textContent = "選択してください";
   }
 
   selectPoint(event) {
-    const points = event.currentTarget.dataset.pointValue;
-    this.pointInputTarget.value = points;
-    this.pointDisplayTarget.textContent = `${points} ポイント`;
+    const selectedPoint = event.currentTarget.dataset.pointValue;
 
-    // ボタンの選択状態を更新
-    this.quickSelectTargets.forEach((btn) => {
-      btn.setAttribute("aria-selected", btn.dataset.pointValue === points);
+    this.quickSelectTargets.forEach((button) => {
+      button.setAttribute("aria-selected", "false");
     });
+
+    event.currentTarget.setAttribute("aria-selected", "true");
+
+    this.pointInputTarget.value = selectedPoint;
+
+    this.pointDisplayTarget.textContent = `${selectedPoint}ポイント`;
 
     this.submitButtonTarget.disabled = false;
   }

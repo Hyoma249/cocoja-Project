@@ -9,48 +9,41 @@ class Vote < ApplicationRecord
     greater_than: 0, # 0より大きい
     less_than_or_equal_to: 5 # 5以下
   }
+  
+  # 一意制約をアプリケーションレベルでもチェック
+  validates :user_id, uniqueness: { 
+    scope: :post_id, 
+    message: '同じ投稿には一度しかポイントを付けられません' 
+  }
+  
   validate :daily_point_limit
   validate :cannot_vote_own_post
-  validate :not_already_voted_today
 
-  # 1日に投票したレコードを取得するためのスコープ
-  # 明示的にUTCで日付計算を行う
+  # 今日の投票を取得するスコープ
   scope :today, -> {
-    utc_beginning = Time.zone.today.beginning_of_day.in_time_zone('UTC')
-    where(created_at: utc_beginning..)
+    where("DATE(created_at AT TIME ZONE 'UTC') = ?", Time.zone.today)
   }
 
   private
 
   # 1日に合計 5ポイントまでしか投票できない
   def daily_point_limit
-    return unless user
+    return unless user && points
 
+    # 新しい投票を含めた合計を確認
     total_points_today = user.votes.today.sum(:points)
-    remaining_points = 5 - total_points_today
+    total_after_vote = total_points_today + points.to_i
 
-    return unless points > remaining_points # 1日の投票ポイント上限を超えている場合 エラー表示をさせる。
+    return unless total_after_vote > 5
 
-    errors.add(:points, "1日の投票ポイント上限（5ポイント）を超えています。残り#{remaining_points}ポイントです。")
+    errors.add(:points, "1日の投票ポイント上限（5ポイント）を超えています。残り#{5 - total_points_today}ポイントです。")
   end
 
   # 自分の投稿にはポイントを付けられない
   def cannot_vote_own_post
     return unless user && post
-
-    return unless user_id == post.user_id # 自分の投稿に投票しようとした場合
+    return unless user_id == post.user_id
 
     errors.add(:post, '自分の投稿にはポイントを付けられません')
-  end
-
-  # 同じ日に同じ投稿に対して既に投票しているかチェック
-  # Naming/PredicateName を修正
-  def not_already_voted_today
-    return unless user && post
-
-    # 同じ日に同じ投稿に対して既に投票しているかチェック
-    return unless user.votes.today.exists?(post_id: post.id) # 既に投票している場合
-
-    errors.add(:post, '同じ投稿に1日に複数回ポイントを付けることはできません')
   end
 end

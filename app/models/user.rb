@@ -32,9 +32,23 @@ class User < ApplicationRecord
     [0, 5 - daily_votes_count].max
   end
 
-  # 今日の残り投票ポイントを加算しても大丈夫か
+  # 指定したポイント数の投票が可能かどうか
   def can_vote?(points_to_add)
-    remaining_daily_points >= points_to_add
+    remaining_daily_points >= points_to_add.to_i
+  end
+
+  # 特定の投稿に今日投票済みかチェック
+  def voted_today_for?(post)
+    # 日付に関わらず投票済みかを最初にチェック（より高速）
+    return true if voted_for?(post)
+
+    # 念のため日付指定でも確認
+    votes.today.exists?(post_id: post.id)
+  end
+
+  # 特定の投稿に投票済みかチェック（日付に関わらず）
+  def voted_for?(post)
+    votes.exists?(post_id: post.id)
   end
 
   # 指定したユーザーをフォローする
