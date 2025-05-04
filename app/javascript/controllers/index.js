@@ -28,3 +28,6 @@ application.register("vote", VoteController);
 
 import InfiniteScrollController from "./infinite_scroll_controller";
 application.register("infinite-scroll", InfiniteScrollController);
+
+import AutocompleteController from "./autocomplete_controller";
+application.register("autocomplete", AutocompleteController);

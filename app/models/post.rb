@@ -30,7 +30,7 @@ class Post < ApplicationRecord
 
   # JSON応答用に日付をフォーマットするメソッド
   def created_at_formatted
-    created_at.strftime('%Y年%m月%d日')
+    I18n.l(created_at, format: :long) if created_at
   end
 
   private
