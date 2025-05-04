@@ -90,11 +90,11 @@ class PostsController < ApplicationController
   end
 
   def load_hashtag_posts
-    post_ids = @tag.posts.select(:id).distinct
-    @posts = Post.where(id: post_ids)
+    # distinctを使って重複を排除する
+    @posts = @tag.posts.distinct
                  .includes(:prefecture, :user, :hashtags, :post_images)
                  .order(created_at: :desc)
-                 .page(params[:page])
+                 .page(params[:slide] || params[:page])
                  .per(POSTS_PER_PAGE)
   end
 

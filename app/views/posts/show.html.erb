@@ -9,9 +9,7 @@
           <% if @post.user.profile_image_url.present? %>
             <img src="<%= @post.user.profile_image_url %>" alt="<%= @post.user.username %>" class="w-10 h-10 rounded-full mr-3">
           <% else %>
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-              <span class="text-gray-500 font-bold"><%= @post.user.username[0].upcase %></span>
-            </div>
+            <%= image_tag "sample_icon1.svg", alt: @post.user.uid, class: "w-10 h-10 rounded-full mr-3" %>
           <% end %>
 
           <div>
