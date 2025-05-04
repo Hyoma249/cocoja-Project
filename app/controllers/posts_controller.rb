@@ -16,7 +16,26 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json
+      format.json do
+        page = params[:slide].to_i
+        next_posts = Post.includes(:user, :prefecture, :hashtags, post_images: [image_attachment: :blob])
+                      .order(created_at: :desc)
+                      .page(page)
+                      .per(12)
+
+        render json: {
+          posts: next_posts.as_json(
+            include: [
+              { user: { methods: [:profile_image_url] } },
+              { prefecture: { only: [:name] } },
+              { hashtags: { only: [:name] } },
+              { post_images: { methods: [:image] } }
+            ],
+            methods: [:created_at_formatted]
+          ),
+          next_page: next_posts.next_page.present?
+        }
+      end
     end
   end
 
@@ -95,5 +114,9 @@ class PostsController < ApplicationController
       format.html
       format.json { render json: build_posts_json }
     end
+  end
+
+  def created_at_formatted
+    I18n.l(created_at, format: :long)
   end
 end
