@@ -4,7 +4,7 @@ default: &default
   host: <%= ENV['POSTGRES_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 3 } %>
 
 development:
   <<: *default
@@ -15,7 +15,7 @@ test:
   database: myapp_test
   adapter: postgresql
   encoding: unicode
-  pool: 5
+  pool: 3
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   host: <%= ENV['POSTGRES_HOST'] %>
@@ -24,4 +24,4 @@ production:
   <<: *default
   adapter: postgresql
   url: <%= Rails.application.credentials.dig(:neon, :connection_string) || ENV['DATABASE_URL'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 3 } %>
