@@ -131,9 +131,6 @@ GEM
     ffi (1.17.1-x86_64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     ffi (1.17.1-x86_64-linux-musl)
-    get_process_mem (1.0.0)
-      bigdecimal (>= 2.0)
-      ffi (~> 1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -335,7 +332,6 @@ DEPENDENCIES
   cloudinary (~> 2.3)
   cssbundling-rails
   devise
-  get_process_mem
   jbuilder
   jsbundling-rails
   kaminari
