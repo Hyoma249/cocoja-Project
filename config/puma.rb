@@ -21,12 +21,9 @@ if ENV.fetch('RAILS_ENV') { 'development' } == 'production'
   worker_timeout 60
   worker_shutdown_timeout 30
 
-  # 低メモリモードを有効化
-  low_memory_mode = true if defined?(low_memory_mode)
-
-  # GC設定の最適化
   before_fork do
-    GC.compact if defined?(GC.compact)
+    # 古いGCメソッドはエラーになる可能性があるためより汎用的な方法を使用
+    GC.start
   end
 end
 
@@ -34,11 +31,18 @@ on_worker_boot do
   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 end
 
-# メモリ使用量を監視し、高くなりすぎた場合にGCを強制実行
+# 安全なメモリ監視方法
 worker_check_interval 30
-on_worker_check do |worker|
-  # メモリ使用量が高い場合にGCを強制実行
-  if GetProcessMem.new.mb > 300 # 300MBを超えたらGCを実行
-    GC.start
+on_worker_check do
+  begin
+    if defined?(GetProcessMem) && GetProcessMem.respond_to?(:new)
+      mem = GetProcessMem.new
+      if mem.mb > 300 # 300MBを超えたらGCを実行
+        GC.start
+      end
+    end
+  rescue => e
+    # エラーをキャッチして、アプリケーションのクラッシュを防止
+    puts "Memory check error: #{e.message}"
   end
 end

@@ -19,6 +19,9 @@ gem 'bootsnap', require: false
 
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
+# 本番環境用のgemを追加
+gem 'get_process_mem' # メモリモニタリング用
+
 # group :development, :test do
 #   gem 'brakeman', require: false
 #   gem 'debug', platforms: %i[mri windows]

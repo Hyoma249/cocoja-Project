@@ -1,15 +1,17 @@
 # メモリ使用量を最適化するための設定
 
 if Rails.env.production?
-  # Garbage Collectionの設定最適化
-  GC.configure(
-    malloc_limit: 64 * 1024 * 1024,      # メモリ割り当て制限を64MBに設定
-    malloc_limit_max: 128 * 1024 * 1024, # 最大メモリ割り当て制限を128MBに設定
-    oldmalloc_limit: 64 * 1024 * 1024,   # 古い世代のメモリ割り当て制限
-    oldmalloc_limit_max: 128 * 1024 * 1024,
-    heap_free_slots: 10_000,              # 空きスロットの数
-    heap_init_slots: 10_000               # 初期スロット数
-  )
+  # Rubyのバージョンに依存しない方法でGCパラメータを調整
+  # 直接GC定数を設定
+  GC::MALLOC_LIMIT = 64 * 1024 * 1024      # 64MB
+  GC::MALLOC_LIMIT_MAX = 128 * 1024 * 1024 # 128MB
+  GC::OLDMALLOC_LIMIT = 64 * 1024 * 1024   # 64MB
+  GC::OLDMALLOC_LIMIT_MAX = 128 * 1024 * 1024 # 128MB
+
+  # GCの間隔を調整
+  GC.stress = false
+  # 初回GCサイクルの実行
+  GC.start
 
   # 定期的にGCを実行するためのミドルウェア
   class GCMiddleware
@@ -29,4 +31,18 @@ if Rails.env.production?
   end
 
   Rails.application.config.middleware.use GCMiddleware
+
+  # メモリ使用状況を監視するロガーを追加
+  Rails.logger.info "Memory Optimization: GC settings initialized for Rails #{Rails.version}"
+
+  # メモリ使用量を定期的に出力するための設定（オプション）
+  if defined?(GetProcessMem)
+    # GetProcessMemが使用可能な場合のみ実行
+    begin
+      mem = GetProcessMem.new
+      Rails.logger.info "Initial Memory Usage: #{mem.mb.round(2)} MB"
+    rescue => e
+      Rails.logger.warn "Memory tracking failed: #{e.message}"
+    end
+  end
 end
