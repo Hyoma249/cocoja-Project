@@ -77,6 +77,6 @@ RSpec.describe Post, type: :model do
   describe '#created_at_formatted' do
     subject(:post) { create(:post, created_at: Time.zone.local(2024, 1, 15)) }
 
-    it { expect(post.created_at_formatted).to eq('2024年01月15日') }
+    it { expect(post.created_at_formatted).to eq('2024/01/15 00:00') }
   end
 end

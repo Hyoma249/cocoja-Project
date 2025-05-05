@@ -43,30 +43,6 @@ services:
       - db
       - redis
 
-  # test:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   command: bash -c "bundle install && bundle exec rails db:test:prepare && bundle exec rspec"
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     RAILS_MASTER_KEY: ${TEST_RAILS_MASTER_KEY} # test.keyの内容を使用
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_HOST: db
-  #     REDIS_URL: ${REDIS_URL}
-  #     RAILS_ENV: test
-  #     BUNDLE_PATH: /myapp/vendor/bundle
-  #     GEM_HOME: /usr/local/bundle
-  #     DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
-  #   volumes:
-  #     - .:/myapp
-  #     - bundle_data:/myapp/vendor/bundle
-  #   depends_on:
-  #     - db
-  #     - redis
-
   sidekiq:
     build:
       context: .
