@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   # ハッシュタグ
   get '/posts/hashtag/:name', to: 'posts#hashtag', as: 'hashtag_posts'
 
+  # 検索API
+  get 'search/autocomplete', to: 'search#autocomplete'
+
   # deviseのルーティング
   devise_for :users, controllers: {
     registrations: 'users/registrations',
@@ -40,7 +43,11 @@ Rails.application.routes.draw do
   end
 
   # 都道府県
-  resources :prefectures, only: %i[index show]
+  resources :prefectures, only: %i[index show] do
+    member do
+      get :posts  # 都道府県ごとの投稿一覧（タイムライン形式）を表示するための新しいルート
+    end
+  end
 
   # ランキング
   resources :rankings, only: [:index]
