@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   # 都道府県
   resources :prefectures, only: %i[index show] do
     member do
-      get :posts  # 都道府県ごとの投稿一覧（タイムライン形式）を表示するための新しいルート
+      get :posts # 都道府県ごとの投稿一覧（タイムライン形式）を表示するための新しいルート
     end
   end
 

@@ -20,10 +20,10 @@ class PrefecturesController < ApplicationController
 
     # 都道府県に紐づく投稿を新しい順に取得
     @posts = @prefecture.posts
-                       .includes(:user, :hashtags, :post_images)
-                       .order(created_at: :desc)
-                       .page(params[:page])
-                       .per(10)
+                        .includes(:user, :hashtags, :post_images)
+                        .order(created_at: :desc)
+                        .page(params[:page])
+                        .per(10)
 
     # 投稿総数の取得
     @posts_count = @prefecture.posts.count
@@ -45,7 +45,7 @@ class PrefecturesController < ApplicationController
             include: [
               { user: { methods: :profile_image_url } },
               { post_images: { methods: [:image] } },
-              :hashtags, 
+              :hashtags,
               :prefecture
             ],
             methods: :created_at_formatted
