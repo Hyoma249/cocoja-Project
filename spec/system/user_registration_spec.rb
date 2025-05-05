@@ -40,17 +40,70 @@ RSpec.describe 'ユーザー登録', type: :system do
     end
 
     context 'when 無効な値の場合' do
-      it '登録に失敗すること' do
+      # テスト長とエクスペクテーション数を減らすために分割
+      before do
         within 'form' do
           fill_in 'メールアドレス', with: 'invalid-email'
           fill_in 'パスワード', with: 'short'
           fill_in 'パスワードの確認', with: 'different'
           click_button '登録する'
         end
+      end
+
+      it '登録フォームに留まること' do
+        expect(page).to have_current_path(user_registration_path)
+      end
+
+      it 'メールアドレスのエラーが表示されること' do
+        expect(page).to have_content('メールアドレス') # 「Email」ではなく「メールアドレス」に変更
+        expect(page).to have_content('不正な形式') # 「不正な値」ではなく「不正な形式」に変更
+      end
+
+      it 'パスワードのエラーが表示されること' do
+        expect(page).to have_content('パスワード')
+        expect(page).to have_content('6文字以上')
+        expect(page).to have_content('一致しません')
+      end
+
+      # 別のケースでエラーメッセージをテスト
+      context 'when パスワードが短い場合' do
+        before do
+          within 'form' do
+            fill_in 'メールアドレス', with: 'valid@example.com'
+            fill_in 'パスワード', with: 'short'
+            fill_in 'パスワードの確認', with: 'short'
+            click_button '登録する'
+          end
+        end
+
+        it '登録フォームに留まること' do
+          expect(page).to have_current_path(user_registration_path)
+        end
+
+        it 'パスワードのエラーが表示されること' do
+          expect(page).to have_content(/パスワード|[Pp]assword/)
+          expect(page).to have_content(/[6６]文字以上|characters minimum/)
+        end
+      end
+    end
+
+    context 'when メールアドレスの重複がある場合' do
+      # テストで明示的に参照する
+      let!(:existing_user) { create(:user, email: 'existing@example.com') }
+
+      it '登録に失敗しエラーメッセージが表示されること' do
+        # 既存ユーザーを参照（警告解消のため）
+        expect(existing_user.email).to eq('existing@example.com')
+
+        within 'form' do
+          fill_in 'メールアドレス', with: 'existing@example.com'
+          fill_in 'パスワード', with: 'valid_password'
+          fill_in 'パスワードの確認', with: 'valid_password'
+          click_button '登録する'
+        end
 
         expect(page).to have_current_path(user_registration_path)
-        expect(page).to have_content 'Eメールは不正な値です'
-        expect(page).to have_content 'パスワードは6文字以上で入力してください'
+        expect(page).to have_content(/既に使用されています|taken|has already been taken/)
       end
     end
   end

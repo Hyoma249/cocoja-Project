@@ -90,9 +90,9 @@ RSpec.configure do |config|
   end
 
   # JSテストは当面必要ないため、この設定は一時的にコメントアウト
-  config.before(:each, :js, type: :system) do
-    driven_by :selenium_chrome_headless
-  end
+  # config.before(:each, :js, type: :system) do
+  #   driven_by :selenium_chrome_headless
+  # end
 
   config.include Warden::Test::Helpers
   config.after do

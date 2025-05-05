@@ -1,5 +1,30 @@
 # config/locales/devise.ja.yml
 ja:
+  errors:
+    messages:
+      not_saved: "以下のエラーにより%{resource}は保存されませんでした："
+
+  activerecord:
+    attributes:
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+        current_password: "現在のパスワード"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "は既に使用されています"
+              blank: "を入力してください"
+              invalid: "は不正な形式です"
+            password:
+              blank: "を入力してください"
+              too_short: "は%{count}文字以上で入力してください"
+            password_confirmation:
+              confirmation: "とパスワードの入力が一致しません"
+
   devise:
     sessions:
       signed_in: "ログインしました。"
@@ -17,3 +42,8 @@ ja:
       locked: "アカウントはロックされています。"
       last_attempt: "あと1回失敗するとアカウントがロックされます。"
       timeout: "セッションがタイムアウトしました。続行するには再度ログインしてください。"
+      already_authenticated: "既にログインしています"
+    registrations:
+      signed_up: "アカウントの作成が完了しました。"
+      updated: "アカウント情報の更新が完了しました。"
+      destroyed: "アカウントの削除が完了しました。"

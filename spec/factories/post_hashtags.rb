@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :post_hashtag do
-    association :post
-    association :hashtag
+    post
+    hashtag
   end
 end
