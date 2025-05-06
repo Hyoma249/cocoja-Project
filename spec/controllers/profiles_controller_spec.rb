@@ -59,7 +59,7 @@ RSpec.describe ProfilesController, type: :controller do
         end
 
         it '成功メッセージを表示すること' do
-          expect(flash[:notice]).to eq 'プロフィールが登録されました'
+          expect(flash[:notice]).to eq 'プロフィールを更新しました'
         end
       end
 
@@ -78,7 +78,7 @@ RSpec.describe ProfilesController, type: :controller do
         end
 
         it 'エラーメッセージを表示すること' do
-          expect(flash.now[:notice]).to eq 'プロフィール登録に失敗しました'
+          expect(flash.now[:alert]).to eq '入力内容に誤りがあります'
         end
 
         it 'ステータスコード422を返すこと' do

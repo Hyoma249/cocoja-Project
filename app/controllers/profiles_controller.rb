@@ -4,25 +4,30 @@ class ProfilesController < ApplicationController
   before_action :authenticate_user!
 
   def setup
+    # 既存のuidやusernameがあれば初期値として表示
     @user = current_user
+
+    # Googleアカウント連携済みかどうかを確認
+    @google_connected = @user.provider == 'google_oauth2' && @user.uid_from_provider.present?
   end
 
   def update
     @user = current_user
-    Rails.logger.debug { "更新パラメータ: #{profile_params.inspect}" }
 
-    if @user.update(profile_params)
-      redirect_to top_page_login_url(protocol: 'https'),
-                  notice: t('controllers.profiles.update.success')
+    if @user.update(user_params)
+      # フォローすべきユーザーがいればフォロー処理を行う（オプション）
+
+      flash[:notice] = 'プロフィールを更新しました'
+      redirect_to top_page_login_url(protocol: 'https') # ログイン後のトップページへ
     else
-      flash.now[:notice] = t('controllers.profiles.update.failure')
+      flash.now[:alert] = '入力内容に誤りがあります'
       render :setup, status: :unprocessable_entity
     end
   end
 
   private
 
-  def profile_params
-    params.require(:user).permit(:username, :uid)
+  def user_params
+    params.require(:user).permit(:username, :uid, :bio, :profile_image_url)
   end
 end

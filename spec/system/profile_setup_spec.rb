@@ -15,8 +15,8 @@ RSpec.describe 'プロフィール設定', type: :system do
     context 'when 正常な値の場合' do
       it 'プロフィールが正常に登録されること' do
         fill_in 'ユーザー名', with: 'テストユーザー'
-        fill_in 'ユーザーID（半角英数字）', with: 'test123'
-        click_button 'はじめる'
+        fill_in 'ユーザーID', with: 'test123'
+        click_button 'プロフィールを設定する'
 
         expect(current_path).to eq top_page_login_path
       end
@@ -25,19 +25,20 @@ RSpec.describe 'プロフィール設定', type: :system do
     context 'when 無効な値の場合' do
       it 'ユーザー名が空の場合、登録に失敗すること' do
         fill_in 'ユーザー名', with: ''
-        fill_in 'ユーザーID（半角英数字）', with: 'test123'
-        click_button 'はじめる'
+        fill_in 'ユーザーID', with: 'test123'
+        click_button 'プロフィールを設定する'
 
-        expect(page).to have_content 'プロフィール登録に失敗しました'
+        expect(page).to have_content '入力内容に誤りがあります'
         expect(current_path).to eq profile_update_path
       end
 
       it '不正なIDフォーマットの場合、登録に失敗すること' do
         fill_in 'ユーザー名', with: 'テストユーザー'
-        fill_in 'ユーザーID（半角英数字）', with: 'test_123'
-        click_button 'はじめる'
+        fill_in 'ユーザーID', with: 'test_123'
+        click_button 'プロフィールを設定する'
 
-        expect(page).to have_content 'プロフィール登録に失敗しました'
+        expect(page).to have_content '入力内容に誤りがあります'
+        # 実際に表示されるエラーメッセージに合わせて期待値を変更
         expect(page).to have_content 'ユーザーIDは半角英数字のみ使用できます'
         expect(current_path).to eq profile_update_path
       end

@@ -33,4 +33,15 @@ Devise.setup do |config|
   config.responder.redirect_status = :see_other
 
   config.sign_in_after_change_password = true
+
+  # OmniAuthの設定を追加
+  config.omniauth :google_oauth2,
+                  Rails.application.credentials.dig(:google_oauth, :client_id),
+                  Rails.application.credentials.dig(:google_oauth, :client_secret),
+                  {
+                    scope: 'email, profile',
+                    prompt: 'select_account',
+                    image_aspect_ratio: 'square',
+                    image_size: 50
+                  }
 end

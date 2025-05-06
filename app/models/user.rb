@@ -4,7 +4,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   # :confirmable メール認証を有効にする場合はコメントアウトを外す
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2] # Google認証を追加
 
   # アソシエーション
   # ユーザーは たくさんの投稿 を持てる
@@ -70,6 +71,27 @@ class User < ApplicationRecord
   # 指定したユーザーをフォローしているかどうかを判定
   def following?(user)
     followings.include?(user)
+  end
+
+  # OmniAuth認証からのユーザー作成・検索
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid_from_provider: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+
+      # ユーザー名を一時的に設定（あとでユーザーに入力してもらう）
+      # Google名からランダム文字列を付加して重複を避ける
+      random_suffix = SecureRandom.hex(2)
+      temp_name = auth.info.name.gsub(/\s+/, '').downcase
+      user.username = "#{temp_name}#{random_suffix}"
+
+      # リモート画像URLを設定（CarrierWaveのリモートURLメソッドを使用）
+      if auth.info.image.present?
+        user.remote_profile_image_url_url = auth.info.image
+      end
+
+      # user.skip_confirmation! # confirmableを使用している場合
+    end
   end
 
   # Active Storageの代わりにCarrierWaveを使用

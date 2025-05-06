@@ -28,6 +28,11 @@ require 'capybara/rspec'
 # Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
 
+# OmniAuthのテスト設定
+OmniAuth.config.test_mode = true
+# CSRFエラーを避けるため
+OmniAuth.config.request_validation_phase = nil
+
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin

@@ -54,3 +54,8 @@ gem 'oj' # 高速JSONパーサー（JSON処理が多い場合）
 gem 'rack-cors' # CORS設定
 gem 'rails-i18n' # Rails の国際化対応
 gem 'sidekiq' # 非同期処理
+
+# Google認証用のGemを追加
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection' # CSRFトークン保護のため
