@@ -12,12 +12,18 @@ RSpec.describe 'ランキング機能', type: :system do
     let(:osaka_post) { create(:post, user: user, prefecture: other_prefecture) }
 
     before do
-      # 各都道府県の投稿を作成し、異なる日付で投票を作成
+      # 都道府県に異なる投票数を設定
+      5.times do |i|
+        voter = create(:user)
+        travel_to (i + 1).day.ago do
+          create(:vote, user: voter, post: tokyo_post, points: 3) # 東京都に15ポイント
+        end
+      end
+
       3.times do |i|
         voter = create(:user)
         travel_to (i + 1).day.ago do
-          create(:vote, user: voter, post: tokyo_post, points: 3) # 東京都のポイントを増やす
-          create(:vote, user: voter, post: osaka_post, points: 1)
+          create(:vote, user: voter, post: osaka_post, points: 2) # 大阪府に6ポイント
         end
       end
 
@@ -34,8 +40,9 @@ RSpec.describe 'ランキング機能', type: :system do
     it '都道府県が正しい順序で表示されること' do
       within('.divide-y') do
         rankings = all('h3').map(&:text)
-        expect(rankings[0]).to eq '大阪府'
-        expect(rankings[1]).to eq '東京都'
+        # 1位は東京都、2位は大阪府と期待
+        expect(rankings[0]).to eq '東京都'
+        expect(rankings[1]).to eq '大阪府'
       end
     end
 

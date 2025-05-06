@@ -17,10 +17,10 @@ class ProfilesController < ApplicationController
     if @user.update(user_params)
       # フォローすべきユーザーがいればフォロー処理を行う（オプション）
 
-      flash[:notice] = "プロフィールを更新しました"
+      flash[:notice] = 'プロフィールを更新しました'
       redirect_to top_page_login_url(protocol: 'https') # ログイン後のトップページへ
     else
-      flash.now[:alert] = "入力内容に誤りがあります"
+      flash.now[:alert] = '入力内容に誤りがあります'
       render :setup, status: :unprocessable_entity
     end
   end

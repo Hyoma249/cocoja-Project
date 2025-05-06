@@ -11,7 +11,7 @@ RSpec.describe 'ユーザー登録', type: :system do
   describe '新規登録' do
     context 'when 正常な値の場合' do
       before do
-        within 'form' do
+        within 'form[action="/users"]' do
           fill_in 'メールアドレス', with: 'test@example.com'
           fill_in 'パスワード', with: 'password123'
           fill_in 'パスワードの確認', with: 'password123'
@@ -27,14 +27,15 @@ RSpec.describe 'ユーザー登録', type: :system do
         before do
           within 'form' do
             fill_in 'ユーザー名', with: 'testuser'
-            fill_in 'ユーザーID（半角英数字）', with: 'testid123'
-            click_button 'はじめる'
+            # 実際のフィールドラベルに修正
+            fill_in 'ユーザーID', with: 'testid123'
+            click_button 'プロフィールを設定する'
           end
         end
 
         it 'プロフィール設定が完了すること' do
           expect(page).to have_current_path(top_page_login_path)
-          expect(page).to have_content 'プロフィールが登録されました'
+          expect(page).to have_content 'プロフィールを更新しました'
         end
       end
     end
@@ -42,7 +43,7 @@ RSpec.describe 'ユーザー登録', type: :system do
     context 'when 無効な値の場合' do
       # テスト長とエクスペクテーション数を減らすために分割
       before do
-        within 'form' do
+        within 'form[action="/users"]' do
           fill_in 'メールアドレス', with: 'invalid-email'
           fill_in 'パスワード', with: 'short'
           fill_in 'パスワードの確認', with: 'different'
@@ -68,7 +69,7 @@ RSpec.describe 'ユーザー登録', type: :system do
       # 別のケースでエラーメッセージをテスト
       context 'when パスワードが短い場合' do
         before do
-          within 'form' do
+          within 'form[action="/users"]' do
             fill_in 'メールアドレス', with: 'valid@example.com'
             fill_in 'パスワード', with: 'short'
             fill_in 'パスワードの確認', with: 'short'
@@ -95,7 +96,7 @@ RSpec.describe 'ユーザー登録', type: :system do
         # 既存ユーザーを参照（警告解消のため）
         expect(existing_user.email).to eq('existing@example.com')
 
-        within 'form' do
+        within 'form[action="/users"]' do
           fill_in 'メールアドレス', with: 'existing@example.com'
           fill_in 'パスワード', with: 'valid_password'
           fill_in 'パスワードの確認', with: 'valid_password'

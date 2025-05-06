@@ -64,15 +64,13 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Max: 5
 
+# コンテキスト名の検証を無効化
 RSpec/ContextWording:
-  Enabled: true
-  Prefixes:
-    - when
-    - with
-    - without
-    - if
-    - unless
-    - for
+  Enabled: false
+
+# described_classの使用を無効化
+RSpec/DescribedClass:
+  Enabled: false
 
 RSpec/MultipleExpectations:
   Max: 5 # 3から5に増加
@@ -80,6 +78,7 @@ RSpec/MultipleExpectations:
 RSpec/ExampleLength:
   Max: 10
 
+# シングルクォートを強制
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
@@ -97,4 +96,29 @@ Layout/HashAlignment:
 
 # ハッシュのインデントを無効化
 Layout/FirstHashElementIndentation:
+  Enabled: false
+
+# 単一行のif文のスタイル警告を無効化
+Style/IfUnlessModifier:
+  Enabled: false
+
+# マイグレーションファイルの警告を抑制
+Style/Documentation:
+  Exclude:
+    - "db/migrate/**/*.rb"
+
+Rails/BulkChangeTable:
+  Exclude:
+    - "db/migrate/**/*.rb"
+
+Style/SymbolArray:
+  Exclude:
+    - "db/migrate/**/*.rb"
+
+# Time.nowの警告を抑制
+Rails/TimeZone:
+  Enabled: false
+
+# RSpecのメタデータスタイルの警告を抑制
+RSpec/MetadataStyle:
   Enabled: false

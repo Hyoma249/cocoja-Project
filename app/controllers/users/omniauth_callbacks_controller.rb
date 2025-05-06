@@ -1,17 +1,19 @@
 # 外部認証サービス連携に関する操作を担当するコントローラー
 # OAuth認証機能を提供します
 module Users
+  # OmniAuth認証コールバックを処理するコントローラー
+  # Google OAuth2などの外部認証プロバイダーからのコールバックを処理します
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Googleログイン認証のコールバック処理
     def google_oauth2
-      handle_auth("Google")
+      handle_auth('Google')
     end
 
     private
 
     def handle_auth(kind)
       # auth情報からユーザーを検索または作成
-      @user = User.from_omniauth(request.env["omniauth.auth"])
+      @user = User.from_omniauth(request.env['omniauth.auth'])
 
       if @user.persisted?
         # 認証成功の場合
@@ -27,7 +29,7 @@ module Users
         end
       else
         # 認証失敗の場合、セッションにデータを格納して登録画面へ
-        session["devise.#{kind.downcase}_data"] = request.env["omniauth.auth"].except(:extra)
+        session["devise.#{kind.downcase}_data"] = request.env['omniauth.auth'].except(:extra)
         redirect_to new_user_registration_url, alert: @user.errors.full_messages.join("\n")
       end
     end
