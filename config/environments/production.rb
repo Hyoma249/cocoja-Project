@@ -24,13 +24,21 @@ Rails.application.configure do
   config.assets.digest = true
   config.assets.version = '1.0'
 
-  # SSL設定 - リダイレクトループを避けるためfalseに
+  # SSL設定 - Back4Appの環境に最適化
   config.force_ssl = false
+  # X-Forwarded-Proto ヘッダーを信頼し、適切に処理
   config.action_controller.default_url_options = { protocol: 'https' }
+  # 信頼できるプロキシとして明示的にBack4Appのプロキシを追加
   config.action_dispatch.trusted_proxies = %w[127.0.0.1 ::1].map { |proxy| IPAddr.new(proxy) }
-  config.ssl_options = { redirect: { exclude: lambda { |request|
-    request.get_header('HTTP_X_FORWARDED_PROTO') == 'https'
-  } } }
+  # X-Forwarded-Proto ヘッダーがhttpsの場合はリダイレクトしない
+  config.ssl_options = {
+    hsts: { subdomains: true, preload: true, expires: 1.year },
+    redirect: {
+      exclude: lambda { |request|
+        request.get_header('HTTP_X_FORWARDED_PROTO') == 'https' 
+      }
+    }
+  }
 
   # ログ設定 - デバッグのため詳細なログを出力
   config.log_tags = [:request_id]
