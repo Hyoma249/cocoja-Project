@@ -1,5 +1,9 @@
 # 全てのコントローラーの基底クラス。アプリケーション全体で共通の機能を提供します。
 class ApplicationController < ActionController::Base
+  # 全てのコントローラーに対してユーザー認証を要求
+  # 特定のアクションは各コントローラーで例外設定するのが望ましい
+  before_action :authenticate_user!
+
   def after_sign_in_path_for(_resource)
     top_page_login_url(protocol: 'https')
   end

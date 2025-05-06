@@ -22,6 +22,10 @@ Rails.application.routes.draw do
   # 検索API
   get 'search/autocomplete', to: 'search#autocomplete'
 
+  # 利用規約とプライバシーポリシー
+  get '/terms', to: 'pages#terms'
+  get '/privacy', to: 'pages#privacy'
+
   # deviseのルーティング
   devise_for :users, controllers: {
     sessions: 'users/sessions',

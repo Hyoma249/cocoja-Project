@@ -5,11 +5,114 @@
       <%= image_tag "cocoja_logo.svg", class: "h-[4.5rem] w-[120px]", alt: "ココジャ" %>
     <% end %>
   </h1>
-  <div class="flex gap-2">
-    <%= link_to "ログイン", new_user_session_path, class: "text-[72%] font-bold px-4 py-2 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50" %>
-    <%= link_to "新規登録", new_user_registration_path, class: "text-[72%] font-bold px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700" %>
+  <div class="flex items-center gap-3">
+    <!-- ログイン/登録ボタン -->
+    <div class="flex gap-2">
+      <%= link_to "ログイン", new_user_session_path, class: "text-[72%] font-bold px-4 py-2 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50" %>
+      <%= link_to "新規登録", new_user_registration_path, class: "text-[72%] font-bold px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700" %>
+    </div>
+
+    <!-- ハンバーガーメニューボタン -->
+    <button id="hamburger-button" class="text-gray-700 hover:text-gray-900 focus:outline-none p-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </div>
 </header>
+
+<!-- モバイルメニュー -->
+<div id="mobile-menu" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[10000] hidden">
+  <div class="absolute right-0 top-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out translate-x-full">
+    <!-- メニューヘッダー -->
+    <div class="flex justify-between items-center p-4 border-b">
+      <h3 class="font-bold">メニュー</h3>
+      <button id="close-menu-button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <!-- メニュー項目 -->
+    <nav class="p-4">
+      <ul class="space-y-3">
+        <li>
+          <a href="/terms" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">
+            利用規約
+          </a>
+        </li>
+        <li>
+          <a href="/privacy" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">
+            プライバシーポリシー
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- メニューフッター -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs text-gray-500 border-t">
+      © 2025 cocoja
+    </div>
+  </div>
+</div>
+
+<script>
+  // ハンバーガーメニューの初期化関数
+  function initMobileMenu() {
+    const hamburgerButton = document.getElementById('hamburger-button');
+    const closeMenuButton = document.getElementById('close-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuContent = mobileMenu.querySelector('div');
+
+    // すでにイベントがアタッチされている場合は削除（重複防止）
+    if (hamburgerButton._initialized) {
+      hamburgerButton.removeEventListener('click', openMenu);
+      closeMenuButton.removeEventListener('click', closeMenu);
+      mobileMenu.removeEventListener('click', handleOutsideClick);
+    }
+
+    function openMenu() {
+      mobileMenu.classList.remove('hidden');
+      setTimeout(() => {
+        menuContent.classList.add('translate-x-0');
+        menuContent.classList.remove('translate-x-full');
+      }, 10);
+      document.body.style.overflow = 'hidden'; // スクロール無効化
+    }
+
+    function closeMenu() {
+      menuContent.classList.remove('translate-x-0');
+      menuContent.classList.add('translate-x-full');
+      setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = ''; // スクロール有効化
+      }, 300);
+    }
+
+    function handleOutsideClick(e) {
+      if (e.target === mobileMenu) {
+        closeMenu();
+      }
+    }
+
+    // イベントリスナーを設定
+    hamburgerButton.addEventListener('click', openMenu);
+    closeMenuButton.addEventListener('click', closeMenu);
+    mobileMenu.addEventListener('click', handleOutsideClick);
+
+    // 初期化フラグを設定
+    hamburgerButton._initialized = true;
+  }
+
+  // ページロード時にメニューを初期化
+  document.addEventListener('DOMContentLoaded', initMobileMenu);
+
+  // Turbolinks/Turboのページ遷移後にも初期化を実行
+  document.addEventListener('turbolinks:load', initMobileMenu);
+  document.addEventListener('turbo:load', initMobileMenu);
+
+  // SPAフレームワーク対応として、すぐに実行も行う（初期表示対策）
+  initMobileMenu();
+</script>
 
 <%# PC用サイドバー %>
 <div class="hidden md:flex fixed left-0 top-0 h-screen w-72 bg-white border-r z-[9999]">
@@ -25,8 +128,18 @@
     <div class="flex flex-col gap-3">
       <%= link_to "ログイン", new_user_session_path,
           class: "w-full text-center font-bold px-4 py-3 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50" %>
-      <%= link_to "新規登録", new_user_registration_path, 
+      <%= link_to "新規登録", new_user_registration_path,
           class: "w-full text-center font-bold px-4 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700" %>
+    </div>
+
+    <%# 法的情報リンク %>
+    <div class="mt-auto pt-6 border-t border-gray-100 mt-6">
+      <div class="flex justify-center space-x-1">
+        <a href="/terms" class="text-sm text-gray-500 hover:text-blue-600 transition-colors px-2 py-1">利用規約</a>
+        <span class="text-gray-300 self-center">|</span>
+        <a href="/privacy" class="text-sm text-gray-500 hover:text-blue-600 transition-colors px-2 py-1">プライバシーポリシー</a>
+      </div>
+      <p class="text-xs text-center text-gray-400 mt-4">© 2025 cocoja</p>
     </div>
   </nav>
 </div>
