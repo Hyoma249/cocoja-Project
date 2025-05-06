@@ -65,6 +65,9 @@
         <%= link_to "パスワードを忘れた場合はこちら", new_password_path(resource_name), class: "text-blue-500 hover:text-blue-700 text-sm" %>
       </div> -->
     </div>
+
+    <!-- Google認証ボタンを含むリンクパーシャル -->
+    <%= render "users/shared/links" %>
   </main>
 
   <small class="block text-center text-xs text-gray-400 m-4">© 2025 cocoja</small>

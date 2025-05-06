@@ -81,8 +81,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_03_083743) do
     t.datetime "updated_at", null: false
     t.string "bio"
     t.integer "remaining_daily_points"
+    t.string "provider"
+    t.string "uid_from_provider"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["provider", "uid_from_provider"], name: "index_users_on_provider_and_uid_from_provider", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
