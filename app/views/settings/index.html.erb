@@ -60,10 +60,12 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('turbo:load', function() {  // DOMContentLoadedをturbo:loadに変更
       const modal = document.getElementById('logout-modal');
       const openButton = document.getElementById('logout-button');
       const cancelButton = document.getElementById('cancel-logout');
+
+      if (!modal || !openButton || !cancelButton) return; // 要素チェックを追加
 
       function openModal() {
         modal.classList.remove('hidden');

@@ -47,3 +47,6 @@ ja:
       signed_up: "アカウントの作成が完了しました。"
       updated: "アカウント情報の更新が完了しました。"
       destroyed: "アカウントの削除が完了しました。"
+    omniauth_callbacks:
+      success: "%{kind}アカウントからの認証に成功しました。"
+      failure: "%{kind}アカウントでの認証に失敗しました：「%{reason}」"

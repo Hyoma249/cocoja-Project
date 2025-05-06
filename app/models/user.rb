@@ -79,11 +79,8 @@ class User < ApplicationRecord
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
 
-      # ユーザー名を一時的に設定（あとでユーザーに入力してもらう）
-      # Google名からランダム文字列を付加して重複を避ける
-      random_suffix = SecureRandom.hex(2)
-      temp_name = auth.info.name.gsub(/\s+/, '').downcase
-      user.username = "#{temp_name}#{random_suffix}"
+      # username と uid の事前設定は行わない
+      # ユーザーがプロフィール設定画面で自分で入力する
 
       # リモート画像URLを設定（CarrierWaveのリモートURLメソッドを使用）
       if auth.info.image.present?
