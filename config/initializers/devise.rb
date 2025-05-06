@@ -34,7 +34,7 @@ Devise.setup do |config|
 
   config.sign_in_after_change_password = true
 
-  # OmniAuthの設定を追加
+  # OmniAuthの設定を更新（HTTPSを使用）
   config.omniauth :google_oauth2,
                   Rails.application.credentials.dig(:google_oauth, :client_id),
                   Rails.application.credentials.dig(:google_oauth, :client_secret),
@@ -42,6 +42,7 @@ Devise.setup do |config|
                     scope: 'email, profile',
                     prompt: 'select_account',
                     image_aspect_ratio: 'square',
-                    image_size: 50
+                    image_size: 50,
+                    redirect_uri: Rails.env.production? ? 'https://cocoja-7b01rrht.b4a.run/users/auth/google_oauth2/callback' : nil
                   }
 end
