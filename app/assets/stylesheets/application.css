@@ -1,0 +1,30 @@
+/* モバイルパフォーマンス最適化用スタイル */
+.translate-hardware {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+}
+
+.lazy-image {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lazy-image.lazy-loaded {
+  opacity: 1;
+}
+
+/* タッチ操作の最適化 */
+.slider-initialized {
+  touch-action: pan-y;
+}
+
+/* iOS Safariでのスクロール問題対策 */
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}

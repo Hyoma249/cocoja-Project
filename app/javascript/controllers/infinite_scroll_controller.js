@@ -13,29 +13,39 @@ export default class extends Controller {
     this.pageValue = this.pageValue || 1;
     this.loadingValue = false;
     this.setupLazyLoading();
+    // スクロールのデバウンス用タイマー
+    this.scrollDebounceTimer = null;
+    // 次の読み込みをブロックする時間（ミリ秒）
+    this.loadCooldown = 1000;
+    this.lastLoadTime = 0;
   }
 
   connect() {
     if (this.hasPaginationTarget) {
-      // より高い感度でIntersectionObserverを設定
+      // モバイル環境でのパフォーマンス向上のため設定を調整
       this.intersectionObserver = new IntersectionObserver(
         (entries) => {
+          const now = Date.now();
           entries.forEach((entry) => {
-            if (entry.isIntersecting && !this.loadingValue) {
-              this.loadMore();
+            if (
+              entry.isIntersecting &&
+              !this.loadingValue &&
+              now - this.lastLoadTime > this.loadCooldown
+            ) {
+              // デバウンス処理を強化
+              clearTimeout(this.loadMoreTimeout);
+              this.loadMoreTimeout = setTimeout(() => this.loadMore(), 250);
             }
           });
         },
         {
-          rootMargin: "300px", // より大きなマージンで早めに検知
-          threshold: 0.1, // わずかに見えるだけで発火
+          rootMargin: "200px", // より先読みするよう調整
+          threshold: 0.05, // しきい値を下げてわずかに見えた時点で読み込み開始
         }
       );
 
       this.intersectionObserver.observe(this.paginationTarget);
       console.log("Infinite scroll observer connected");
-    } else {
-      console.warn("Pagination target not found for infinite scroll");
     }
   }
 
@@ -43,13 +53,17 @@ export default class extends Controller {
     if (this.intersectionObserver) {
       this.intersectionObserver.disconnect();
     }
+    if (this.imageObserver) {
+      this.imageObserver.disconnect();
+    }
+    clearTimeout(this.loadMoreTimeout);
   }
 
   loadMore() {
     if (this.loadingValue) return;
 
     this.loadingValue = true;
-    console.log(`Loading page ${this.pageValue + 1}`);
+    this.lastLoadTime = Date.now();
 
     if (this.hasLoadingTarget) {
       this.loadingTarget.classList.remove("hidden");
@@ -58,10 +72,7 @@ export default class extends Controller {
     this.pageValue++;
     const url = `${this.urlValue}?slide=${this.pageValue}`;
 
-    // URLパスからページタイプを判別
     const isMypage = window.location.pathname.includes("/mypage");
-
-    console.log(`Fetching: ${url}`);
 
     fetch(url, {
       headers: {
@@ -71,7 +82,6 @@ export default class extends Controller {
     })
       .then((response) => {
         if (!response.ok) {
-          console.error(`HTTP error: ${response.status}`);
           throw new Error(`Network response was not ok: ${response.status}`);
         }
         return response.json();
@@ -82,36 +92,35 @@ export default class extends Controller {
           this.loadingTarget.classList.add("hidden");
         }
 
-        console.log(`Received ${data.posts ? data.posts.length : 0} posts`);
-        console.log(
-          "First post data:",
-          data.posts && data.posts.length > 0 ? data.posts[0] : "No posts"
-        );
-
         if (data.posts && data.posts.length > 0) {
-          // URLに基づいて異なるHTMLビルダーを使用
+          // 一度に大量のDOM操作を避けるため、フラグメントを使用
+          const fragment = document.createDocumentFragment();
+          const tempContainer = document.createElement("div");
+
           if (isMypage) {
-            this.entriesTarget.insertAdjacentHTML(
-              "beforeend",
-              this.buildGridPostsHTML(data.posts)
-            );
+            tempContainer.innerHTML = this.buildGridPostsHTML(data.posts);
           } else {
-            this.entriesTarget.insertAdjacentHTML(
-              "beforeend",
-              this.buildPostsHTML(data.posts)
-            );
+            tempContainer.innerHTML = this.buildPostsHTML(data.posts);
           }
 
+          // tempContainerの中身をフラグメントに移動
+          while (tempContainer.firstChild) {
+            fragment.appendChild(tempContainer.firstChild);
+          }
+
+          // DOMへの追加は一度だけ行う
+          this.entriesTarget.appendChild(fragment);
+
+          // DOM追加後に必要な処理を実行
           this.setupLazyLoading();
 
-          // スライダー初期化はグリッドレイアウト（マイページ）では不要
+          // モバイル向けに最適化：スライダーを非同期で初期化
           if (!isMypage) {
-            this.initializeNewSliders();
+            setTimeout(() => this.initializeNewSliders(), 10);
           }
         }
 
         if (!data.next_page && this.hasPaginationTarget) {
-          console.log("No more pages, removing pagination target");
           this.paginationTarget.remove();
         }
       })
@@ -126,31 +135,58 @@ export default class extends Controller {
 
   // 画像の遅延読み込み設定
   setupLazyLoading() {
-    const lazyImages = document.querySelectorAll(".lazy-image");
+    const lazyImages = document.querySelectorAll(
+      ".lazy-image:not(.lazy-loaded)"
+    );
+
+    if (!lazyImages.length) return;
 
     if ("IntersectionObserver" in window) {
-      const imageObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const lazyImage = entry.target;
-              lazyImage.src = lazyImage.dataset.src;
-              lazyImage.classList.remove("lazy-image");
-              imageObserver.unobserve(lazyImage);
-            }
-          });
-        },
-        { rootMargin: "200px" }
-      );
+      if (!this.imageObserver) {
+        this.imageObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const lazyImage = entry.target;
+                this.imageObserver.unobserve(lazyImage); // 先に監視を解除してパフォーマンス向上
 
-      lazyImages.forEach((image) => {
-        imageObserver.observe(image);
-      });
-    } else {
-      // IntersectionObserverがサポートされていないブラウザ向けのフォールバック
-      lazyImages.forEach((image) => {
-        image.src = image.dataset.src;
-      });
+                // 画像読み込みを改善
+                lazyImage.style.opacity = "0";
+                lazyImage.src = lazyImage.dataset.src;
+                lazyImage.onload = () => {
+                  lazyImage.style.opacity = "1";
+                  lazyImage.classList.add("lazy-loaded");
+                };
+                lazyImage.onerror = () => {
+                  // エラー時の処理
+                  lazyImage.style.opacity = "1";
+                  lazyImage.classList.add("lazy-loaded");
+                };
+              }
+            });
+          },
+          {
+            rootMargin: "300px", // より先に読み込み開始
+            threshold: 0.01,
+          }
+        );
+      }
+
+      // 一括登録ではなくバッチ処理で登録
+      const batchSize = 5;
+      for (let i = 0; i < lazyImages.length; i += batchSize) {
+        const batch = Array.from(lazyImages).slice(i, i + batchSize);
+        batch.forEach((image) => {
+          if (!image.classList.contains("lazy-loaded")) {
+            this.imageObserver.observe(image);
+          }
+        });
+
+        // バッチ間で少し遅延を入れる（モバイルのパフォーマンス向上）
+        if (i + batchSize < lazyImages.length) {
+          setTimeout(() => {}, 5);
+        }
+      }
     }
   }
 
@@ -161,10 +197,25 @@ export default class extends Controller {
       '[data-controller="slider"]:not(.slider-initialized)'
     );
 
-    newSliders.forEach((slider) => {
+    if (!newSliders.length) return;
+
+    // 一度に初期化せず、少しずつ初期化する
+    let index = 0;
+    const initializeNextSlider = () => {
+      if (index >= newSliders.length) return;
+
+      const slider = newSliders[index];
       slider.classList.add("slider-initialized");
       application.getControllerForElementAndIdentifier(slider, "slider");
-    });
+
+      index++;
+      // 次のスライダーを非同期で初期化
+      if (index < newSliders.length) {
+        setTimeout(initializeNextSlider, 16); // ≈1フレームの遅延
+      }
+    };
+
+    initializeNextSlider();
   }
 
   // マイページのグリッドレイアウト用のHTMLを生成

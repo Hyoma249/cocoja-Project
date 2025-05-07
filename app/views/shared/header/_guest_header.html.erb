@@ -70,20 +70,30 @@
     }
 
     function openMenu() {
+      // スクロール位置を保存
+      menuContent.dataset.scrollY = window.scrollY;
       mobileMenu.classList.remove('hidden');
-      setTimeout(() => {
+
+      // レイアウトの再計算を一度にまとめる
+      requestAnimationFrame(() => {
         menuContent.classList.add('translate-x-0');
         menuContent.classList.remove('translate-x-full');
-      }, 10);
-      document.body.style.overflow = 'hidden'; // スクロール無効化
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed'; // 位置固定でスクロール防止
+        document.body.style.width = '100%';
+      });
     }
 
     function closeMenu() {
       menuContent.classList.remove('translate-x-0');
       menuContent.classList.add('translate-x-full');
+
+      // トランジション後にスクロール位置を復元
       setTimeout(() => {
         mobileMenu.classList.add('hidden');
-        document.body.style.overflow = ''; // スクロール有効化
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        window.scrollTo(0, parseInt(menuContent.dataset.scrollY || 0));
       }, 300);
     }
 
