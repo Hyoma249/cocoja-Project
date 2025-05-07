@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     member do
       get :following
       get :followers
+      get :posts
     end
     resource :relationships, only: %i[create destroy]
   end
@@ -59,7 +60,9 @@ Rails.application.routes.draw do
   resources :rankings, only: [:index]
 
   # マイページ
-  resource :mypage, only: %i[show edit update]
+  resource :mypage, only: %i[show edit update] do
+    get 'posts', to: 'mypages#posts'
+  end
 
   # letter_opener_webのルーティング（開発環境のみ）
   # mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?

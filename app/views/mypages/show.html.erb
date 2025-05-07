@@ -37,13 +37,23 @@
       </div>
 
       <%# 投稿グリッド - インフィニットスクロール用に変更 %>
-      <div class="mt-8" data-controller="infinite-scroll" data-infinite-scroll-url-value="<%= mypage_path %>" data-infinite-scroll-next-slide-value="2">
-        <div class="grid grid-cols-3 gap-1" data-infinite-scroll-target="container">
+      <div class="mt-8">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-900">投稿</h3>
+          <%= link_to posts_mypage_path, class: "text-blue-600 hover:text-blue-800 flex items-center text-sm" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            リスト表示で見る
+          <% end %>
+        </div>
+
+        <div class="grid grid-cols-3 gap-1" data-controller="infinite-scroll" data-infinite-scroll-url-value="<%= mypage_path %>" data-infinite-scroll-next-slide-value="2" data-infinite-scroll-target="container">
           <% @posts.each do |post| %>
-            <% if post.post_images.present? %>
-              <div class="aspect-square overflow-hidden relative group">
+            <% if post.post_images.present? && post.post_images.first.image.present? %>
+              <%= link_to "#{posts_mypage_path}#post-#{post.id}", class: "aspect-square overflow-hidden relative group" do %>
                 <%= image_tag post.post_images.first.image.url(:thumb),
-                  class: "w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" if post.post_images.first.image.present? %>
+                  class: "w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" %>
                 <% if post.post_images_count > 1 %>
                   <div class="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-md p-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
@@ -51,7 +61,7 @@
                     </svg>
                   </div>
                 <% end %>
-              </div>
+              <% end %>
             <% end %>
           <% end %>
         </div>

@@ -31,3 +31,6 @@ application.register("infinite-scroll", InfiniteScrollController);
 
 import AutocompleteController from "./autocomplete_controller";
 application.register("autocomplete", AutocompleteController);
+
+import PostScrollController from "./post_scroll_controller";
+application.register("post-scroll", PostScrollController);

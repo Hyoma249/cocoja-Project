@@ -1,0 +1,139 @@
+<div class="mx-auto min-h-screen pb-16 bg-gray-50"
+     data-controller="infinite-scroll post-scroll"
+     data-infinite-scroll-url-value="<%= posts_user_path(@user) %>"
+     data-infinite-scroll-page-value="1">
+  <%= render "shared/header/login_header" %>
+
+  <div class="max-w-4xl mx-auto px-4 md:pl-[calc(288px+2rem)] md:pr-8">
+    <div class="flex items-center justify-between py-6">
+      <h1 class="text-2xl font-bold text-gray-900"><%= @user.username %>の投稿</h1>
+      <%= link_to user_path(@user), class: "text-blue-600 hover:text-blue-800 flex items-center text-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+        </svg>
+        グリッド表示に戻る
+      <% end %>
+    </div>
+
+    <% if @posts.present? %>
+      <!-- 投稿リスト - モバイルパフォーマンス最適化 -->
+      <div class="grid gap-4 py-4" data-infinite-scroll-target="entries" data-post-scroll-target="container">
+        <% @posts.each do |post| %>
+          <div id="post-<%= post.id %>" class="bg-white rounded-lg shadow-sm overflow-hidden relative will-change-contents post-item">
+            <!-- ユーザーヘッダー -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden">
+                  <% if post.user.profile_image_url.present? %>
+                    <%= image_tag post.user.profile_image_url.url, alt: post.user.uid, class: "w-full h-full object-cover",
+                      loading: "lazy" %>
+                  <% else %>
+                    <%= image_tag "sample_icon1.svg", alt: post.user.uid, class: "w-full h-full object-cover" %>
+                  <% end %>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-sm"><%= post.user.uid %></h4>
+                  <p class="text-xs text-gray-500"><%= post.prefecture.name %></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 画像スライダー - 最適化版 -->
+            <% if post.post_images.present? %>
+              <div class="relative will-change-transform" data-controller="slider">
+                <div class="w-full md:aspect-[4/3] aspect-square overflow-hidden touch-none">
+                  <div class="flex h-full will-change-transform translate-gpu backface-hidden perspective-1000" data-slider-target="wrapper">
+                    <% post.post_images.each_with_index do |post_image, index| %>
+                      <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
+                        <% if post_image.image.present? && post_image.image.url.present? %>
+                          <% if index == 0 %>
+                            <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none",
+                              draggable: "false", loading: "lazy" %>
+                          <% else %>
+                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none opacity-0 transition-opacity duration-300"
+                              draggable="false" loading="lazy">
+                          <% end %>
+                        <% else %>
+                          <div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
+                            <span>画像なし</span>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <!-- インジケーター -->
+                  <% if post.post_images.length > 1 %>
+                    <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
+                      <span data-slider-target="counter">1</span>/<%= post.post_images.length %>
+                    </div>
+
+                    <!-- ナビゲーションボタン -->
+                    <button class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="prevButton" data-action="click->slider#prev">
+                      <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                      </svg>
+                    </button>
+                    <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="nextButton" data-action="click->slider#next">
+                      <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </button>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- 投稿本文 -->
+            <div class="px-4 py-4">
+              <div class="text-sm md:text-base mb-2">
+                <span><%= format_content_with_hashtags(post.content) %></span>
+              </div>
+
+              <% if post.hashtags.present? %>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <% post.hashtags.each do |tag| %>
+                    <%= link_to "/posts/hashtag/#{tag.name}", class: "text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full" do %>
+                      #<%= tag.name %>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <p class="text-xs md:text-sm text-gray-500 mt-4">投稿日：<%= l post.created_at, format: :long %></p>
+            </div>
+
+            <!-- 詳細ページへのリンク -->
+            <div class="p-4 border-t">
+              <%= link_to post_path(post),
+                        class: "w-full inline-flex items-center justify-center px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition duration-150 ease-in-out shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm" do %>
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                ポイントをつけよう！
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- ローディングとページネーション -->
+      <div class="py-4 flex justify-center">
+        <div data-infinite-scroll-target="loading" class="hidden">
+          <svg class="animate-spin h-8 w-8 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+        <div data-infinite-scroll-target="pagination" class="h-4"></div>
+      </div>
+    <% else %>
+      <div class="bg-white rounded-lg shadow-sm p-8 text-center mt-6">
+        <p class="text-gray-500">投稿がありません</p>
+        <p class="text-sm text-gray-400 mt-2">まだ投稿がありません</p>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render "shared/footer/login_footer" %>
+</div>

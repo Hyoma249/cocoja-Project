@@ -2,22 +2,43 @@
 # ユーザープロフィール表示、編集、更新などを担当します
 class MypagesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: %i[show edit update]
+  before_action :set_user, only: %i[show edit update posts post]
 
   def show
-    # 基本クエリを構築
-    base_query = @user.posts.includes(:post_images).order(created_at: :desc)
+    @user = current_user
 
-    # ページネーションを適用
-    @posts = base_query.page(params[:slide]).per(12)
+    # すべての投稿を新着順（created_atの降順）で取得
+    @posts = current_user.posts.order(created_at: :desc).includes(:post_images)
 
+    # インフィニットスクロールの場合、ページネーション処理を追加
     respond_to do |format|
       format.html
-      format.json
+      format.json {
+        page = params[:page].to_i || 1
+        per_page = 12
+        offset = (page - 1) * per_page
+
+        @posts = @posts.offset(offset).limit(per_page)
+        render json: {
+          posts: @posts.as_json(
+            include: [
+              { user: { methods: :profile_image_url } },
+              { post_images: { methods: [:image] } },
+              :hashtags,
+              :prefecture
+            ],
+            methods: :created_at_formatted
+          ),
+          next_page: page + 1,
+          last_page: @posts.size < per_page
+        }
+      }
     end
   end
 
-  def edit; end
+  def edit
+    @user = current_user
+  end
 
   def update
     if @user.update(user_params)
@@ -25,6 +46,36 @@ class MypagesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  # ログインユーザーの投稿一覧を表示
+  def posts
+    @posts = current_user.posts.order(created_at: :desc)
+      .includes(:user, :post_images, :hashtags, :prefecture)
+
+    # インフィニットスクロールの場合、ページネーション処理を追加
+    respond_to do |format|
+      format.html
+      format.json {
+        page = params[:page].to_i || 1
+        per_page = 10
+        offset = (page - 1) * per_page
+
+        paginated_posts = @posts.offset(offset).limit(per_page)
+        render json: {
+          posts: render_to_string(partial: 'posts/post', collection: paginated_posts, formats: [:html]),
+          next_page: page + 1,
+          last_page: paginated_posts.size < per_page
+        }
+      }
+    end
+  end
+
+  # 個別の投稿詳細を表示
+  def post
+    @post = current_user.posts.includes(:user, :post_images, :hashtags, :prefecture).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to mypage_path, alert: "投稿が見つかりませんでした"
   end
 
   private
