@@ -58,5 +58,8 @@ module Myapp
                        controller_specs: false,
                        request_specs: true
     end
+
+    # ヘルパーのパスを追加
+    config.autoload_paths += %W(#{config.root}/app/helpers)
   end
 end

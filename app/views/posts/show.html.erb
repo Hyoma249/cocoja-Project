@@ -70,7 +70,8 @@
         <% end %>
 
         <div class="prose max-w-none pt-4">
-          <span><%= format_content_with_hashtags(@post.content) %></span>
+          <!-- 投稿内容表示部分（ハッシュタグと改行の両方を処理） -->
+          <%= format_content_with_hashtags(@post.content) %>
         </div>
 
         <!-- ハッシュタグがあれば表示 -->

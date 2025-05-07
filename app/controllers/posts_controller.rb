@@ -3,7 +3,7 @@
 class PostsController < ApplicationController
   # ログインユーザーによってのみ実行可能となる
   before_action :authenticate_user!
-  include HashtagHelper
+  include PostsHelper
   include PostsJsonBuildable
   include PostCreatable
 
