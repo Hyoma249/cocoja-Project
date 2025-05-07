@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get 'search/autocomplete', to: 'search#autocomplete'
 
   # 利用規約とプライバシーポリシー
+  get '/contact', to: 'pages#contact'
   get '/terms', to: 'pages#terms'
   get '/privacy', to: 'pages#privacy'
 

@@ -1,4 +1,4 @@
-<!-- Header -->
+<!-- モバイル用ヘッダー -->
 <header class="bg-white p-4 flex justify-between items-center sticky top-0 shadow-sm z-[9999] md:hidden">
   <h1>
     <%= link_to root_path do %>
@@ -37,20 +37,19 @@
     <nav class="p-4">
       <ul class="space-y-3">
         <li>
-          <a href="/terms" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">
-            利用規約
-          </a>
+          <%= link_to "お問い合わせ", contact_path, class: "block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded" %>
         </li>
         <li>
-          <a href="/privacy" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">
-            プライバシーポリシー
-          </a>
+          <%= link_to "利用規約", terms_path, class: "block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded" %>
+        </li>
+        <li>
+          <%= link_to "プライバシーポリシー", privacy_path, class: "block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded" %>
         </li>
       </ul>
     </nav>
     <!-- メニューフッター -->
     <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs text-gray-500 border-t">
-      © 2025 cocoja
+      © <%= Time.current.year %> cocoja
     </div>
   </div>
 </div>
@@ -114,37 +113,59 @@
   initMobileMenu();
 </script>
 
-<%# PC用サイドバー %>
-<div class="hidden md:flex fixed left-0 top-0 h-screen w-72 bg-white border-r z-[9999]">
-  <nav class="flex-1 flex flex-col p-6">
-    <%# ロゴ部分 %>
-    <div class="mb-8">
+<!-- PC用サイドバー -->
+<div class="hidden md:block fixed left-0 top-0 h-screen w-72 bg-white border-r border-gray-200 shadow-sm z-50 overflow-y-auto">
+  <nav class="flex flex-col h-full p-6">
+    <!-- ロゴ部分 -->
+    <div class="mb-8 flex justify-center">
       <%= link_to root_path do %>
-        <%= image_tag "cocoja_logo.svg", class: "w-32 h-auto", alt: "ココジャ" %>
+        <%= image_tag "cocoja_logo.svg", class: "w-36 h-auto", alt: "ココジャ" %>
       <% end %>
     </div>
 
-    <%# ログインボタン %>
-    <div class="flex flex-col gap-3">
+    <!-- ログインボタン -->
+    <div class="flex flex-col gap-3 px-2">
       <%= link_to "ログイン", new_user_session_path,
-          class: "w-full text-center font-bold px-4 py-3 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50" %>
+          class: "w-full text-center font-bold py-3 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50 transition-colors" %>
       <%= link_to "新規登録", new_user_registration_path,
-          class: "w-full text-center font-bold px-4 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700" %>
+          class: "w-full text-center font-bold py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors" %>
     </div>
 
-    <%# 法的情報リンク %>
-    <div class="mt-auto pt-6 border-t border-gray-100 mt-6">
-      <div class="flex justify-center space-x-1">
-        <a href="/terms" class="text-sm text-gray-500 hover:text-blue-600 transition-colors px-2 py-1">利用規約</a>
-        <span class="text-gray-300 self-center">|</span>
-        <a href="/privacy" class="text-sm text-gray-500 hover:text-blue-600 transition-colors px-2 py-1">プライバシーポリシー</a>
+    <!-- メニュー項目 -->
+    <div class="mt-8">
+      <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 px-3">メニュー</h3>
+      <ul class="space-y-1">
+        <li>
+          <%= link_to root_path, class: "flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors" do %>
+            <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            ホーム
+          <% end %>
+        </li>
+        <li>
+          <%= link_to contact_path, class: "flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors" do %>
+            <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            お問い合わせ
+          <% end %>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 法的情報リンク -->
+    <div class="mt-auto pt-6 border-t border-gray-200">
+      <div class="flex flex-col space-y-1">
+        <%= link_to "利用規約", terms_path, class: "text-sm text-gray-600 hover:text-blue-600 transition-colors px-3 py-1" %>
+        <%= link_to "プライバシーポリシー", privacy_path, class: "text-sm text-gray-600 hover:text-blue-600 transition-colors px-3 py-1" %>
       </div>
-      <p class="text-xs text-center text-gray-400 mt-4">© 2025 cocoja</p>
+      <p class="text-xs text-gray-400 mt-4 px-3">© <%= Time.current.year %> cocoja</p>
     </div>
   </nav>
 </div>
 
-<%# メインコンテンツのパディング調整用 %>
+<!-- サイドバーの幅分のスペーサー（PC表示時のみ） -->
 <div class="hidden md:block md:w-72"></div>
 
 <%# メインコンテンツのパディング調整用 %>

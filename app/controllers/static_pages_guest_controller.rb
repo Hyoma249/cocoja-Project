@@ -1,6 +1,9 @@
 # 未ログインユーザー向けの静的ページを担当するコントローラー
 # ランディングページやゲスト向け情報表示機能を提供します
 class StaticPagesGuestController < ApplicationController
+  # authenticate_user!フィルターをスキップ
+  skip_before_action :authenticate_user!, only: [:top], if: -> { respond_to?(:authenticate_user!) }
+
   # ログイン済みユーザーのリダイレクト処理を:topアクションの前に実行
   before_action :redirect_if_authenticated, only: [:top]
 
