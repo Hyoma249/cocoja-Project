@@ -52,7 +52,7 @@
                           <% if index == 0 %>
                             <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none", draggable: "false" %>
                           <% else %>
-                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none lazy-image" draggable="false">
+                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none opacity-0 transition-opacity duration-300" draggable="false">
                           <% end %>
                         <% else %>
                           <div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">

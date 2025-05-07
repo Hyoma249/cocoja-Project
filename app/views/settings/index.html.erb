@@ -1,18 +1,18 @@
 <div class="min-h-screen flex flex-col bg-gray-50">
   <%= render "shared/header/setting_header" %>
 
-  <div class="flex-1 px-4 py-8 md:px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+  <div class="flex-1 px-4 py-8 md:px-8 md:pl-[calc(288px+2rem)] md:pr-8 pb-20">
     <div class="max-w-3xl mx-auto w-full">
       <!-- タイトル -->
       <h2 class="text-2xl text-center font-bold text-gray-900 mb-6">設定</h2>
 
       <!-- アカウント設定セクション -->
-      <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
+      <!-- <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
         <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">アカウント設定</h3>
         <div class="space-y-4">
-          <!-- 将来の設定オプションはここに追加 -->
+          将来の設定オプションはここに追加
         </div>
-      </div>
+      </div> -->
 
       <!-- 法的情報セクション -->
       <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
@@ -30,6 +30,19 @@
               <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
             </svg>
           </a>
+        </div>
+      </div>
+
+      <!-- お問い合わせセクション -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
+        <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">サポート</h3>
+        <div class="space-y-3">
+          <%= link_to contact_path, class: "flex items-center justify-between text-gray-700 hover:text-blue-600 py-2 px-1 transition-colors" do %>
+            <span>お問い合わせ</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          <% end %>
         </div>
       </div>
 

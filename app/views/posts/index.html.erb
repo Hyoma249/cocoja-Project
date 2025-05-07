@@ -32,15 +32,15 @@
             <% if post.post_images.present? %>
               <div class="relative will-change-transform" data-controller="slider">
                 <div class="w-full md:aspect-[4/3] aspect-square overflow-hidden touch-none">
-                  <div class="flex h-full will-change-transform translate-hardware" data-slider-target="wrapper" style="-webkit-backface-visibility: hidden;">
+                  <div class="flex h-full will-change-transform translate-gpu backface-hidden perspective-1000" data-slider-target="wrapper">
                     <% post.post_images.each_with_index do |post_image, index| %>
                       <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
                         <% if post_image.image.present? && post_image.image.url.present? %>
                           <% if index == 0 %>
-                            <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none", 
+                            <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none",
                               draggable: "false", loading: "lazy" %>
                           <% else %>
-                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none lazy-image" 
+                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none opacity-0 transition-opacity duration-300"
                               draggable="false" loading="lazy">
                           <% end %>
                         <% else %>

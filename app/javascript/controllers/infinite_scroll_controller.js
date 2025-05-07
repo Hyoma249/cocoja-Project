@@ -135,8 +135,9 @@ export default class extends Controller {
 
   // 画像の遅延読み込み設定
   setupLazyLoading() {
+    // セレクタを拡張して両方のタイプの画像をカバー
     const lazyImages = document.querySelectorAll(
-      ".lazy-image:not(.lazy-loaded)"
+      "img[data-src]:not(.opacity-100)"
     );
 
     if (!lazyImages.length) return;
@@ -150,17 +151,26 @@ export default class extends Controller {
                 const lazyImage = entry.target;
                 this.imageObserver.unobserve(lazyImage); // 先に監視を解除してパフォーマンス向上
 
-                // 画像読み込みを改善
-                lazyImage.style.opacity = "0";
+                // 必要なクラスの追加を確認
+                if (!lazyImage.classList.contains("opacity-0")) {
+                  lazyImage.classList.add("opacity-0");
+                }
+                if (!lazyImage.classList.contains("transition-opacity")) {
+                  lazyImage.classList.add("transition-opacity");
+                }
+                if (!lazyImage.classList.contains("duration-300")) {
+                  lazyImage.classList.add("duration-300");
+                }
+
                 lazyImage.src = lazyImage.dataset.src;
                 lazyImage.onload = () => {
-                  lazyImage.style.opacity = "1";
-                  lazyImage.classList.add("lazy-loaded");
+                  lazyImage.classList.remove("opacity-0");
+                  lazyImage.classList.add("opacity-100");
                 };
                 lazyImage.onerror = () => {
                   // エラー時の処理
-                  lazyImage.style.opacity = "1";
-                  lazyImage.classList.add("lazy-loaded");
+                  lazyImage.classList.remove("opacity-0");
+                  lazyImage.classList.add("opacity-100");
                 };
               }
             });
@@ -172,12 +182,13 @@ export default class extends Controller {
         );
       }
 
-      // 一括登録ではなくバッチ処理で登録
+      // バッチ処理で登録
       const batchSize = 5;
       for (let i = 0; i < lazyImages.length; i += batchSize) {
         const batch = Array.from(lazyImages).slice(i, i + batchSize);
         batch.forEach((image) => {
-          if (!image.classList.contains("lazy-loaded")) {
+          // 読み込み済みかどうかのチェックを.opacity-100に基づいて行う
+          if (!image.classList.contains("opacity-100")) {
             this.imageObserver.observe(image);
           }
         });
@@ -194,7 +205,7 @@ export default class extends Controller {
   initializeNewSliders() {
     const application = this.application;
     const newSliders = this.entriesTarget.querySelectorAll(
-      '[data-controller="slider"]:not(.slider-initialized)'
+      '[data-controller="slider"]:not(.touch-pan-y)'
     );
 
     if (!newSliders.length) return;
@@ -205,7 +216,7 @@ export default class extends Controller {
       if (index >= newSliders.length) return;
 
       const slider = newSliders[index];
-      slider.classList.add("slider-initialized");
+      slider.classList.add("touch-pan-y");
       application.getControllerForElementAndIdentifier(slider, "slider");
 
       index++;
@@ -227,7 +238,7 @@ export default class extends Controller {
           <div class="aspect-square overflow-hidden relative group">
             ${
               post.post_images[0].url
-                ? `<img data-src="${post.post_images[0].url}" class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 lazy-image">`
+                ? `<img data-src="${post.post_images[0].url}" class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 opacity-0 transition-opacity duration-300">`
                 : ``
             }
             ${
@@ -288,7 +299,7 @@ export default class extends Controller {
                     <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
                       ${
                         image.image && image.image.url
-                          ? `<img data-src="${image.image.url}" class="w-full h-full object-contain select-none pointer-events-none lazy-image" draggable="false">`
+                          ? `<img data-src="${image.image.url}" class="w-full h-full object-contain select-none pointer-events-none opacity-0 transition-opacity duration-300" draggable="false">`
                           : `<div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
                           <span>画像なし</span>
                         </div>`
