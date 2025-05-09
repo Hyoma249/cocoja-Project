@@ -20,16 +20,16 @@ class ApplicationController < ActionController::Base
   def set_default_meta_tags
     # 本番環境用のホスト名を取得
     host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
-    protocol = Rails.env.production? ? 'https' : request.protocol
+    protocol = 'https' # 常にhttpsを使用
 
-    # OGP画像のURL - asset_pathを使用してアセットパイプラインから正しいパスを取得
-    ogp_image_url = "#{protocol}#{host}#{ActionController::Base.helpers.asset_path('cocoja-ogp.png')}"
+    # OGP画像のURL - 絶対URLで明示的に指定
+    ogp_image_url = "#{protocol}://#{host}#{ActionController::Base.helpers.asset_path('cocoja-ogp.png')}"
 
     set_meta_tags(
       site: 'ココじゃ',
       reverse: true,
       separator: '|',
-      title: '都道府県魅力度ランキングSNS',
+      title: 'ココじゃ｜都道府県魅力度ランキングSNS',
       description: '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！',
       keywords: 'ココじゃ, 都道府県, 魅力度ランキング, 地域情報, SNS, 観光, 地元',
       canonical: request.original_url,
@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
         title: :title,
         description: :description,
         type: 'website',
-        url: request.original_url,
+        url: "#{protocol}://#{host}#{request.path}",
         image: {
           _: ogp_image_url,
           width: 1200,
@@ -48,6 +48,7 @@ class ApplicationController < ActionController::Base
       twitter: {
         card: 'summary_large_image',
         site: '@cocoja_app',
+        creator: '@cocoja_app',
         image: ogp_image_url
       }
     )
