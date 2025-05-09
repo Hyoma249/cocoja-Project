@@ -8,9 +8,6 @@ import { application } from "./application";
 import HelloController from "./hello_controller";
 application.register("hello", HelloController);
 
-import SliderController from "./slider_controller";
-application.register("slider", SliderController);
-
 import PasswordVisibilityController from "./password_visibility_controller";
 application.register("password-visibility", PasswordVisibilityController);
 
@@ -34,3 +31,6 @@ application.register("autocomplete", AutocompleteController);
 
 import PostScrollController from "./post_scroll_controller";
 application.register("post-scroll", PostScrollController);
+
+import SwiperController from "./swiper_controller";
+application.register("swiper", SwiperController);

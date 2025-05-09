@@ -10,12 +10,23 @@ module.exports = {
       cursor: {
         grabbing: "grabbing",
       },
+      colors: {
+        // テーマカラーの定義
+        "swiper-bullet": "#2563eb", // カラーテーマのみ定義
+        "swiper-bullet-active": "#2563eb",
+      },
+      zIndex: {
+        60: 60,
+        70: 70,
+        80: 80,
+      },
     },
   },
   plugins: [
-    function ({ addUtilities, addBase }) {
-      // ユーティリティクラス定義
-      const newUtilities = {
+    function ({ addUtilities }) {
+      // Swiperコンポーネント関連のスタイルはapplication.tailwind.cssに統合するため、
+      // ここではパフォーマンス最適化用のユーティリティのみ定義
+      addUtilities({
         ".translate-gpu": {
           transform: "translateZ(0)",
           "-webkit-transform": "translateZ(0)",
@@ -24,27 +35,8 @@ module.exports = {
           "backface-visibility": "hidden",
           "-webkit-backface-visibility": "hidden",
         },
-        ".perspective-1000": {
-          perspective: "1000px",
-          "-webkit-perspective": "1000px",
-        },
         ".touch-pan-y": {
           "touch-action": "pan-y",
-        },
-        ".webkit-touch-scroll": {
-          "-webkit-overflow-scrolling": "touch",
-        },
-      };
-      addUtilities(newUtilities);
-
-      // 基本要素にスタイルを適用
-      addBase({
-        html: {
-          "-webkit-overflow-scrolling": "touch",
-        },
-        body: {
-          "-webkit-overflow-scrolling": "touch",
-          "overscroll-behavior-y": "none",
         },
       });
     },

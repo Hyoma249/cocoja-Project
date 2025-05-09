@@ -38,21 +38,18 @@
               </div>
             </div>
 
-            <!-- 画像スライダー - 最適化版 -->
+            <!-- 画像スライダー - posts/indexと同様に修正 -->
             <% if post.post_images.present? %>
-              <div class="relative will-change-transform" data-controller="slider">
-                <div class="w-full md:aspect-[4/3] aspect-square overflow-hidden touch-none">
-                  <div class="flex h-full will-change-transform translate-gpu backface-hidden perspective-1000" data-slider-target="wrapper">
+              <div class="relative overflow-visible pb-8" data-controller="swiper">
+                <div class="swiper w-full md:aspect-[4/3] aspect-square overflow-visible" data-swiper-target="container">
+                  <div class="swiper-wrapper">
                     <% post.post_images.each_with_index do |post_image, index| %>
-                      <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
+                      <div class="swiper-slide">
                         <% if post_image.image.present? && post_image.image.url.present? %>
-                          <% if index == 0 %>
-                            <%= image_tag post_image.image.url, class: "w-full h-full object-contain select-none pointer-events-none",
-                              draggable: "false", loading: "lazy" %>
-                          <% else %>
-                            <img data-src="<%= post_image.image.url %>" class="w-full h-full object-contain select-none pointer-events-none opacity-0 transition-opacity duration-300"
-                              draggable="false" loading="lazy">
-                          <% end %>
+                          <%= image_tag post_image.image.url,
+                                      class: "w-full h-full object-contain select-none",
+                                      draggable: "false",
+                                      loading: "lazy" %>
                         <% else %>
                           <div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
                             <span>画像なし</span>
@@ -62,23 +59,14 @@
                     <% end %>
                   </div>
 
-                  <!-- インジケーター -->
+                  <!-- インジケーターとページネーション - 画像に被らないよう下部に配置 -->
                   <% if post.post_images.length > 1 %>
-                    <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
-                      <span data-slider-target="counter">1</span>/<%= post.post_images.length %>
+                    <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full z-10">
+                      <span class="swiper-index">1</span>/<%= post.post_images.length %>
                     </div>
 
-                    <!-- ナビゲーションボタン -->
-                    <button class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="prevButton" data-action="click->slider#prev">
-                      <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                      </svg>
-                    </button>
-                    <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="nextButton" data-action="click->slider#next">
-                      <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                      </svg>
-                    </button>
+                    <!-- ページネーション - 画像下部に配置 -->
+                    <div class="swiper-pagination"></div>
                   <% end %>
                 </div>
               </div>

@@ -91,126 +91,40 @@
           <h3 class="text-xl font-bold">投稿フォーマットの紹介</h3>
         </div>
 
-        <!-- スライダー -->
-        <div class="main-slider relative w-full overflow-hidden" data-controller="slider">
-          <div class="slider-wrapper flex transition-transform duration-500 ease-in-out" data-slider-target="wrapper">
-            <!-- 投稿カード -->
-            <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
-              <div class="bg-white border border-gray-200 rounded-lg overflow-hidden max-w-lg mx-auto">
-                <!-- ユーザー情報 -->
-                <div class="flex items-center p-3 border-b border-gray-100">
-                  <div class="w-8 h-8 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
-                    <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-full h-full object-cover" %>
-                  </div>
-                  <div class="ml-2">
-                    <h4 class="text-sm font-bold">travel_Taro</h4>
-                    <div class="text-xs text-gray-600">
-                      <span>沖縄県</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 投稿画像 -->
-                <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", 
-                    class: "w-full aspect-[4/3] object-cover" %>
-
-                <!-- 投稿内容 -->
-                <div class="p-3">
-                  <p class="text-sm text-gray-800 mb-2">
-                    沖縄<span class="text-blue-600">#旅行</span>で最高の景色に出会いました！透き通った海と白い砂浜が本当に綺麗で、時間を忘れて過ごしました。
-                  </p>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#沖縄</span>
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#旅行</span>
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ビーチ</span>
-                  </div>
-                  <p class="text-xs text-gray-500 mt-2">投稿日：2025年03月19日</p>
+        <!-- シンプルな1枚表示に変更 -->
+        <div class="max-w-lg mx-auto">
+          <!-- 投稿カード -->
+          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <!-- ユーザー情報 -->
+            <div class="flex items-center p-3 border-b border-gray-100">
+              <div class="w-8 h-8 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+                <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-full h-full object-cover" %>
+              </div>
+              <div class="ml-2">
+                <h4 class="text-sm font-bold">travel_Taro</h4>
+                <div class="text-xs text-gray-600">
+                  <span>沖縄県</span>
                 </div>
               </div>
             </div>
 
-            <!-- 投稿 2 -->
-            <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
-              <div class="bg-white border border-gray-200 rounded-lg overflow-hidden max-w-lg mx-auto">
-                <!-- ユーザー情報 -->
-                <div class="flex items-center p-3 border-b border-gray-100">
-                  <div class="w-8 h-8 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
-                    <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-full h-full object-cover" %>
-                  </div>
-                  <div class="ml-2">
-                    <h4 class="text-sm font-bold">Gurume_Hanako</h4>
-                    <div class="text-xs text-gray-600">
-                      <span>福岡県</span>
-                    </div>
-                  </div>
-                </div>
+            <!-- 投稿画像 -->
+            <%= image_tag "post-okinawa.png", alt: "沖縄のビーチ", 
+                class: "w-full aspect-[4/3] object-cover" %>
 
-                <!-- 投稿画像 -->
-                <%= image_tag "post-fukuoka.png", alt: "福岡ラーメン", 
-                    class: "w-full aspect-[4/3] object-cover" %>
-
-                <!-- 投稿内容 -->
-                <div class="p-3">
-                  <p class="text-sm text-gray-800 mb-2">
-                    <span class="text-blue-600">#福岡</span>に来たらやっぱり<span class="text-blue-600">#ラーメン</span>！<span class="text-blue-600">#屋台</span>で食べる熱々の豚骨ラーメンは最高です！スープまで飲み干してしまうほど美味しかった！
-                  </p>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#福岡</span>
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ラーメン</span>
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#屋台</span>
-                  </div>
-                  <p class="text-xs text-gray-500 mt-2">投稿日：2025年02月10日</p>
-                </div>
+            <!-- 投稿内容 -->
+            <div class="p-3">
+              <p class="text-sm text-gray-800 mb-2">
+                沖縄<span class="text-blue-600">#旅行</span>で最高の景色に出会いました！透き通った海と白い砂浜が本当に綺麗で、時間を忘れて過ごしました。
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#沖縄</span>
+                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#旅行</span>
+                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#ビーチ</span>
               </div>
-            </div>
-
-            <!-- 投稿 3 -->
-            <div class="slider-item w-full flex-shrink-0" data-slider-target="slide">
-              <div class="bg-white border border-gray-200 rounded-lg overflow-hidden max-w-lg mx-auto">
-                <!-- ユーザー情報 -->
-                <div class="flex items-center p-3 border-b border-gray-100">
-                  <div class="w-8 h-8 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
-                    <%= image_tag "sample_icon1.svg", alt: "travel_Taro", class: "w-full h-full object-cover" %>
-                  </div>
-                  <div class="ml-2">
-                    <h4 class="text-sm font-bold">kyoto_kyoco</h4>
-                    <div class="text-xs text-gray-600">
-                      <span>京都府</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 投稿画像 -->
-                <%= image_tag "post-kyoto.png", alt: "京都の祇園祭", 
-                    class: "w-full aspect-[4/3] object-cover" %>
-
-                <!-- 投稿内容 -->
-                <div class="p-3">
-                  <p class="text-sm text-gray-800 mb-2">
-                    <span class="text-blue-600">#京都</span> の<span class="text-blue-600">#祇園祭</span> に行ってきました！豪華絢爛な山鉾巡行は圧巻！日本の<span class="text-blue-600">#伝統文化</span> に触れることができました。来年も絶対行きたい！ 
-                  </p>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#京都</span>
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#祇園祭</span>
-                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#伝統文化</span>
-                  </div>
-                  <p class="text-xs text-gray-500 mt-2">投稿日：2025年01月07日</p>
-                </div>
-              </div>
+              <p class="text-xs text-gray-500 mt-2">投稿日：2025年03月19日</p>
             </div>
           </div>
-
-            <!-- ナビゲーションボタン -->
-            <button class="slide-nav prev absolute left-0 md:left-[calc(54%-280px)] top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 rounded-full shadow flex items-center justify-center" data-slider-target="prevButton" data-action="click->slider#prev">
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-            </button>
-            <button class="slide-nav next absolute right-0 md:right-[calc(54%-280px)] top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 rounded-full shadow flex items-center justify-center" data-slider-target="nextButton" data-action="click->slider#next">
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-            </button>
         </div>
       </div>
 

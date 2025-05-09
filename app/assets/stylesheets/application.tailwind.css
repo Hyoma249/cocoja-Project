@@ -20,4 +20,38 @@
       transform: translateY(0);
     }
   }
+  /* Swiperのスタイル */
+  .swiper {
+    @apply relative w-full h-full overflow-visible;
+  }
+
+  .swiper-wrapper {
+    @apply flex w-full h-full transition-transform overflow-visible;
+  }
+
+  .swiper-slide {
+    @apply flex-shrink-0 w-full h-full flex justify-center items-center;
+  }
+
+  /* ページネーションのスタイル - 画像に被らないよう下に配置 */
+  .swiper-pagination {
+    @apply absolute left-0 right-0 flex justify-center items-center z-50;
+    bottom: -24px !important;
+    /* 画像の外側に配置 */
+  }
+
+  .swiper-pagination-bullet {
+    @apply w-1 h-1 mx-1 rounded-full bg-gray-300 opacity-80 inline-block cursor-pointer transition-all;
+  }
+
+  .swiper-pagination-bullet-active {
+    @apply bg-blue-600 opacity-100 scale-110 shadow-sm;
+  }
+}
+
+/* 特殊なケース用のユーティリティ */
+@layer utilities {
+  .swiper-visible {
+    @apply overflow-visible !important;
+  }
 }

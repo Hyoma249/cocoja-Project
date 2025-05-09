@@ -201,11 +201,11 @@ export default class extends Controller {
     }
   }
 
-  // 新しく追加されたスライダーを初期化
+  // 新しく追加されたスライダーを初期化 - Swiperを使用するように修正
   initializeNewSliders() {
     const application = this.application;
     const newSliders = this.entriesTarget.querySelectorAll(
-      '[data-controller="slider"]:not(.touch-pan-y)'
+      '[data-controller="swiper"]:not(.initialized-swiper)'
     );
 
     if (!newSliders.length) return;
@@ -216,8 +216,8 @@ export default class extends Controller {
       if (index >= newSliders.length) return;
 
       const slider = newSliders[index];
-      slider.classList.add("touch-pan-y");
-      application.getControllerForElementAndIdentifier(slider, "slider");
+      slider.classList.add("initialized-swiper");
+      application.getControllerForElementAndIdentifier(slider, "swiper");
 
       index++;
       // 次のスライダーを非同期で初期化
@@ -258,7 +258,7 @@ export default class extends Controller {
       .join("");
   }
 
-  // 投稿のHTMLを生成する関数（ハッシュタグページ用）
+  // 投稿のHTMLを生成する関数（ハッシュタグページ用） - Swiperに対応
   buildPostsHTML(posts) {
     return posts
       .map((post) => {
@@ -287,19 +287,19 @@ export default class extends Controller {
             </div>
           </div>
 
-          <!-- 画像スライダー -->
+          <!-- 画像スライダー - Swiperに変更 -->
           ${
             post.post_images && post.post_images.length > 0
-              ? `<div class="relative" data-controller="slider">
-              <div class="w-full md:aspect-[4/3] aspect-square overflow-hidden touch-none">
-                <div class="flex h-full will-change-transform touch-pan-y" data-slider-target="wrapper">
+              ? `<div class="relative overflow-hidden pb-8" data-controller="swiper">
+              <div class="swiper w-full md:aspect-[4/3] aspect-square" data-swiper-target="container">
+                <div class="swiper-wrapper">
                   ${post.post_images
                     .map(
                       (image, index) => `
-                    <div class="w-full flex-shrink-0 flex items-center justify-center select-none" data-slider-target="slide">
+                    <div class="swiper-slide">
                       ${
                         image.image && image.image.url
-                          ? `<img data-src="${image.image.url}" class="w-full h-full object-contain select-none pointer-events-none opacity-0 transition-opacity duration-300" draggable="false">`
+                          ? `<img data-src="${image.image.url}" src="${image.image.url}" class="w-full h-full object-contain select-none" draggable="false" loading="lazy">`
                           : `<div class="w-full h-full bg-gray-900 flex items-center justify-center text-white select-none">
                           <span>画像なし</span>
                         </div>`
@@ -312,20 +312,11 @@ export default class extends Controller {
 
                 ${
                   post.post_images.length > 1
-                    ? `<div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
-                    <span data-slider-target="counter">1</span>/${post.post_images.length}
+                    ? `<div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full z-10">
+                    <span class="swiper-index">1</span>/${post.post_images.length}
                   </div>
 
-                  <button class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="prevButton" data-action="click->slider#prev">
-                    <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                  </button>
-                  <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black bg-opacity-20 rounded-full shadow flex items-center justify-center z-10 focus:outline-none" data-slider-target="nextButton" data-action="click->slider#next">
-                    <svg class="w-8 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                  </button>`
+                  <div class="swiper-pagination"></div>`
                     : ""
                 }
               </div>
@@ -359,7 +350,7 @@ export default class extends Controller {
             }</p>
           </div>
 
-          <!-- 詳細ページへのリンクを追加 -->
+          <!-- 詳細ページへのリンク -->
           <div class="p-4 border-t">
             <a href="/posts/${
               post.id
