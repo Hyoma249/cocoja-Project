@@ -18,15 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_default_meta_tags
-    # 本番環境用のホスト名を取得
-    host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
-    protocol = 'https' # 常にhttpsを使用
-
-    # 固定パスのOGP画像URL
-    ogp_image_url = Rails.env.production? ? 
-      "https://cocoja-7b01rrht.b4a.run/ogp-image.png" :
-      "#{protocol}://#{host}/ogp-image.png"
-
+    # 完全に固定のOGP情報を設定
     set_meta_tags(
       site: 'ココじゃ',
       reverse: true,
@@ -34,24 +26,20 @@ class ApplicationController < ActionController::Base
       title: 'ココじゃ｜都道府県魅力度ランキングSNS',
       description: '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！',
       keywords: 'ココじゃ, 都道府県, 魅力度ランキング, 地域情報, SNS, 観光, 地元',
-      canonical: request.original_url,
       og: {
         site_name: 'ココじゃ',
-        title: :title,
-        description: :description,
+        title: 'ココじゃ | 都道府県魅力度ランキングSNS',
+        description: '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！',
         type: 'website',
-        url: "#{protocol}://#{host}#{request.path}",
-        image: {
-          _: ogp_image_url,
-          width: 1200,
-          height: 630
-        }
+        url: 'https://cocoja-7b01rrht.b4a.run/',
+        image: 'https://cocoja-7b01rrht.b4a.run/cocoja-ogp.png'
       },
       twitter: {
         card: 'summary_large_image',
         site: '@cocoja_app',
-        creator: '@cocoja_app',
-        image: ogp_image_url
+        title: 'ココじゃ | 都道府県魅力度ランキングSNS',
+        description: '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！',
+        image: 'https://cocoja-7b01rrht.b4a.run/cocoja-ogp.png'
       }
     )
   end

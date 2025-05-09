@@ -1,33 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%
-      host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
-      protocol = 'https' # 常にhttpsを使用
-
-      # OGP画像の絶対URL（ハードコード）- アセットパイプラインをバイパス
-      if Rails.env.production?
-        ogp_image_url = "https://cocoja-7b01rrht.b4a.run/ogp-image.png" 
-      else
-        ogp_image_url = "#{protocol}://#{host}/ogp-image.png"
-      end
-    %>
     <meta charset="utf-8">
     <title><%= content_for?(:title) ? yield(:title) : "ココじゃ | 都道府県魅力度ランキングSNS" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。' %>">
 
-    <!-- OGP・Twitter Card タグ -->
-    <meta property="og:title" content="<%= content_for?(:title) ? yield(:title) : "ココじゃ | 都道府県魅力度ランキングSNS" %>">
-    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！' %>">
+    <!-- 固定OGP・Twitter Card タグ - 動的に生成せずに固定 -->
+    <meta property="og:title" content="ココじゃ | 都道府県魅力度ランキングSNS">
+    <meta property="og:description" content="「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<%= "#{protocol}://#{host}#{request.path}" %>">
+    <meta property="og:url" content="https://cocoja-7b01rrht.b4a.run/">
     <meta property="og:site_name" content="ココじゃ">
-    <meta property="og:image" content="<%= ogp_image_url %>">
+    <meta property="og:image" content="https://cocoja-7b01rrht.b4a.run/cocoja-ogp.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@cocoja_app">
-    <meta name="twitter:image" content="<%= ogp_image_url %>">
+    <meta name="twitter:title" content="ココじゃ | 都道府県魅力度ランキングSNS">
+    <meta name="twitter:description" content="「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！">
+    <meta name="twitter:image" content="https://cocoja-7b01rrht.b4a.run/cocoja-ogp.png">
 
     <!-- 基本設定 -->
     <meta name="viewport" content="width=device-width,initial-scale=1">
