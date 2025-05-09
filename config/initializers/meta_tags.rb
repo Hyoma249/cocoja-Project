@@ -1,6 +1,6 @@
 # MetaTags用の初期設定
 MetaTags.configure do |config|
-  # タイトルが指定されていない場合のデフォルトタイトル
+  # タイトルが指定されていない場合のデフォルトタイトル文字数制限
   config.title_limit = 70
 
   # 説明文の文字数制限
@@ -12,11 +12,5 @@ MetaTags.configure do |config|
   # キーワードのセパレータ
   config.keywords_separator = ', '
 
-  # OGPのimageがない場合のデフォルト画像は、application_controller.rbのset_default_meta_tagsで設定します
-
-  # Twitterカードタイプのデフォルト
-  # config.twitter_card_type = 'summary_large_image' # このオプションは存在しない
-
-  # titleヘルパーメソッドで使用するセパレーター
-  config.title_separator = ' | '
+  # OGPの設定はコントローラで行う
 end

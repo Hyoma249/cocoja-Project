@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
     protocol = Rails.env.production? ? 'https' : request.protocol
 
-    # OGP画像のURL
+    # OGP画像のURL - asset_pathを使用してアセットパイプラインから正しいパスを取得
     ogp_image_url = "#{protocol}#{host}#{ActionController::Base.helpers.asset_path('cocoja-ogp.png')}"
 
     set_meta_tags(
