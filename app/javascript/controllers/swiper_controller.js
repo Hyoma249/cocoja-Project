@@ -1,60 +1,133 @@
 import { Controller } from "@hotwired/stimulus";
 import Swiper from "swiper";
-import { Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
 
-// Swiperのモジュールを明示的に登録
-Swiper.use([Pagination]);
+// スタイルインポートをコメントアウト（application.tailwind.cssで定義しているため）
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
 
 export default class extends Controller {
   static targets = ["container"];
 
   connect() {
-    if (document.readyState === "complete") {
-      this.initSwiper();
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      setTimeout(() => this.initSwiper(), 10);
     } else {
       window.addEventListener("load", () => this.initSwiper());
     }
   }
 
   initSwiper() {
-    const container = this.containerTarget;
-    const hasMultipleSlides =
-      container.querySelectorAll(".swiper-slide").length > 1;
+    try {
+      const container = this.containerTarget;
+      const hasMultipleSlides =
+        container.querySelectorAll(".swiper-slide").length > 1;
 
-    // Swiperインスタンスをシンプルに初期化
-    this.swiper = new Swiper(container, {
-      slidesPerView: 1,
-      direction: "horizontal",
-      preloadImages: true,
-      updateOnWindowResize: true,
+      // スタイルを直接適用して確実に表示を修正
+      this.applyEmergencySwiperStyles(container);
 
-      // ページネーション設定
-      pagination: hasMultipleSlides
-        ? {
-            el: ".swiper-pagination",
-            clickable: true,
-          }
-        : false,
+      // Swiperを初期化
+      this.swiper = new Swiper(container, {
+        modules: [Navigation, Pagination],
+        slidesPerView: 1,
+        direction: "horizontal",
+        preloadImages: true,
+        updateOnWindowResize: true,
 
-      on: {
-        slideChange: () => {
-          // スライド変更時のインデックス表示を更新
-          if (hasMultipleSlides && this.swiper) {
-            const indexElement = container.querySelector(".swiper-index");
-            if (indexElement) {
-              indexElement.textContent = this.swiper.activeIndex + 1;
+        // ページネーション設定
+        pagination: hasMultipleSlides
+          ? {
+              el: ".swiper-pagination",
+              clickable: true,
             }
-          }
+          : false,
+
+        on: {
+          init: function () {
+            container.classList.add("swiper-initialized");
+            console.log("Swiper initialized successfully");
+          },
+          slideChange: () => {
+            if (hasMultipleSlides && this.swiper) {
+              const indexElement = container.querySelector(".swiper-index");
+              if (indexElement) {
+                indexElement.textContent = this.swiper.activeIndex + 1;
+              }
+            }
+          },
         },
-      },
+      });
+    } catch (error) {
+      console.error("Swiper initialization error:", error);
+    }
+  }
+
+  // JavaScriptでスタイルを強制適用する関数を追加
+  applyEmergencySwiperStyles(container) {
+    // コンテナのスタイル
+    Object.assign(container.style, {
+      position: "relative",
+      width: "100%",
+      height: "100%",
+      overflow: "visible",
+      zIndex: "1",
+      marginLeft: "auto",
+      marginRight: "auto",
     });
+
+    // ラッパーのスタイル
+    const wrapper = container.querySelector(".swiper-wrapper");
+    if (wrapper) {
+      Object.assign(wrapper.style, {
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        zIndex: "1",
+        display: "flex",
+        boxSizing: "content-box",
+        transitionProperty: "transform",
+        overflow: "visible",
+      });
+    }
+
+    // スライドのスタイル
+    const slides = container.querySelectorAll(".swiper-slide");
+    slides.forEach((slide) => {
+      Object.assign(slide.style, {
+        flexShrink: "0",
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      });
+    });
+
+    // ページネーションのスタイル
+    const pagination = container.querySelector(".swiper-pagination");
+    if (pagination) {
+      Object.assign(pagination.style, {
+        position: "absolute",
+        left: "0",
+        right: "0",
+        bottom: "-24px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: "10",
+      });
+    }
   }
 
   disconnect() {
-    if (this.swiper && this.swiper.destroy) {
+    if (this.swiper && typeof this.swiper.destroy === "function") {
       this.swiper.destroy(true, true);
+      this.swiper = null;
     }
   }
 }

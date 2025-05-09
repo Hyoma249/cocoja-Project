@@ -20,8 +20,7 @@ Rails.application.configure do
   config.public_file_server.headers = {
     'Cache-Control' => 'public, max-age=31536000, immutable'
   }
-  config.assets.compile = true
-  config.assets.css_compressor = nil
+  config.assets.compile = false
   config.assets.digest = true
   config.assets.version = '1.0'
 
