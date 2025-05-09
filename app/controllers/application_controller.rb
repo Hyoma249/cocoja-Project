@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # 全てのコントローラーに対してユーザー認証を要求
   # 特定のアクションは各コントローラーで例外設定するのが望ましい
   before_action :authenticate_user!
+  before_action :set_default_meta_tags
 
   def after_sign_in_path_for(_resource)
     top_page_login_url(protocol: 'https')
@@ -14,5 +15,34 @@ class ApplicationController < ActionController::Base
     return unless user_signed_in?
 
     redirect_to top_page_login_path
+  end
+
+  def set_default_meta_tags
+    set_meta_tags(
+      site: 'ココじゃ',
+      reverse: true,
+      separator: '|',
+      title: '都道府県魅力度ランキングSNS',
+      description: '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！',
+      keywords: 'ココじゃ, 都道府県, 魅力度ランキング, 地域情報, SNS, 観光, 地元',
+      canonical: request.original_url,
+      og: {
+        site_name: 'ココじゃ',
+        title: :title,
+        description: :description,
+        type: 'website',
+        url: request.original_url,
+        image: {
+          _: ActionController::Base.helpers.asset_url('cocoja-ogp.png', protocol: 'https'),
+          width: 1200, 
+          height: 630
+        }
+      },
+      twitter: {
+        card: 'summary_large_image',
+        site: '@cocoja_app',
+        image: ActionController::Base.helpers.asset_url('cocoja-ogp.png', protocol: 'https')
+      }
+    )
   end
 end

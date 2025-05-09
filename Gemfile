@@ -50,6 +50,7 @@ gem 'carrierwave' # 画像アップロード
 gem 'cloudinary', '~> 2.3' # 画像アップロードのストレージ
 gem 'devise' # 認証機能
 gem 'kaminari' # ページネーション機能のベースとして使用
+gem 'meta-tags' # OGP対応のためのmetaタグ管理
 gem 'oj' # 高速JSONパーサー（JSON処理が多い場合）
 gem 'rack-cors' # CORS設定
 gem 'rails-i18n' # Rails の国際化対応
