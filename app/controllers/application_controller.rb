@@ -18,6 +18,13 @@ class ApplicationController < ActionController::Base
   end
 
   def set_default_meta_tags
+    # 本番環境用のホスト名を取得
+    host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
+    protocol = Rails.env.production? ? 'https' : request.protocol
+
+    # OGP画像のURL
+    ogp_image_url = "#{protocol}#{host}#{ActionController::Base.helpers.asset_path('cocoja-ogp.png')}"
+
     set_meta_tags(
       site: 'ココじゃ',
       reverse: true,
@@ -33,15 +40,15 @@ class ApplicationController < ActionController::Base
         type: 'website',
         url: request.original_url,
         image: {
-          _: ActionController::Base.helpers.asset_url('cocoja-ogp.png', protocol: 'https'),
-          width: 1200, 
+          _: ogp_image_url,
+          width: 1200,
           height: 630
         }
       },
       twitter: {
         card: 'summary_large_image',
         site: '@cocoja_app',
-        image: ActionController::Base.helpers.asset_url('cocoja-ogp.png', protocol: 'https')
+        image: ogp_image_url
       }
     )
   end

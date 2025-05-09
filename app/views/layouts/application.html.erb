@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%
+      host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
+      protocol = Rails.env.production? ? 'https' : request.protocol
+      ogp_image_url = "#{protocol}#{host}#{asset_path('cocoja-ogp.png')}"
+    %>
+
     <%= display_meta_tags %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <meta property="og:image" content="<%= ogp_image_url %>">
+    <meta name="twitter:image" content="<%= ogp_image_url %>">
 
     <%= yield :head %>
 

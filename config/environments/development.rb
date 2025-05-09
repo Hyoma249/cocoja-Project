@@ -73,4 +73,7 @@ Rails.application.configure do
   # メール認証の設定（開発環境）
   config.action_mailer.delivery_method = :letter_opener_web
   config.action_mailer.perform_deliveries = true
+
+  # 開発環境でのアセットURLのホスト設定
+  # config.action_controller.asset_host = 'http://localhost:3000'
 end

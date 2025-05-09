@@ -12,11 +12,10 @@ MetaTags.configure do |config|
   # キーワードのセパレータ
   config.keywords_separator = ', '
 
-  # OGPのimageがない場合のデフォルト画像
-  config.og_image_default = 'cocoja-ogp.png'
+  # OGPのimageがない場合のデフォルト画像は、application_controller.rbのset_default_meta_tagsで設定します
 
   # Twitterカードタイプのデフォルト
-  config.twitter_card_type = 'summary_large_image'
+  # config.twitter_card_type = 'summary_large_image' # このオプションは存在しない
 
   # titleヘルパーメソッドで使用するセパレーター
   config.title_separator = ' | '
