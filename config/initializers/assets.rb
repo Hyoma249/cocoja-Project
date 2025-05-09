@@ -14,4 +14,6 @@ Rails.application.config.assets.precompile += %w[
   application.tailwind.css
   swiper-bundle.min.js
   swiper-bundle.min.css
+  cocoja-ogp.png
+  cocoja-icon.png
 ]

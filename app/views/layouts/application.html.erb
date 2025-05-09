@@ -4,10 +4,16 @@
     <%
       host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
       protocol = 'https' # 常にhttpsを使用
-      ogp_image_url = "#{protocol}://#{host}#{asset_path('cocoja-ogp.png')}"
-    %>
 
-    <title><%= content_for?(:title) ? yield(:title) : "ココじゃ" %></title>
+      # OGP画像の絶対URL（ハードコード）- アセットパイプラインをバイパス
+      if Rails.env.production?
+        ogp_image_url = "https://cocoja-7b01rrht.b4a.run/ogp-image.png" 
+      else
+        ogp_image_url = "#{protocol}://#{host}/ogp-image.png"
+      end
+    %>
+    <meta charset="utf-8">
+    <title><%= content_for?(:title) ? yield(:title) : "ココじゃ | 都道府県魅力度ランキングSNS" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。' %>">
 
     <!-- OGP・Twitter Card タグ -->

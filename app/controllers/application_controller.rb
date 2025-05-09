@@ -22,8 +22,10 @@ class ApplicationController < ActionController::Base
     host = Rails.env.production? ? 'cocoja-7b01rrht.b4a.run' : request.host_with_port
     protocol = 'https' # 常にhttpsを使用
 
-    # OGP画像のURL - 絶対URLで明示的に指定
-    ogp_image_url = "#{protocol}://#{host}#{ActionController::Base.helpers.asset_path('cocoja-ogp.png')}"
+    # 固定パスのOGP画像URL
+    ogp_image_url = Rails.env.production? ? 
+      "https://cocoja-7b01rrht.b4a.run/ogp-image.png" :
+      "#{protocol}://#{host}/ogp-image.png"
 
     set_meta_tags(
       site: 'ココじゃ',
