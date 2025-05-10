@@ -27,8 +27,14 @@ RUN bundle config set path '/myapp/vendor/bundle'
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
+# package.jsonとyarn.lockをコピー
+COPY package.json yarn.lock /myapp/
+
 # 特定のバージョンでbundle installを実行
 RUN bundle _2.6.3_ install
+
+# Linuxプラットフォーム用にnodeパッケージをインストール
+RUN yarn install
 
 # カレントディレクトリのファイルをコンテナにコピー
 ADD . /myapp
