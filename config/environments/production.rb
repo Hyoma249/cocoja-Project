@@ -35,7 +35,7 @@ Rails.application.configure do
     hsts: { subdomains: true, preload: true, expires: 1.year },
     redirect: {
       exclude: lambda { |request|
-        request.get_header('HTTP_X_FORWARDED_PROTO') == 'https' 
+        request.get_header('HTTP_X_FORWARDED_PROTO') == 'https'
       }
     }
   }

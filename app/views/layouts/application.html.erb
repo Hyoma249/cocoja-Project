@@ -5,22 +5,6 @@
     <title><%= content_for?(:title) ? yield(:title) : "ココじゃ | 都道府県魅力度ランキングSNS" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。' %>">
 
-    <!-- 固定OGP・Twitter Card タグ - 動的に生成せずに固定 -->
-    <meta property="og:title" content="ココじゃ | 都道府県魅力度ランキングSNS">
-    <meta property="og:description" content="「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cocoja-7b01rrht.b4a.run/">
-    <meta property="og:site_name" content="ココじゃ">
-    <meta property="og:image" content="https://cocoja-7b01rrht.b4a.run/cocoja-ogp.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@cocoja_app">
-    <meta name="twitter:title" content="ココじゃ | 都道府県魅力度ランキングSNS">
-    <meta name="twitter:description" content="「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！">
-    <meta name="twitter:image" content="https://cocoja-7b01rrht.b4a.run/cocoja-ogp.png">
-
     <!-- 基本設定 -->
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +20,8 @@
     <!-- スタイルとスクリプト -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
+    <%= display_meta_tags(default_meta_tags) %>
   </head>
 
   <body class="bg-gray-50">
