@@ -16,6 +16,12 @@ module Users
       @user = User.from_omniauth(request.env['omniauth.auth'])
 
       if @user.persisted?
+        # 既存ユーザーの場合でもメール確認を強制的に完了させる
+        unless @user.confirmed?
+          @user.confirm
+          @user.save
+        end
+
         # 認証成功の場合
         flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: kind
 
