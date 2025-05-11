@@ -60,3 +60,24 @@ ja:
     mailer:
       confirmation_instructions:
         subject: "【ココじゃ】アカウント認証のお願い"
+      reset_password_instructions:
+        subject: "【ココじゃ】パスワード再設定のご案内"
+        greeting: "%{recipient}様"
+        instruction: "パスワードの再設定を行うには、下のリンクをクリックしてください。"
+        instruction_2: "パスワード再設定の依頼をしていない場合は、このメールを無視してください。"
+        instruction_3: "上のリンクにアクセスして新しいパスワードを設定するまで、パスワードは変更されません。"
+        action: "パスワードを変更する"
+    passwords:
+      no_token: "パスワードリセットメールのリンクからアクセスしてください。"
+      send_instructions: "パスワードリセットのメールを送信しました。"
+      send_paranoid_instructions: "メールアドレスが登録されている場合、パスワード再設定のメールが送信されます。"
+      updated: "パスワードが正常に変更されました。ログインしました。"
+      updated_not_active: "パスワードが正常に変更されました。"
+      new:
+        forgot_your_password: "パスワードを忘れましたか？"
+        send_me_reset_instructions: "パスワードリセット手順を送信する"
+      edit:
+        change_your_password: "パスワードを変更する"
+        new_password: "新しいパスワード"
+        confirm_new_password: "新しいパスワード（確認）"
+        change_my_password: "パスワードを変更する"

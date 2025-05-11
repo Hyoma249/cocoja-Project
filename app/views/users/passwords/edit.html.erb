@@ -1,25 +1,102 @@
-<h2>Change your password</h2>
+<div class="container mx-auto px-4 py-8 max-w-screen-lg">
+  <div class="flex justify-center">
+    <div class="w-full md:w-2/3 lg:w-1/2 xl:w-2/5">
+      <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="bg-blue-600 text-white py-4 px-6 text-center">
+          <h2 class="text-xl font-semibold flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
+            新しいパスワードを設定
+          </h2>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+        <div class="px-6 py-8">
+          <div class="text-gray-500 text-center mb-6">
+            <p class="text-sm">新しいパスワードを入力してください</p>
+          </div>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+          <%= form_with(model: resource, as: resource_name, url: password_path(resource_name), method: :put) do |f| %>
+            <%= render "users/shared/error_messages", resource: resource %>
+            <%= f.hidden_field :reset_password_token %>
+
+            <!-- 新しいパスワード入力欄 -->
+            <div class="relative mb-6">
+              <%= f.label :password, "新しいパスワード", class: "block text-sm font-semibold text-gray-800" %>
+              <% if @minimum_password_length %>
+                <small class="text-[74%] text-gray-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください</small>
+              <% end %>
+              <div data-controller="password-visibility" class="relative">
+                <%= f.password_field :password,
+                    class: "password-field w-full px-4 pr-12 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none",
+                    data: { password_visibility_target: "field" } %>
+                <button type="button"
+                        class="toggle-password absolute right-3 flex items-center text-gray-600"
+                        style="top: calc(50% + -5px);"
+                        data-action="click->password-visibility#toggle"
+                        aria-label="パスワードを表示">
+                  <svg class="show-password hidden"
+                      data-password-visibility-target="showIcon"
+                      xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 3.75C4.22727 3.75 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C13.7727 14.25 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg class="hide-password"
+                      data-password-visibility-target="hideIcon"
+                      xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M15 11.1251C15.9811 9.9988 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75C8.74408 3.75 8.49405 3.76509 8.25 3.79366C7.99334 3.82371 7.7433 3.86866 7.5 3.92664M9 6.75C9.26298 6.75 9.51542 6.79512 9.75 6.87803C10.3893 7.10399 10.896 7.61069 11.122 8.25C11.2049 8.48458 11.25 8.73702 11.25 9M2.25 2.25L15.75 15.75M9 11.25C8.73702 11.25 8.48458 11.2049 8.25 11.122C7.61069 10.896 7.10399 10.3893 6.87803 9.75C6.8354 9.62939 6.80276 9.50406 6.78111 9.375M3.11026 6.75C2.87907 7.00838 2.67176 7.26181 2.48898 7.5C1.83965 8.34618 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C9.25592 14.25 9.50595 14.2349 9.75 14.2063" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- パスワード確認入力欄 -->
+            <div class="relative mb-6">
+              <%= f.label :password_confirmation, "パスワードの確認", class: "block text-sm font-semibold text-gray-800" %>
+              <div data-controller="password-visibility" class="relative">
+                <%= f.password_field :password_confirmation,
+                    class: "password-field w-full px-4 pr-12 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none",
+                    data: { password_visibility_target: "field" } %>
+                <button type="button"
+                        class="toggle-password absolute right-3 flex items-center text-gray-600"
+                        style="top: calc(50% + -5px);"
+                        data-action="click->password-visibility#toggle"
+                        aria-label="パスワードを表示">
+                  <svg class="show-password hidden"
+                      data-password-visibility-target="showIcon"
+                      xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 3.75C4.22727 3.75 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C13.7727 14.25 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg class="hide-password"
+                      data-password-visibility-target="hideIcon"
+                      xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M15 11.1251C15.9811 9.9988 16.5 9 16.5 9C16.5 9 13.7727 3.75 9 3.75C8.74408 3.75 8.49405 3.76509 8.25 3.79366C7.99334 3.82371 7.7433 3.86866 7.5 3.92664M9 6.75C9.26298 6.75 9.51542 6.79512 9.75 6.87803C10.3893 7.10399 10.896 7.61069 11.122 8.25C11.2049 8.48458 11.25 8.73702 11.25 9M2.25 2.25L15.75 15.75M9 11.25C8.73702 11.25 8.48458 11.2049 8.25 11.122C7.61069 10.896 7.10399 10.3893 6.87803 9.75C6.8354 9.62939 6.80276 9.50406 6.78111 9.375M3.11026 6.75C2.87907 7.00838 2.67176 7.26181 2.48898 7.5C1.83965 8.34618 1.5 9 1.5 9C1.5 9 4.22727 14.25 9 14.25C9.25592 14.25 9.50595 14.2349 9.75 14.2063" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- 設定変更ボタン -->
+            <div class="pt-4 flex justify-center">
+              <%= f.submit "パスワードを変更", class: "w-[240px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" %>
+            </div>
+          <% end %>
+
+          <div class="mt-8 text-center space-y-4">
+            <div class="mt-4">
+              <a href="/" class="inline-flex items-center text-sm px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                トップページに戻る
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+  <small class="block text-center text-xs text-gray-400 m-4">© 2025 cocoja</small>
+</div>
