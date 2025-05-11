@@ -87,7 +87,9 @@ class User < ApplicationRecord
         user.remote_profile_image_url_url = auth.info.image
       end
 
-      # user.skip_confirmation! # confirmableを使用している場合
+      # Google認証の場合はメール確認を自動的に完了させる
+      user.skip_confirmation!
+      user.confirm
     end
   end
 

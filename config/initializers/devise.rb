@@ -15,7 +15,7 @@ Devise.setup do |config|
 
   config.reconfirmable = true  # メールアドレス変更時に再確認するか
 
-  config.confirm_within = 3.days  # 認証トークンの有効期限
+  config.confirm_within = 1.days  # 認証トークンの有効期限
 
   config.expire_all_remember_me_on_sign_out = true
 

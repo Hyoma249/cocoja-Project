@@ -1,30 +1,30 @@
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <div class="text-center mt-2">
+  <div class="flex justify-center w-full">
     <%= link_to "確認メールの再送信", new_confirmation_path(resource_name), class: "text-blue-600 hover:text-blue-800 text-sm" %>
   </div>
 <% end %>
 
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-  <div class="text-center mt-2">
+  <div class="flex justify-center w-full mt-2">
     <%= link_to "アカウントロック解除の手順を送信", new_unlock_path(resource_name), class: "text-blue-600 hover:text-blue-800 text-sm" %>
   </div>
 <% end %>
 
 <%- if devise_mapping.omniauthable? %>
-  <div class="mt-8 w-full max-w-md">
-    <div class="relative">
+  <div class="mt-8 w-full flex flex-col items-center">
+    <div class="relative w-full max-w-xs">
       <div class="absolute inset-0 flex items-center">
         <div class="w-full border-t border-gray-300"></div>
       </div>
       <div class="relative flex justify-center text-sm">
-        <span class="px-2 bg-[#f9fafb] text-gray-500">または</span>
+        <span class="px-2 bg-white text-gray-500">または</span>
       </div>
     </div>
 
-    <div class="mt-6 flex justify-center">
+    <div class="mt-6 flex flex-col items-center w-full">
       <%- resource_class.omniauth_providers.each do |provider| %>
         <% if provider.to_s == 'google_oauth2' %>
-          <%= button_to omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "w-[240px] flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-full bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" do %>
+          <%= button_to omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "w-full max-w-[240px] flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-full bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" do %>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M17.64 9.20455C17.64 8.56637 17.5827 7.95273 17.4764 7.36364H9V10.845H13.8436C13.635 11.97 13.0009 12.9232 12.0477 13.5614V15.8195H14.9564C16.6582 14.2527 17.64 11.9455 17.64 9.20455Z" fill="#4285F4"/>
               <path d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5614C11.2418 14.1014 10.2109 14.4205 9 14.4205C6.65591 14.4205 4.67182 12.8373 3.96409 10.71H0.957275V13.0418C2.43818 15.9832 5.48182 18 9 18Z" fill="#34A853"/>
@@ -34,7 +34,7 @@
             <span><%= controller_name == 'registrations' ? 'Googleで登録' : 'Googleでログイン' %></span>
           <% end %>
         <% else %>
-          <%= button_to "#{OmniAuth::Utils.camelize(provider)}でログイン", omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "w-[240px] text-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 mt-2" %>
+          <%= button_to "#{OmniAuth::Utils.camelize(provider)}でログイン", omniauth_authorize_path(resource_name, provider), data: { turbo: false }, class: "w-full max-w-[240px] text-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 mt-2" %>
         <% end %>
       <% end %>
     </div>
