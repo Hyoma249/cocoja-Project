@@ -1,5 +1,5 @@
 Devise.setup do |config|
-  config.mailer_sender = 'cocoja@example.com'
+  config.mailer_sender = 'cocoja0725@gmail.com'
 
   require 'devise/orm/active_record'
 
@@ -11,9 +11,11 @@ Devise.setup do |config|
 
   config.stretches = Rails.env.test? ? 1 : 12
 
-  config.allow_unconfirmed_access_for = 0.days
+  config.allow_unconfirmed_access_for = 0.days  # メール認証が必要
 
-  config.reconfirmable = true
+  config.reconfirmable = true  # メールアドレス変更時に再確認するか
+
+  config.confirm_within = 3.days  # 認証トークンの有効期限
 
   config.expire_all_remember_me_on_sign_out = true
 

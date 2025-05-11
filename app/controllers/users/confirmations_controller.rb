@@ -24,12 +24,11 @@ module Users
     #   super(resource_name)
     # end
 
-    # メール確認後の処理をオーバーライド
-    # def after_confirmation_path_for(resource_name, resource)
-    #   # sign_inメソッドで自動ログイン
-    #   sign_in(resource)
-    #   # プロフィール登録ページへリダイレクト
-    #   profile_setup_path
-    # end
+    # メールアドレス確認後のリダイレクト先
+    def after_confirmation_path_for(resource_name, resource)
+      sign_in(resource)
+      # プロフィール設定ページへリダイレクト
+      profile_setup_path
+    end
   end
 end

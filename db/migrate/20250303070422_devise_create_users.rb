@@ -47,10 +47,10 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
     # table.string   :last_sign_in_ip
 
     # Confirmable（メール確認）
-    # table.string   :confirmation_token
-    # table.datetime :confirmed_at
-    # table.datetime :confirmation_sent_at
-    # table.string   :unconfirmed_email
+    table.string   :confirmation_token
+    table.datetime :confirmed_at
+    table.datetime :confirmation_sent_at
+    table.string   :unconfirmed_email
   end
 
   # カスタムユーザーフィールド
@@ -64,7 +64,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
   def add_user_indexes
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
-    # add_index :users, :confirmation_token,   unique: true
+    add_index :users, :confirmation_token,   unique: true
     add_index :users, :username,             unique: true
     add_index :users, :uid,                  unique: true
   end

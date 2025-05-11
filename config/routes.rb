@@ -31,7 +31,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
-    omniauth_callbacks: 'users/omniauth_callbacks' # 追加
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    confirmations: 'users/confirmations'
   }
 
   # ユーザーリソースとフォロー機能のルーティング
@@ -65,5 +66,5 @@ Rails.application.routes.draw do
   end
 
   # letter_opener_webのルーティング（開発環境のみ）
-  # mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

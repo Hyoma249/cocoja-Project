@@ -3,22 +3,22 @@
 module Users
   # Deviseの登録コントローラーを拡張し、カスタム登録フローを提供します
   class RegistrationsController < Devise::RegistrationsController
-    # POST /resource
     def create
-      super do |resource|
-        if resource.persisted?
-          sign_in(resource)
-          # プロフィール設定ページへリダイレクト
-          redirect_to profile_setup_path and return
-        end
-      end
+      super
     end
 
     protected
 
-    # 基本情報登録（メールアドレスとパスワード）後のリダイレクト先を変更
-    def after_sign_up_path_for(_)
-      profile_setup_path
+    # サインアップ後のリダイレクト先
+    def after_sign_up_path_for(resource)
+      # 必ず確認メール待ちのページへ
+      new_user_session_path
+    end
+
+    # 非アクティブなユーザー登録後のリダイレクト先（メール認証が必要な場合など）
+    def after_inactive_sign_up_path_for(resource)
+      # サインアップ成功メッセージを表示するページへ
+      new_user_session_path
     end
   end
 end

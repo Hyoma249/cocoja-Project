@@ -43,10 +43,20 @@ ja:
       last_attempt: "あと1回失敗するとアカウントがロックされます。"
       timeout: "セッションがタイムアウトしました。続行するには再度ログインしてください。"
       already_authenticated: "既にログインしています"
+      inactive: "アカウントがまだ認証されていません。メールの指示に従って認証を完了してください。"
     registrations:
-      signed_up: "アカウントの作成が完了しました。"
+      signed_up: "アカウントの登録が完了しました。"
+      signed_up_but_unconfirmed: "確認メールを送信しました。メールに記載されているリンクをクリックして、アカウントを有効化してください。"
+      signed_up_but_inactive: "アカウントの登録が完了しました。ただし、アカウントがまだ有効化されていないためログインできません。"
       updated: "アカウント情報の更新が完了しました。"
       destroyed: "アカウントの削除が完了しました。"
     omniauth_callbacks:
       success: "%{kind}アカウントからの認証に成功しました。"
       failure: "%{kind}アカウントでの認証に失敗しました：「%{reason}」"
+    confirmations:
+      confirmed: "アカウントの認証が完了しました。プロフィール設定をお願いします。"
+      send_instructions: "認証メールを送信しました。メールの指示に従ってアカウントを認証してください。"
+      send_paranoid_instructions: "メールアドレスが登録されている場合、認証メールを送信しました。"
+    mailer:
+      confirmation_instructions:
+        subject: "【ココじゃ】アカウント認証のお願い"

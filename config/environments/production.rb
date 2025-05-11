@@ -57,4 +57,21 @@ Rails.application.configure do
   # Action Cable設定
   config.action_cable.disable_request_forgery_protection = false
   config.action_cable.allowed_request_origins = [%r{http://*}, %r{https://*}]
+
+  # メール送信設定 - Gmail SMTP
+  config.action_mailer.default_url_options = { host: 'cocoja-7b01rrht.b4a.run', protocol: 'https' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'cocoja-7b01rrht.b4a.run',
+    user_name:            Rails.application.credentials.dig(:gmail, :username),
+    password:             Rails.application.credentials.dig(:gmail, :password),
+    authentication:       'plain',
+    enable_starttls_auto: true,
+    open_timeout:         5,
+    read_timeout:         5
+  }
+  config.action_mailer.perform_caching = false
+  config.action_mailer.raise_delivery_errors = true
 end
