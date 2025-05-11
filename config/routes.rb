@@ -66,5 +66,5 @@ Rails.application.routes.draw do
   end
 
   # letter_opener_webのルーティング（開発環境のみ）
-  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+  # mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

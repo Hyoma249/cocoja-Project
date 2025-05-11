@@ -12,8 +12,8 @@ class Vote < ApplicationRecord
 
   # 一意制約をアプリケーションレベルでもチェック
   validates :user_id, uniqueness: {
-    scope: :post_id,
-    message: '同じ投稿には一度しかポイントを付けられません'
+    scope: [:post_id, :voted_on],
+    message: '同じ投稿には1日1回しかポイントを付けられません'
   }
 
   validate :daily_point_limit
@@ -23,6 +23,8 @@ class Vote < ApplicationRecord
   scope :today, lambda {
     where("DATE(created_at AT TIME ZONE 'UTC') = ?", Time.zone.today)
   }
+
+  before_validation :set_voted_on
 
   private
 
@@ -45,5 +47,9 @@ class Vote < ApplicationRecord
     return unless user_id == post.user_id
 
     errors.add(:post, '自分の投稿にはポイントを付けられません')
+  end
+
+  def set_voted_on
+    self.voted_on = Time.zone.today
   end
 end
