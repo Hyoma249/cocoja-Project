@@ -16,7 +16,11 @@
             <p class="text-sm">登録したメールアドレスを入力してください。パスワードリセット用のリンクをメールで送信します。</p>
           </div>
 
-          <%= form_with(model: resource, as: resource_name, url: password_path(resource_name), method: :post) do |f| %>
+          <%= form_with(model: resource,
+                        as: resource_name,
+                        url: password_path(resource_name),
+                        method: :post,
+                        data: { turbo: false }) do |f| %>
             <%= render "users/shared/error_messages", resource: resource %>
 
             <div class="mb-6">

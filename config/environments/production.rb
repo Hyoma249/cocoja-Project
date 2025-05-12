@@ -5,7 +5,7 @@ Rails.application.configure do
   # 基本設定
   config.cache_classes = true
   config.eager_load = true
-  config.consider_all_requests_local = false
+  config.consider_all_requests_local = true  # エラー詳細を表示（セキュリティリスク）
 
   # キャッシュ設定 - Redisを使用してパフォーマンス向上
   config.cache_store = :redis_cache_store, {
