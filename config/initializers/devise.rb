@@ -51,7 +51,4 @@ Devise.setup do |config|
   # パスワードリセットメール送信後の遷移先を設定
   config.navigational_formats = ['*/*', :html, :turbo_stream]
   config.sign_in_after_reset_password = true
-
-  # パスワードリセット後の遷移先
-  config.after_sending_reset_password_instructions_path_for = ->(resource) { new_session_path(resource_name) }
 end
