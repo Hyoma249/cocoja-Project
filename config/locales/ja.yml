@@ -3,12 +3,23 @@ ja:
     models:
       profile: "プロフィール" # モデル名がProfileの場合
       user: "ユーザー"
+      post: "投稿" # 追加：投稿モデル
     attributes:
       profile: # または実際のモデル名
         username: "ユーザー名"
         uid: "ユーザーID"
       user:
         uid: "ユーザーID"
+      post: # 追加：投稿モデルの属性
+        title: "タイトル"
+        body: "本文"
+        prefecture_id: "都道府県"
+        location_name: "場所名"
+        latitude: "緯度"
+        longitude: "経度"
+        category_id: "カテゴリー"
+      post_image: # 追加：投稿画像モデルの属性
+        image: "画像"
     errors:
       models:
         user:
@@ -19,6 +30,13 @@ ja:
     messages:
       max_size_error: "のサイズが大きすぎます。%{max_size}以下にしてください。"
       min_size_error: "のサイズが小さすぎます"
+      blank: "を入力してください" # 追加：空欄エラー
+      required: "は必須項目です" # 追加：必須項目エラー
+      empty: "を入力してください" # 追加：空エラー
+      invalid: "は不正な値です" # 追加：不正な値エラー
+      taken: "はすでに使用されています" # 追加：重複エラー
+      too_long: "は%{count}文字以内で入力してください" # 追加：文字数超過エラー
+      too_short: "は%{count}文字以上で入力してください" # 追加：文字数不足エラー
 
   # コントローラー関連の翻訳を追加
   controllers:
