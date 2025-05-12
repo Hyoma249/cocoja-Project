@@ -8,13 +8,11 @@ module Users
       yield resource if block_given?
 
       if successfully_sent?(resource)
-        set_flash_message! :notice, :send_instructions
-        # Turbo対応のためのリダイレクト
-        if request.format == :turbo_stream
-          redirect_to after_sending_reset_password_instructions_path_for(resource_name), notice: I18n.t('devise.passwords.send_instructions')
-        else
-          respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
-        end
+        # フラッシュメッセージを設定
+        flash[:notice] = I18n.t('devise.passwords.send_instructions')
+
+        # 明示的にサインインページへリダイレクト
+        redirect_to new_user_session_path
       else
         respond_with(resource)
       end

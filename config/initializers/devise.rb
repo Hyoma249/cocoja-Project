@@ -47,4 +47,11 @@ Devise.setup do |config|
                     image_size: 50,
                     redirect_uri: Rails.env.production? ? 'https://cocoja-7b01rrht.b4a.run/users/auth/google_oauth2/callback' : nil
                   }
+
+  # パスワードリセットメール送信後の遷移先を設定
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
+  config.sign_in_after_reset_password = true
+
+  # パスワードリセット後の遷移先
+  config.after_sending_reset_password_instructions_path_for = ->(resource) { new_session_path(resource_name) }
 end
