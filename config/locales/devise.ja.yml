@@ -3,6 +3,7 @@ ja:
   errors:
     messages:
       not_saved: "以下のエラーにより%{resource}は保存されませんでした："
+      already_confirmed: "は既に確認済みです。ログインしてください。"
 
   activerecord:
     attributes:
@@ -19,6 +20,7 @@ ja:
               taken: "は既に使用されています"
               blank: "を入力してください"
               invalid: "は不正な形式です"
+              already_confirmed: "は既に確認済みです。ログインしてください。"
             password:
               blank: "を入力してください"
               too_short: "は%{count}文字以上で入力してください"
@@ -57,6 +59,7 @@ ja:
       confirmed: "アカウントの認証が完了しました。プロフィール設定をお願いします。"
       send_instructions: "認証メールを送信しました。メールの指示に従ってアカウントを認証してください。"
       send_paranoid_instructions: "メールアドレスが登録されている場合、認証メールを送信しました。"
+      already_confirmed: "メールアドレスは既に確認済みです。ログインしてください。"
     mailer:
       confirmation_instructions:
         subject: "【ココじゃ】アカウント認証のお願い"
