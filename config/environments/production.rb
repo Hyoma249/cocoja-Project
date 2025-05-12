@@ -5,7 +5,7 @@ Rails.application.configure do
   # 基本設定
   config.cache_classes = true
   config.eager_load = true
-  config.consider_all_requests_local = true  # エラー詳細を表示（セキュリティリスク）
+  config.consider_all_requests_local = false
 
   # キャッシュ設定 - Redisを使用してパフォーマンス向上
   config.cache_store = :redis_cache_store, {
@@ -43,7 +43,7 @@ Rails.application.configure do
   # ログ設定 - デバッグのため詳細なログを出力
   config.log_tags = [:request_id]
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
-  config.log_level = :debug
+  config.log_level = :info # 標準のログレベルに設定
 
   # i18n
   config.i18n.fallbacks = true
