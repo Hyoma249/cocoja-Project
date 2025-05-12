@@ -13,7 +13,7 @@ ja:
       post: # 追加：投稿モデルの属性
         title: "タイトル"
         body: "本文"
-        prefecture_id: "都道府県"
+        prefecture: "都道府県"
         location_name: "場所名"
         latitude: "緯度"
         longitude: "経度"
