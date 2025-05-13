@@ -13,11 +13,12 @@
           <% @posts.each do |post| %>
             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
               <!-- ユーザーヘッダー -->
-              <div class="flex items-center justify-between p-3 border-b border-gray-100">
-                <div class="flex items-center gap-4">
+              <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <%= link_to user_path(post.user), class: "flex items-center gap-4 hover:opacity-75 transition-opacity" do %>
                   <div class="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden">
                     <% if post.user.profile_image_url.present? %>
-                      <%= image_tag post.user.profile_image_url.url, alt: post.user.uid, class: "w-full h-full object-cover" %>
+                      <%= image_tag post.user.profile_image_url.url, alt: post.user.uid, class: "w-full h-full object-cover",
+                        loading: "lazy" %>
                     <% else %>
                       <%= image_tag "sample_icon1.svg", alt: post.user.uid, class: "w-full h-full object-cover" %>
                     <% end %>
@@ -26,7 +27,7 @@
                     <h4 class="font-semibold text-sm"><%= post.user.uid %></h4>
                     <p class="text-xs text-gray-500"><%= post.prefecture.name %></p>
                   </div>
-                </div>
+                <% end %>
               </div>
 
               <!-- 画像スライダー - Swiperに変更 -->

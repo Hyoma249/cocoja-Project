@@ -10,6 +10,13 @@
     </div>
   </header>
 
+  <!-- フラッシュメッセージ -->
+  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8 mt-2">
+    <div class="max-w-4xl mx-auto w-full">
+      <%= render 'shared/flash_messages' %>
+    </div>
+  </div>
+
   <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
     <div class="max-w-4xl mx-auto w-full">
       <%= form_with(model: @user, url: mypage_path(@user), method: :patch, local: true) do |f| %>

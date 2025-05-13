@@ -9,6 +9,7 @@ ja:
         username: "ユーザー名"
         uid: "ユーザーID"
       user:
+        username: "ユーザー名"
         uid: "ユーザーID"
       post: # 追加：投稿モデルの属性
         title: "タイトル"

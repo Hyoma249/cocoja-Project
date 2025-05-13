@@ -1,37 +1,69 @@
 <div class="flex flex-col min-h-screen bg-gray-50">
   <%= render "shared/header/mypage_header" %>
 
-  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8 pb-20">
+  <div class="px-4 sm:px-6 md:pl-[calc(288px+2rem)] md:pr-8 pb-25">
     <div class="max-w-4xl mx-auto w-full">
       <%# プロフィールセクション %>
-      <div class="bg-white shadow rounded-xl p-6 md:p-8 mt-8">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-          <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
+      <div class="bg-white shadow rounded-xl md:mt-8 mt-6 md:p-6 p-2">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6">
+          <div class="w-20 h-2 mt-2 sm:w-28 sm:h-28 rounded-full bg-blue-500 flex-shrink-0 overflow-hidden">
             <%= image_tag current_user.profile_image_url.present? ? current_user.profile_image_url.url : 'sample_icon1.svg',
                 class: "w-full h-full object-cover" %>
           </div>
-          <div class="flex-grow text-center md:text-left">
-            <h2 class="text-2xl font-bold mb-2"><%= current_user.username %></h2>
-            <p class="text-gray-600 text-sm mb-6"><%= current_user.bio %></p>
-
+          <div class="md:text-left pt-2 md:pt-0">
+            <h2 class="text-center md:text-left text-xl sm:text-2xl font-bold mb-1 sm:mb-2"><%= current_user.username %></h2>
+            <div class="px-4 sm:px-6">
+              <p class="text-gray-600 mb-4 sm:mb-6 text-left px-0"><%= current_user.bio %></p>
+            </div>
             <%# 統計情報の追加 %>
-            <div class="flex justify-center md:justify-start space-x-12">
-              <div class="text-center md:pl-0 pl-10">
+            <div class="px-2 block md:hidden grid grid-cols-3 w-full border-t border-b border-gray-100 py-3">
+              <div class="text-center py-1">
+                <span class="block font-bold text-base sm:text-lg text-gray-900"><%= current_user.posts.count %></span>
+                <span class="text-gray-500 text-xs sm:text-sm font-medium whitespace-nowrap">投稿</span>
+              </div>
+
+              <div class="text-center py-1 relative">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-10 w-px bg-gray-100"></div>
+                <%= link_to following_user_path(current_user), class: "block h-full transition-colors duration-150 hover:bg-gray-50 active:bg-gray-100 rounded-lg" do %>
+                  <span class="block font-bold text-base sm:text-lg text-gray-900"><%= current_user.followings.count %></span>
+                  <span class="text-gray-500 text-xs sm:text-sm font-medium whitespace-nowrap">フォロー中</span>
+                <% end %>
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-px bg-gray-100"></div>
+              </div>
+
+              <div class="px-3 text-center py-1">
+                <%= link_to followers_user_path(current_user), class: "block h-full transition-colors duration-150 hover:bg-gray-50 active:bg-gray-100 rounded-lg" do %>
+                  <span class="block font-bold text-base sm:text-lg text-gray-900"><%= current_user.followers.count %></span>
+                  <span class="text-gray-500 text-xs sm:text-sm font-medium whitespace-nowrap">フォロワー</span>
+                <% end %>
+              </div>
+            </div>
+
+            <%# PC表示用の統計情報 %>
+            <div class="hidden md:flex md:space-x-12">
+              <div class="text-center px-4">
                 <span class="block font-bold text-xl text-gray-900"><%= current_user.posts.count %></span>
                 <span class="text-gray-500 text-sm font-medium">投稿</span>
               </div>
-              <%= link_to following_user_path(current_user), class: "text-center group" do %>
+              <%= link_to following_user_path(current_user), class: "text-center group px-6" do %>
                 <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followings.count %></span>
                 <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロー中</span>
               <% end %>
-              <%= link_to followers_user_path(current_user), class: "text-center group" do %>
+              <%= link_to followers_user_path(current_user), class: "text-center group px-4" do %>
                 <span class="block font-bold text-xl text-gray-900 group-hover:text-blue-600"><%= current_user.followers.count %></span>
                 <span class="text-gray-500 text-sm font-medium group-hover:text-blue-600">フォロワー</span>
               <% end %>
             </div>
 
-            <%= link_to "プロフィール編集", edit_mypage_path,
-                class: "mt-8 text-sm inline-block bg-white border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-50 transition-colors duration-200" %>
+            <div class="text-center md:text-left mt-6 md:mt-4 mb-2">
+              <%= link_to edit_mypage_path,
+                  class: "inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors duration-200" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                プロフィール編集
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

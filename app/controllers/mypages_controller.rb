@@ -42,8 +42,10 @@ class MypagesController < ApplicationController
 
   def update
     if @user.update(user_params)
+      flash[:success] = "プロフィールを更新しました"
       redirect_to mypage_url(protocol: 'https'), notice: t('controllers.mypages.update.success')
     else
+      flash.now[:error] = "更新に失敗しました: #{@user.errors.full_messages.join(', ')}"
       render :edit, status: :unprocessable_entity
     end
   end

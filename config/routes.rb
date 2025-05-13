@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   # 未ログインのトップページ
   root 'static_pages_guest#top'
 
+  # 使い方ガイド
+  get 'guide', to: 'static_pages#guide', as: 'static_pages_guide'
+
   # ログイントップページ
   get 'top_page_login', to: 'top_page_login#top'
 
@@ -67,5 +70,5 @@ Rails.application.routes.draw do
   end
 
   # letter_opener_webのルーティング（開発環境のみ）
-  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+  # mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
