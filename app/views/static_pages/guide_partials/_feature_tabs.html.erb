@@ -1,0 +1,241 @@
+<div class="mt-12 mb-8" id="feature-guide-tabs">
+  <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg mb-8">
+    <h2 class="text-2xl font-bold mb-2">動画で見る使い方ガイド</h2>
+    <p class="text-lg">視覚的に「ココじゃ」の機能を理解しよう！</p>
+  </div>
+
+  <!-- タブナビゲーション -->
+  <div class="bg-white rounded-t-lg border border-gray-200">
+    <!-- スマホ用横スワイプタブ -->
+    <div class="md:hidden">
+      <nav class="gnav" id="mobileVideoTabs" role="tablist">
+        <div class="item active">
+          <button id="search-tab-mobile" data-tab="search-tab" type="button" role="tab"
+                  class="text-sm font-medium tab-button">
+            検索機能
+          </button>
+        </div>
+        <div class="item">
+          <button id="vote-tab-mobile" data-tab="vote-tab" type="button" role="tab"
+                  class="text-sm font-medium tab-button">
+            投票機能
+          </button>
+        </div>
+        <div class="item">
+          <button id="ranking-tab-mobile" data-tab="ranking-tab" type="button" role="tab"
+                  class="text-sm font-medium tab-button">
+            ランキング機能
+          </button>
+        </div>
+        <div class="item">
+          <button id="hashtag-tab-mobile" data-tab="hashtag-tab" type="button" role="tab"
+                  class="text-sm font-medium tab-button">
+            ハッシュタグ機能
+          </button>
+        </div>
+        <div class="item">
+          <button id="profile-tab-mobile" data-tab="profile-tab" type="button" role="tab"
+                  class="text-sm font-medium tab-button">
+            プロフィール機能
+          </button>
+        </div>
+        <div class="item">
+          <button id="follow-tab-mobile" data-tab="follow-tab" type="button" role="tab"
+                  class="text-sm font-medium tab-button">
+            フォロー機能
+          </button>
+        </div>
+      </nav>
+
+      <!-- スワイプインジケーター - モバイルのみ -->
+      <div class="flex justify-center pb-2 bg-white">
+        <div class="flex space-x-2">
+          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PC/タブレット用タブ -->
+    <div class="hidden md:flex flex-wrap" id="videoTabs" role="tablist">
+      <button class="px-4 py-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600 active tab-button"
+              id="search-tab" data-tab="search-tab" type="button" role="tab">
+        検索機能
+      </button>
+      <button class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent tab-button" 
+              id="vote-tab" data-tab="vote-tab" type="button" role="tab">
+        投票機能
+      </button>
+      <button class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent tab-button" 
+              id="ranking-tab" data-tab="ranking-tab" type="button" role="tab">
+        ランキング機能
+      </button>
+      <button class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent tab-button" 
+              id="hashtag-tab" data-tab="hashtag-tab" type="button" role="tab">
+        ハッシュタグ機能
+      </button>
+      <button class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent tab-button" 
+              id="profile-tab" data-tab="profile-tab" type="button" role="tab">
+        プロフィール機能
+      </button>
+      <button class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent tab-button" 
+              id="follow-tab" data-tab="follow-tab" type="button" role="tab">
+        フォロー機能
+      </button>
+    </div>
+  </div>
+
+  <!-- タブコンテンツ -->
+  <div class="bg-white rounded-b-lg border border-gray-200 border-t-0 p-6" id="tab-content-container">
+    <!-- 検索タブ -->
+    <div id="search-tab" class="tab-panel">
+      <%= render 'static_pages/guide_partials/tabs/search_tab' %>
+    </div>
+
+    <!-- 投票タブ -->
+    <div id="vote-tab" class="tab-panel hidden">
+      <%= render 'static_pages/guide_partials/tabs/vote_tab' %>
+    </div>
+
+    <!-- ランキングタブ -->
+    <div id="ranking-tab" class="tab-panel hidden">
+      <%= render 'static_pages/guide_partials/tabs/ranking_tab' %>
+    </div>
+
+    <!-- ハッシュタグタブ -->
+    <div id="hashtag-tab" class="tab-panel hidden">
+      <%= render 'static_pages/guide_partials/tabs/hashtag_tab' %>
+    </div>
+
+    <!-- プロフィールタブ -->
+    <div id="profile-tab" class="tab-panel hidden">
+      <%= render 'static_pages/guide_partials/tabs/profile_tab' %>
+    </div>
+
+    <!-- フォロータブ -->
+    <div id="follow-tab" class="tab-panel hidden">
+      <%= render 'static_pages/guide_partials/tabs/follow_tab' %>
+    </div>
+  </div>
+
+  <style>
+    /* シンプル化したスタイル - 修正版 */
+    .gnav {
+      overflow-x: auto;
+      display: flex;
+      -webkit-overflow-scrolling: touch;
+      padding: 0;
+      margin: 0;
+      scrollbar-width: none;
+    }
+    
+    .gnav::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .gnav .item {
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    .gnav .item.active {
+      border-bottom: 2px solid #3b82f6;
+    }
+    
+    .gnav .item.active button {
+      color: #3b82f6;
+    }
+
+    .gnav .item button {
+      display: block;
+      padding: 10px 20px;
+      color: #6b7280;
+      border: none;
+      background: transparent;
+      font-weight: 500;
+    }
+
+    /* タブパネル表示スタイルの修正 */
+    .tab-panel.hidden {
+      display: none;
+    }
+    
+    .tab-panel {
+      display: block;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 要素の参照
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      const pcNavItems = document.querySelectorAll('#videoTabs .tab-button');
+      const mobileNavItems = document.querySelectorAll('#mobileVideoTabs .item');
+
+      // タブ切り替え関数 - 修正版
+      function activateTab(targetId) {
+        console.log('タブ切替:', targetId);
+
+        // すべてのタブの表示状態をリセット
+        tabPanels.forEach(panel => {
+          if(panel.id === targetId) {
+            // 選択されたタブは表示
+            panel.classList.remove('hidden');
+            console.log(panel.id, '表示');
+          } else {
+            // それ以外のタブは非表示
+            panel.classList.add('hidden');
+            console.log(panel.id, '非表示');
+          }
+        });
+        
+        // PC用ナビゲーションの状態更新
+        pcNavItems.forEach(btn => {
+          const isSelected = btn.getAttribute('data-tab') === targetId;
+          btn.classList.toggle('text-blue-600', isSelected);
+          btn.classList.toggle('border-blue-600', isSelected);
+          btn.classList.toggle('text-gray-500', !isSelected);
+          btn.classList.toggle('border-transparent', !isSelected);
+        });
+        
+        // モバイル用ナビゲーションの状態更新
+        mobileNavItems.forEach(item => {
+          const btn = item.querySelector('.tab-button');
+          const isSelected = btn && btn.getAttribute('data-tab') === targetId;
+          item.classList.toggle('active', isSelected);
+          
+          // 選択されたタブが見えるようスクロール調整
+          if(isSelected) {
+            const container = document.getElementById('mobileVideoTabs');
+            if(container) {
+              container.scrollTo({
+                left: item.offsetLeft - (container.offsetWidth / 2) + (item.offsetWidth / 2),
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      }
+      
+      // タブ切り替えイベントの設定
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const tabTarget = this.getAttribute('data-tab');
+          if(tabTarget) {
+            activateTab(tabTarget);
+          }
+        });
+      });
+      
+      // 初期タブの設定（単純化）
+      console.log('初期タブを表示');
+      activateTab('search-tab');
+    });
+  </script>
+</div>
