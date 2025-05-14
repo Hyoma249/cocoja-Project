@@ -1,85 +1,46 @@
 <div class="min-h-screen">
   <%= render "shared/header/guest_header" %>
 
-  <div class="px-8 md:pl-[calc(288px+2rem)] md:pr-8">
+  <div class="px-4 md:px-8 md:pl-[calc(288px+2rem)] md:pr-8">
     <div class="max-w-4xl mx-auto w-full">
       <!-- Hero Section -->
-      <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg mt-8">
-        <h2 class="text-2xl font-bold mb-2">つながって、広がって</h2>
-        <h3 class="text-3xl font-bold mb-4">日本をもっと好きになる！</h3>
-        <p>日本の魅力を再発見！地元の人しか知らない穴場スポットや文化を共有しよう</p>
-        <div class="mt-6">
-          <%= link_to "今すぐ登録", new_user_registration_path, class: "bg-white text-blue-600 px-6 py-3 rounded-full font-bold transition-all duration-200 hover:bg-blue-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2" %>
-          <%= link_to "使い方ガイドを見る", static_pages_guide_path, class: "ml-4 text-white underline hover:text-blue-100 transition-colors" %>
-        </div>
+      <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 md:p-6 rounded-lg mt-6 md:mt-8 text-center md:text-left">
+        <h2 class="text-xl md:text-2xl font-bold mb-1 md:mb-2">つながって、広がって</h2>
+        <h3 class="text-2xl md:text-3xl font-bold mb-3 md:mb-4">日本をもっと好きになる！</h3>
+        <p class="text-sm md:text-base">日本の魅力を再発見！地元の人しか知らない穴場スポットや文化を共有しよう</p>
       </div>
 
-      <!-- Ranking Section -->
-      <div class="py-7">
-        <div class="flex items-center gap-2 mb-4">
-          <h3 class="text-xl font-bold">今月の注目都道府県</h3>
-        </div>
-        <div class="grid grid-cols-1 gap-4">
-          <!-- Ranking Card 1 -->
-          <div class="bg-white rounded-xl p-4 shadow-sm">
-            <div class="flex items-start gap-4">
-              <div class="w-24 h-24 relative">
-                <%= image_tag "ranking_hokkaido.png", alt: "北海道", class: "w-full h-full object-cover rounded-xl" %>
-                <div class="absolute -top-2 -left-2 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+      <!-- Guide Section -->
+      <div class="my-8">
+        <div class="bg-white rounded-2xl p-4 md:p-8 shadow-lg border border-blue-100 transform transition-all duration-300 hover:shadow-xl hover:scale-[1.01]">
+          <div class="flex flex-col md:flex-row items-center gap-8">
+            <div class="flex-1 space-y-4">
+              <div class="flex items-center gap-2 md:gap-3">
+                <div class="relative">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-blue-600 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                  </svg>
+                </div>
+                <h4 class="font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-blue-700 border-b-2 border-blue-100 pb-1 sm:pb-2 flex-1">
+                  <span class="hidden xs:inline">ココじゃの</span>使い方をチェック！
+                </h4>
               </div>
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-2">
-                  <h4 class="font-bold text-lg">北海道</h4>
-                </div>
-                <p class="text-sm text-gray-600 mb-2">
-                  富良野のラベンダー畑や新鮮な海産物など、自然と食の魅力が満載！
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#絶景</span>
-                  <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#富良野のラベンダー畑</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Ranking Card 2 -->
-          <div class="bg-white rounded-xl p-4 shadow-sm">
-            <div class="flex items-start gap-4">
-              <div class="w-24 h-24 relative">
-                <%= image_tag "ranking_kyoto.png", alt: "京都府", class: "w-full h-full object-cover rounded-xl" %>
-                <div class="absolute -top-2 -left-2 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
-              </div>
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-2">
-                  <h4 class="font-bold text-lg">京都府</h4>
-                </div>
-                <p class="text-sm text-gray-600 mb-2">
-                  伝統的な神社仏閣や美しい庭園、抹茶スイーツなど、日本の文化が詰まった観光地！
-                </p>
-                <div class="flex gap-2">
-                  <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#絶景</span>
-                  <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#嵐山</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Ranking Card 3 -->
-          <div class="bg-white rounded-xl p-4 shadow-sm">
-            <div class="flex items-start gap-4">
-              <div class="w-24 h-24 relative">
-                <%= image_tag "ranking_okinawa.png", alt: "沖縄県", class: "w-full h-full object-cover rounded-xl" %>
-                <div class="absolute -top-2 -left-2 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
-              </div>
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-2">
-                  <h4 class="font-bold text-lg">沖縄県</h4>
-                </div>
-                <p class="text-sm text-gray-600 mb-2">
-                  透き通った海と白い砂浜が広がるリゾート地！美しいビーチや海中遺跡が魅力的
-                </p>
-                <div class="flex gap-2">
-                  <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#絶景</span>
-                  <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">#古宇利島</span>
-                </div>
+              <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+                おすすめ機能紹介から投稿の仕方、地元の魅力を共有する方法まで、詳しく解説しています。
+                <span class="hidden sm:inline">初めての方も安心してご利用いただけます。</span>
+              </p>
+              <ul class="ml-4 text-gray-600 text-sm sm:text-base space-y-1 sm:space-y-2 pl-4 sm:pl-5 list-disc">
+                <li>おすすめな使い方</li>
+                <li>写真や情報の投稿方法</li>
+                <li>地域コミュニティへの参加方法</li>
+              </ul>
+              <div class="pt-4">
+                <%= link_to static_pages_guide_path, class: "inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3.5 rounded-full font-bold transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 group" do %>
+                  <span>ガイドを見る</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                <% end %>
               </div>
             </div>
           </div>
