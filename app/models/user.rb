@@ -44,11 +44,8 @@ class User < ApplicationRecord
 
   # 特定の投稿に今日投票済みかチェック
   def voted_today_for?(post)
-    # 日付に関わらず投票済みかを最初にチェック（より高速）
-    return true if voted_for?(post)
-
-    # 念のため日付指定でも確認
-    votes.today.exists?(post_id: post.id)
+    # 日付条件を含めた正確なチェック
+    votes.where(post_id: post.id, voted_on: Time.zone.today).exists?
   end
 
   # 特定の投稿に投票済みかチェック（日付に関わらず）

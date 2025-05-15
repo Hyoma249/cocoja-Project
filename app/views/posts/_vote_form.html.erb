@@ -2,9 +2,9 @@
   <h3 class="text-lg font-medium mb-2">この投稿にポイントを付ける</h3>
 
   <%
-    # より確実な投票状態チェック
-    already_voted = current_user && Vote.where(user_id: current_user.id, post_id: post.id).exists?
-    remaining_points = current_user ? current_user.remaining_daily_points : 0 
+    # より確実な投票状態チェック - 当日の投票のみをチェック
+    already_voted = current_user && Vote.where(user_id: current_user.id, post_id: post.id, voted_on: Time.zone.today).exists?
+    remaining_points = current_user ? current_user.remaining_daily_points : 0
   %>
 
   <% if !current_user %>
@@ -15,7 +15,7 @@
   <% elsif current_user == post.user %>
     <p class="text-gray-600">自分の投稿にはポイントを付けられません</p>
   <% elsif already_voted %>
-    <p class="text-yellow-600">この投稿にはすでにポイントを付けています</p>
+    <p class="text-yellow-600">この投稿には本日すでにポイントを付けています</p>
   <% elsif remaining_points <= 0 %>
     <p class="text-red-600">本日のポイント上限（5ポイント）に達しています</p>
   <% else %>
@@ -25,7 +25,7 @@
       </p>
     </div>
 
-    <%= form_with(model: [post, Vote.new], 
+    <%= form_with(model: [post, Vote.new],
                   data: { controller: "vote", turbo: true }) do |f| %>
       <%= f.hidden_field :points, data: { vote_target: "pointInput" } %>
 
@@ -35,11 +35,11 @@
           <% max_points.times do |i| %>
             <% point = i + 1 %>
             <button type="button"
-                    class="w-12 h-12 rounded-full border-2 border-indigo-200 
+                    class="w-12 h-12 rounded-full border-2 border-indigo-200
                            hover:border-indigo-600 hover:bg-indigo-50
-                           [&[aria-selected='true']]:bg-indigo-600 
+                           [&[aria-selected='true']]:bg-indigo-600
                            [&[aria-selected='true']]:text-white
-                           [&[aria-selected='true']]:border-indigo-600 
+                           [&[aria-selected='true']]:border-indigo-600
                            transition-all font-medium text-lg"
                     data-vote-target="quickSelect"
                     data-action="click->vote#selectPoint"
