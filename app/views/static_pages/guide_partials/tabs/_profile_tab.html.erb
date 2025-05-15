@@ -1,6 +1,8 @@
 <div>
-  <div class="md:flex gap-6 md:w-1/2">
-    <div class="space-y-4">
+  <!-- 全体を包む親コンテナを作成し、PC表示時に横並びにする -->
+  <div class="flex flex-col md:flex-row gap-6">
+    <!-- 左側のコンテンツ - md:w-1/2を維持 -->
+    <div class="md:w-1/2 space-y-4">
       <h3 class="text-lg font-semibold text-gray-800 mb-2">プロフィール機能の使い方</h3>
       <p class="text-gray-600 mb-4">「ココじゃ」のプロフィールページでは、あなたの投稿やフォロー関係を管理できます。個性的なプロフィールで多くのフォロワーを獲得しましょう！</p>
 
@@ -22,9 +24,7 @@
           <li>他のユーザーのプロフィールを確認</li>
         </ul>
       </div>
-    </div>
 
-    <div class="space-y-4 mt-4">
       <div class="bg-green-50 p-4 rounded-lg">
         <h4 class="font-medium text-green-700 mb-1">他のユーザーの投稿を閲覧する方法</h4>
         <ol class="ml-4 list-decimal list-inside text-gray-600 text-sm space-y-1">
@@ -47,35 +47,40 @@
         <p class="text-gray-600 text-sm">プロフィール画像を設定し、自己紹介文には好きな地域や興味のあるジャンルを記載すると、同じ興味を持つユーザーからのフォローが増えやすくなります！</p>
       </div>
     </div>
+
+    <!-- 右側のコンテンツ - md:w-1/2を維持 -->
+    <div class="md:w-1/2">
+      <!-- グリッドレイアウトに変更して整理 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="pb-2 text-sm md:text-base"><strong>プロフィールの閲覧</strong></p>
+          <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
+            <a href="https://gyazo.com/097db5b3c38aaee54f695a02b0d02595"><video class="w-full" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/097db5b3c38aaee54f695a02b0d02595.mp4" type="video/mp4"/></video></a>
+          </div>
+        </div>
+        <div>
+          <p class="pb-2 text-sm md:text-base"><strong>プロフィールの投稿を見る</strong></p>
+          <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
+            <a href="https://gyazo.com/63f8e3cfe0c8f005f746f3c856f19e43"><video class="w-full" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/63f8e3cfe0c8f005f746f3c856f19e43.mp4" type="video/mp4"/></video></a>
+          </div>
+        </div>
+        <div>
+          <p class="pb-2 text-sm md:text-base"><strong>プロフィールの設定方法</strong></p>
+          <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
+            <a href="https://gyazo.com/fb032e8d3254c548d507ec13059d5993"><video class="w-full" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/fb032e8d3254c548d507ec13059d5993.mp4" type="video/mp4"/></video></a>
+          </div>
+        </div>
+        <div>
+          <p class="pb-2 text-sm md:text-base"><strong>他のユーザーの投稿を閲覧する方法</strong></p>
+          <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
+            <a href="https://gyazo.com/b8cb3206d7707ecd055d4b679e659682"><video class="w-full" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/b8cb3206d7707ecd055d4b679e659682.mp4" type="video/mp4"/></video></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="flex flex-col md:flex-row gap-4 md:gap-6 md:w-1/2 mt-4 md:mt-0">
-    <div class="flex-1">
-      <p class="pb-2 text-sm md:text-base"><strong>プロフィールの閲覧</strong></p>
-      <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
-        <a href="https://gyazo.com/097db5b3c38aaee54f695a02b0d02595"><video class="w-full max-w-[374px]" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/097db5b3c38aaee54f695a02b0d02595.mp4" type="video/mp4"/></video></a>
-      </div>
-    </div>
-    <div class="flex-1">
-      <p class="pb-2 text-sm md:text-base"><strong>プロフィールの投稿を見る</strong></p>
-      <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
-        <a href="https://gyazo.com/63f8e3cfe0c8f005f746f3c856f19e43"><video class="w-full max-w-[370px]" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/63f8e3cfe0c8f005f746f3c856f19e43.mp4" type="video/mp4"/></video></a>
-      </div>
-    </div>
-    <div class="flex-1">
-      <p class="pb-2 text-sm md:text-base"><strong>プロフィールの設定方法</strong></p>
-      <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
-        <a href="https://gyazo.com/fb032e8d3254c548d507ec13059d5993"><video class="w-full max-w-[372px]" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/fb032e8d3254c548d507ec13059d5993.mp4" type="video/mp4"/></video></a>
-      </div>
-    </div>
-    <div class="flex-1">
-      <p class="pb-2 text-sm md:text-base"><strong>他のユーザーの投稿を閲覧する方法</strong></p>
-      <div class="bg-gray-100 p-2 rounded-lg aspect-video flex items-center justify-center">
-        <a href="https://gyazo.com/b8cb3206d7707ecd055d4b679e659682"><video class="w-full max-w-[374px]" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/b8cb3206d7707ecd055d4b679e659682.mp4" type="video/mp4"/></video></a>
-      </div>
-    </div>
-  </div>
-
+  <!-- モバイル表示用のヒント - 以前の位置を維持 -->
   <div class="md:hidden mt-4 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
     <h4 class="font-medium flex items-center text-yellow-700 mb-2">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
