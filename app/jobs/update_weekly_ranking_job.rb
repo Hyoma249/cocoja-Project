@@ -8,8 +8,11 @@ class UpdateWeeklyRankingJob < ApplicationJob
     # 既存の同じ週のランキングがあれば削除
     clear_existing_rankings
 
-    # 都道府県ごとの獲得ポイントを集計
-    prefecture_points = collect_prefecture_points
+    # 一括クエリで都道府県ごとのポイントを取得
+    prefecture_points = Prefecture.weekly_points_for_all(@start_date, @end_date)
+
+    # 都道府県情報をプリロード
+    prefectures = Prefecture.all.index_by(&:id)
 
     # ランキングを作成して保存
     create_rankings(prefecture_points)
@@ -36,38 +39,23 @@ class UpdateWeeklyRankingJob < ApplicationJob
     WeeklyRanking.where(year: @year, week: @week_number).destroy_all
   end
 
-  # 都道府県ごとのポイントを集計
-  def collect_prefecture_points
-    prefecture_points = {}
-
-    Prefecture.find_each do |prefecture|
-      points = prefecture.weekly_points(@start_date, @end_date)
-      prefecture_points[prefecture.id] = points
-    end
-
-    # ポイント降順でソート
-    prefecture_points.sort_by { |_, points| -points }
-  end
-
   # ランキングデータを作成して保存
-  def create_rankings(ranked_prefectures)
+  def create_rankings(prefecture_points)
+    # ポイント降順でソート
+    ranked_prefectures = prefecture_points.sort_by { |_, points| -points }
+
     ActiveRecord::Base.transaction do
-      create_ranking_records(ranked_prefectures)
-    end
-  end
+      ranked_prefectures.each_with_index do |(prefecture_id, points), index|
+        next if points.zero? # ポイントが0の場合はランキングに含めない
 
-  # ランキングレコードを作成
-  def create_ranking_records(ranked_prefectures)
-    ranked_prefectures.each_with_index do |(prefecture_id, points), index|
-      next if points.zero? # ポイントが0の場合はランキングに含めない
-
-      WeeklyRanking.create!(
-        prefecture_id: prefecture_id,
-        year: @year,
-        week: @week_number,
-        rank: index + 1,
-        points: points
-      )
+        WeeklyRanking.create!(
+          prefecture_id: prefecture_id,
+          year: @year,
+          week: @week_number,
+          rank: index + 1,
+          points: points
+        )
+      end
     end
   end
 end
