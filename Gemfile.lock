@@ -367,12 +367,14 @@ DEPENDENCIES
   bootsnap
   carrierwave
   cloudinary (~> 2.3)
+  concurrent-ruby (~> 1.2)
   cssbundling-rails
   devise
   jbuilder
   jsbundling-rails
   kaminari
   meta-tags
+  mini_magick
   oj
   omniauth
   omniauth-google-oauth2

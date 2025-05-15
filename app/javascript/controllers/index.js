@@ -34,3 +34,6 @@ application.register("post-scroll", PostScrollController);
 
 import SwiperController from "./swiper_controller";
 application.register("swiper", SwiperController);
+
+import SubmitLoadingController from "./submit_loading_controller";
+application.register("submit-loading", SubmitLoadingController);

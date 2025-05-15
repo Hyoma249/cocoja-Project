@@ -46,8 +46,10 @@ gem 'tzinfo-data', platforms: %i[windows jruby]
 # end
 
 # 追加 ⬇️
+gem 'mini_magick' # 画像処理ライブラリ
 gem 'carrierwave' # 画像アップロード
 gem 'cloudinary', '~> 2.3' # 画像アップロードのストレージ
+gem 'concurrent-ruby', '~> 1.2' # 並列処理ライブラリ
 gem 'devise' # 認証機能
 gem 'kaminari' # ページネーション機能のベースとして使用
 gem 'meta-tags' # OGP対応のためのmetaタグ管理

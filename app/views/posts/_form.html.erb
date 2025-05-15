@@ -19,7 +19,7 @@
       <svg class="group-hover:text-blue-500 mb-1 text-slate-400" width="20" height="20" fill="currentColor" aria-hidden="true">
         <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
       </svg>
-      <span>タップして写真を選択しよう！<br>※画像は最大10枚まで投稿できます</span>
+      <span>タップして写真を選択しよう！<br>※画像は最大5枚まで投稿できます</span>
 
       <%= form.fields_for :post_images do |pi| %>
         <%= pi.file_field :image, multiple: true, name: "post_images[image][]", data: { action: "change->post-prev#displayPreview" }, class: "hidden", id: "pi" %>

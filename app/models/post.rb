@@ -17,7 +17,7 @@ class Post < ApplicationRecord
   end
 
   # 画像アップロード用
-  has_many :post_images, dependent: :destroy
+  has_many :post_images, -> { order(created_at: :asc) }, dependent: :destroy, autosave: false
   # 1つのフォームで投稿＋画像を一緒に追加・編集・削除できるようにする
   accepts_nested_attributes_for :post_images, allow_destroy: true
 
@@ -33,10 +33,15 @@ class Post < ApplicationRecord
     I18n.l(created_at, format: :long) if created_at
   end
 
+  # カウンターキャッシュの有効活用
+  def increment_images_count!
+    increment!(:post_images_count)
+  end
+
   private
 
   def post_images_count_within_limit
-    max_images = 10
+    max_images = 5
     return unless post_images.size > max_images
 
     errors.add(:post_images, "は#{max_images}枚まで投稿できます")
