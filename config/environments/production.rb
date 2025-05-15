@@ -11,9 +11,7 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, {
     url: ENV.fetch('REDIS_URL') { raise 'REDIS_URL environment variable is required' },
     namespace: 'cache',
-    expires_in: 1.day,
-    compression: true,
-    compress_threshold: 1.kilobyte
+    expires_in: 1.day
   }
 
   # アセット設定
