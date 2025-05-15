@@ -46,18 +46,6 @@
           </button>
         </div>
       </nav>
-
-      <!-- スワイプインジケーター - モバイルのみ -->
-      <div class="flex justify-center pb-2 bg-white">
-        <div class="flex space-x-2">
-          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
-          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
-          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
-          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
-          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
-          <span class="h-1 w-1 rounded-full bg-gray-300"></span>
-        </div>
-      </div>
     </div>
 
     <!-- PC/タブレット用タブ -->
@@ -171,71 +159,86 @@
   </style>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 要素の参照
-      const tabButtons = document.querySelectorAll('.tab-button');
-      const tabPanels = document.querySelectorAll('.tab-panel');
-      const pcNavItems = document.querySelectorAll('#videoTabs .tab-button');
-      const mobileNavItems = document.querySelectorAll('#mobileVideoTabs .item');
+  // イベントリスナー関数を定義
+  function initTabFunctionality() {
+    console.log('タブ機能の初期化');
+    // 要素の参照
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    const pcNavItems = document.querySelectorAll('#videoTabs .tab-button');
+    const mobileNavItems = document.querySelectorAll('#mobileVideoTabs .item');
 
-      // タブ切り替え関数 - 修正版
-      function activateTab(targetId) {
-        console.log('タブ切替:', targetId);
+    // タブ切り替え関数 - 修正版
+    function activateTab(targetId) {
+      console.log('タブ切替:', targetId);
 
-        // すべてのタブの表示状態をリセット
-        tabPanels.forEach(panel => {
-          if(panel.id === targetId) {
-            // 選択されたタブは表示
-            panel.classList.remove('hidden');
-            console.log(panel.id, '表示');
-          } else {
-            // それ以外のタブは非表示
-            panel.classList.add('hidden');
-            console.log(panel.id, '非表示');
-          }
-        });
-        
-        // PC用ナビゲーションの状態更新
-        pcNavItems.forEach(btn => {
-          const isSelected = btn.getAttribute('data-tab') === targetId;
-          btn.classList.toggle('text-blue-600', isSelected);
-          btn.classList.toggle('border-blue-600', isSelected);
-          btn.classList.toggle('text-gray-500', !isSelected);
-          btn.classList.toggle('border-transparent', !isSelected);
-        });
-        
-        // モバイル用ナビゲーションの状態更新
-        mobileNavItems.forEach(item => {
-          const btn = item.querySelector('.tab-button');
-          const isSelected = btn && btn.getAttribute('data-tab') === targetId;
-          item.classList.toggle('active', isSelected);
-          
-          // 選択されたタブが見えるようスクロール調整
-          if(isSelected) {
-            const container = document.getElementById('mobileVideoTabs');
-            if(container) {
-              container.scrollTo({
-                left: item.offsetLeft - (container.offsetWidth / 2) + (item.offsetWidth / 2),
-                behavior: 'smooth'
-              });
-            }
-          }
-        });
-      }
-      
-      // タブ切り替えイベントの設定
-      tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const tabTarget = this.getAttribute('data-tab');
-          if(tabTarget) {
-            activateTab(tabTarget);
-          }
-        });
+      // すべてのタブの表示状態をリセット
+      tabPanels.forEach(panel => {
+        if(panel.id === targetId) {
+          // 選択されたタブは表示
+          panel.classList.remove('hidden');
+          console.log(panel.id, '表示');
+        } else {
+          // それ以外のタブは非表示
+          panel.classList.add('hidden');
+          console.log(panel.id, '非表示');
+        }
       });
       
-      // 初期タブの設定（単純化）
-      console.log('初期タブを表示');
-      activateTab('search-tab');
+      // PC用ナビゲーションの状態更新
+      pcNavItems.forEach(btn => {
+        const isSelected = btn.getAttribute('data-tab') === targetId;
+        btn.classList.toggle('text-blue-600', isSelected);
+        btn.classList.toggle('border-blue-600', isSelected);
+        btn.classList.toggle('text-gray-500', !isSelected);
+        btn.classList.toggle('border-transparent', !isSelected);
+      });
+      
+      // モバイル用ナビゲーションの状態更新
+      mobileNavItems.forEach(item => {
+        const btn = item.querySelector('.tab-button');
+        const isSelected = btn && btn.getAttribute('data-tab') === targetId;
+        item.classList.toggle('active', isSelected);
+        
+        // 選択されたタブが見えるようスクロール調整
+        if(isSelected) {
+          const container = document.getElementById('mobileVideoTabs');
+          if(container) {
+            container.scrollTo({
+              left: item.offsetLeft - (container.offsetWidth / 2) + (item.offsetWidth / 2),
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    }
+    
+    // タブ切り替えイベントの設定
+    tabButtons.forEach(button => {
+      // 既存のイベントリスナーを削除（重複登録防止）
+      button.removeEventListener('click', handleTabClick);
+      // 新しいイベントリスナーを追加
+      button.addEventListener('click', handleTabClick);
     });
-  </script>
+    
+    function handleTabClick() {
+      const tabTarget = this.getAttribute('data-tab');
+      if(tabTarget) {
+        activateTab(tabTarget);
+      }
+    }
+    
+    // 初期タブの設定
+    console.log('初期タブを表示');
+    activateTab('search-tab');
+  }
+
+  // 複数のイベントでタブ機能を初期化
+  document.addEventListener('DOMContentLoaded', initTabFunctionality);
+  document.addEventListener('turbolinks:load', initTabFunctionality);
+  // turbolinksを使用していない場合の対応
+  if (document.getElementById('feature-guide-tabs')) {
+    initTabFunctionality();
+  }
+</script>
 </div>
