@@ -47,14 +47,14 @@ module ApplicationHelper
       charset: 'utf-8',
       description: '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。あなたの地元や旅先の魅力を投稿して、みんなで盛り上げよう！',
       keywords: 'ココじゃ, 都道府県, 魅力度ランキング, 地域情報, SNS, 観光, 地元',
-      canonical: 'https://cocoja-7b01rrht.b4a.run/',
+      canonical: 'https://www.cocoja.jp/',
       separator: '|',
       og:{
         site_name: :site,
         title: :title,
         description: :description,
         type: 'website',
-        url: 'https://cocoja-7b01rrht.b4a.run/',
+        url: 'https://www.cocoja.jp/',
         image: image_url('cocoja-ogp.png'),
         local: 'ja-JP'
       },

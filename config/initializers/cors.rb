@@ -5,7 +5,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     else
       # Back4appの実際のドメインを指定
       origins ENV.fetch('ALLOWED_ORIGINS') {
-        'https://cocoja-7b01rrht.b4a.run'
+        'https://www.cocoja.jp/'
       }
     end
 

@@ -45,7 +45,7 @@ Devise.setup do |config|
                     prompt: 'select_account',
                     image_aspect_ratio: 'square',
                     image_size: 50,
-                    redirect_uri: Rails.env.production? ? 'https://cocoja-7b01rrht.b4a.run/users/auth/google_oauth2/callback' : nil
+                    redirect_uri: Rails.env.production? ? 'https://www.cocoja.jp/users/auth/google_oauth2/callback' : nil
                   }
 
   # パスワードリセットメール送信後の遷移先を設定

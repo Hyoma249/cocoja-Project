@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cocoja-7b01rrht.b4a.run/sitemap.xml
+Sitemap: https://www.cocoja.jp//sitemap.xml

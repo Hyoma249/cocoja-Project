@@ -59,12 +59,12 @@ Rails.application.configure do
   config.action_cable.allowed_request_origins = [%r{http://*}, %r{https://*}]
 
   # メール送信設定 - Gmail SMTP
-  config.action_mailer.default_url_options = { host: 'cocoja-7b01rrht.b4a.run', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: 'www.cocoja.jp', protocol: 'https' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
-    domain:               'cocoja-7b01rrht.b4a.run',
+    domain:               'www.cocoja.jp',
     user_name:            Rails.application.credentials.dig(:gmail, :username),
     password:             Rails.application.credentials.dig(:gmail, :password),
     authentication:       'plain',
