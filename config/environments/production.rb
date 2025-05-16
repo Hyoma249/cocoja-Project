@@ -41,7 +41,7 @@ Rails.application.configure do
   # ログ設定 - デバッグのため詳細なログを出力
   config.log_tags = [:request_id]
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
-  config.log_level = :debug # デバッグのため詳細なログレベルに設定
+  config.log_level = :info
 
   # i18n
   config.i18n.fallbacks = true
