@@ -3,18 +3,8 @@
 
   <div class="flex-1 px-4 py-8 md:px-8 md:pl-[calc(288px+2rem)] md:pr-8 pb-20">
     <div class="max-w-3xl mx-auto w-full">
-      <!-- タイトル -->
       <h2 class="text-2xl text-center font-bold text-gray-900 mb-6">設定</h2>
 
-      <!-- アカウント設定セクション -->
-      <!-- <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
-        <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">アカウント設定</h3>
-        <div class="space-y-4">
-          将来の設定オプションはここに追加
-        </div>
-      </div> -->
-
-      <!-- 法的情報セクション -->
       <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
         <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">法的情報</h3>
         <div class="space-y-3">
@@ -33,7 +23,6 @@
         </div>
       </div>
 
-     <!-- 使い方ガイドセクション -->
       <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
         <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">使い方ガイド</h3>
         <div class="space-y-3">
@@ -46,7 +35,6 @@
         </div>
       </div>
 
-      <!-- お問い合わせセクション -->
       <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
         <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">サポート</h3>
         <div class="space-y-3">
@@ -59,7 +47,6 @@
         </div>
       </div>
 
-      <!-- ログアウトセクション -->
       <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
         <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">セッション管理</h3>
         <div class="flex justify-center">
@@ -71,7 +58,6 @@
     </div>
   </div>
 
-  <!-- モーダル部分 -->
   <div id="logout-modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full mx-4">
       <h3 class="text-lg font-medium text-gray-900 mb-3">ログアウトの確認</h3>
@@ -86,12 +72,12 @@
   </div>
 
   <script>
-    document.addEventListener('turbo:load', function() {  // DOMContentLoadedをturbo:loadに変更
+    document.addEventListener('turbo:load', function() {
       const modal = document.getElementById('logout-modal');
       const openButton = document.getElementById('logout-button');
       const cancelButton = document.getElementById('cancel-logout');
 
-      if (!modal || !openButton || !cancelButton) return; // 要素チェックを追加
+      if (!modal || !openButton || !cancelButton) return;
 
       function openModal() {
         modal.classList.remove('hidden');
@@ -104,14 +90,12 @@
       openButton.addEventListener('click', openModal);
       cancelButton.addEventListener('click', closeModal);
 
-      // モーダルの外側をクリックして閉じる
       modal.addEventListener('click', function(e) {
         if (e.target === modal) {
           closeModal();
         }
       });
 
-      // ESCキーでモーダルを閉じる
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
           closeModal();

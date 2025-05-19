@@ -1,8 +1,6 @@
 require 'cloudinary'
 
-# Cloudinary APIモックのセットアップヘルパー
 module CloudinaryHelper
-  # テスト用にCloudinaryのアップロードAPIをスタブ化する
   def stub_cloudinary_upload
     allow(Cloudinary::Uploader).to receive(:upload).and_return(
       {
@@ -14,7 +12,6 @@ module CloudinaryHelper
     )
   end
 
-  # テスト用にCloudinaryの削除APIをスタブ化する
   def stub_cloudinary_destroy
     allow(Cloudinary::Uploader).to receive(:destroy).and_return({ 'result' => 'ok' })
   end
@@ -24,18 +21,13 @@ RSpec.configure do |config|
   config.include CloudinaryHelper
 
   config.before do
-    # Cloudinaryのモック設定を強化
     Cloudinary.config do |c|
       c.cloud_name = 'test'
       c.api_key = 'test_key'
       c.api_secret = 'test_secret'
       c.secure = true
     end
-
-    # アップロードのモックをより具体的に
     stub_cloudinary_upload
-
-    # 画像変換のモックも追加
     allow(Cloudinary::Utils).to receive(:cloudinary_url).and_return('https://example.com/test_image.jpg')
   end
 end

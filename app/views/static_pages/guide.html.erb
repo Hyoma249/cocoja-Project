@@ -1,10 +1,8 @@
 <div class="container mx-auto px-4 py-8">
-  <!-- ヘッダーセクション -->
   <div class="p-4 sm:p-6">
     <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">「ココじゃ」使い方ガイド</h1>
   </div>
 
-  <!-- 戻るボタン -->
   <div class="mb-6 ml-6">
     <button onclick="history.back()" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors duration-200">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -13,10 +11,6 @@
       前のページに戻る
     </button>
   </div>
-
-  <!-- おすすめ機能セクション -->
   <%= render 'static_pages/guide_partials/recommended_features' %>
-
-  <!-- 機能ガイドタブセクション -->
   <%= render 'static_pages/guide_partials/feature_tabs' %>
 </div>

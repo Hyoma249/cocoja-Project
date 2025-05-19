@@ -2,7 +2,6 @@
   <h3 class="text-lg font-medium mb-2">この投稿にポイントを付ける</h3>
 
   <%
-    # より確実な投票状態チェック - 当日の投票のみをチェック
     already_voted = current_user && Vote.where(user_id: current_user.id, post_id: post.id, voted_on: Time.zone.today).exists?
     remaining_points = current_user ? current_user.remaining_daily_points : 0
   %>

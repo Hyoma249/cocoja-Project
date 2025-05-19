@@ -1,39 +1,27 @@
-# 投稿を管理するモデル
 class Post < ApplicationRecord
-  # 投稿は 1つの都道府県 にひもづく
   belongs_to :prefecture
-
-  # 投稿は 1人のユーザー にひもづく
   belongs_to :user
 
-  # ハッシュタグとの関連付け
   has_many :post_hashtags, dependent: :destroy
   has_many :hashtags, through: :post_hashtags
-
   has_many :votes, dependent: :destroy
-  # この投稿が、全部で何ポイント投票されているか？
+
   def total_points
     votes.sum(:points)
   end
 
-  # 画像アップロード用
   has_many :post_images, -> { order(created_at: :asc) }, dependent: :destroy, autosave: false
-  # 1つのフォームで投稿＋画像を一緒に追加・編集・削除できるようにする
   accepts_nested_attributes_for :post_images, allow_destroy: true
 
-  # 画像枚数の上限を10枚に制限
   validates_associated :post_images
   validate :post_images_count_within_limit
 
-  # 投稿内容に # がついている場合、それをハッシュタグとして登録する
   after_create :create_hashtags
 
-  # JSON応答用に日付をフォーマットするメソッド
   def created_at_formatted
     I18n.l(created_at, format: :long) if created_at
   end
 
-  # カウンターキャッシュの有効活用
   def increment_images_count!
     increment!(:post_images_count)
   end
@@ -48,7 +36,6 @@ class Post < ApplicationRecord
   end
 
   def create_hashtags
-    # 半角(#)と全角(＃)の両方に対応し、空白を無視しない正規表現
     hashtags = content.scan(/[#＃]([^\s#＃]+)/).flatten.map(&:downcase).uniq
     hashtags.each do |tag|
       hashtag = Hashtag.find_or_create_by(name: tag)

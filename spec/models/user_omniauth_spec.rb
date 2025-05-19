@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe '.from_omniauth' do
-    # テスト用の認証ハッシュ
     let(:auth_hash) do
       OmniAuth::AuthHash.new(
         provider: 'google_oauth2',
@@ -21,7 +20,6 @@ RSpec.describe User, type: :model do
           User.from_omniauth(auth_hash)
         }.to change(User, :count).by(1)
 
-        # 作成されたユーザーの情報を確認
         user = User.last
         expect(user.email).to eq('test@example.com')
         expect(user.provider).to eq('google_oauth2')
@@ -30,7 +28,6 @@ RSpec.describe User, type: :model do
     end
 
     context '既存ユーザーの場合' do
-      # 事前にユーザーを作成
       let!(:existing_user) do
         User.create!(
           email: 'test@example.com',

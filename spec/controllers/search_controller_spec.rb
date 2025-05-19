@@ -1,19 +1,14 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
-# 検索コントローラーのテスト
-# 注: このファイルがsearch機能の主要なテストです
 RSpec.describe SearchController, type: :controller do
   describe 'GET #autocomplete' do
-    # コントローラーテスト用にログイン状態を設定
     let(:user) { create(:user, username: 'testuser', uid: 'testuid123') }
     let!(:prefecture) { create(:prefecture, name: 'テスト県') }
     let!(:hashtag) { create(:hashtag, name: 'testhashtag') }
 
     before do
       sign_in user
-      # Ajaxリクエストとして設定
+
       request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
       request.env['HTTP_ACCEPT'] = 'application/json'
     end
@@ -69,7 +64,6 @@ RSpec.describe SearchController, type: :controller do
     end
 
     context 'when 大文字小文字混在のクエリの場合' do
-      # テスト内で参照されているため、let! のままにする
       let!(:mixed_case_hashtag) { create(:hashtag, name: 'MixedCase') }
 
       it '検索ができること（大文字小文字の扱いはシステム実装に依存）' do
@@ -81,18 +75,14 @@ RSpec.describe SearchController, type: :controller do
         hashtag_results = json_response['results'].select { |r| r['type'] == 'hashtag' }
         expect(hashtag_results).not_to be_empty
 
-        # モデルやコントローラの実装によって大文字小文字の扱いが変わる可能性があるため
-        # 大文字小文字を区別せずに内容を検証する
         expect(hashtag_results.first['text'].downcase).to eq('mixedcase')
 
-        # 明示的に参照して警告を解消
         expect(mixed_case_hashtag.name.downcase).to eq('mixedcase')
       end
     end
 
     context 'when 検索結果が多数ある場合' do
       before do
-        # 多数のテストデータを作成
         6.times { |i| create(:user, username: "testuser#{i}") }
       end
 
@@ -103,7 +93,7 @@ RSpec.describe SearchController, type: :controller do
         json_response = response.parsed_body
 
         user_results = json_response['results'].select { |r| r['type'] == 'user' }
-        expect(user_results.length).to be <= 5 # コントローラで設定した制限
+        expect(user_results.length).to be <= 5
       end
     end
   end

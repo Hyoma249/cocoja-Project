@@ -2,13 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Users::OmniauthCallbacksController, type: :controller do
   before do
-    # Deviseのマッピングを設定
     @request.env['devise.mapping'] = Devise.mappings[:user]
-
-    # OmniAuthのテストモード設定
     OmniAuth.config.test_mode = true
 
-    # テスト用の認証ハッシュ
     auth_hash = OmniAuth::AuthHash.new(
       provider: 'google_oauth2',
       uid: '123456789',
@@ -19,7 +15,6 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
       }
     )
 
-    # リクエスト環境に設定
     @request.env['omniauth.auth'] = auth_hash
   end
 
@@ -46,7 +41,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
           provider: 'google_oauth2',
           uid_from_provider: '123456789',
           username: 'testuser',
-          uid: 'testuid' # プロフィール設定済みを示す
+          uid: 'testuid'
         )
       end
 

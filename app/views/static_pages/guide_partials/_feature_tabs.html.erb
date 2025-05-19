@@ -4,9 +4,7 @@
     <p class="text-lg">視覚的に「ココじゃ」の機能を理解しよう！</p>
   </div>
 
-  <!-- タブナビゲーション -->
   <div class="bg-white rounded-t-lg border border-gray-200">
-    <!-- スマホ用横スワイプタブ -->
     <div class="md:hidden">
       <nav class="gnav" id="mobileVideoTabs" role="tablist">
         <div class="item active">
@@ -48,7 +46,6 @@
       </nav>
     </div>
 
-    <!-- PC/タブレット用タブ -->
     <div class="hidden md:flex flex-wrap" id="videoTabs" role="tablist">
       <button class="px-4 py-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600 active tab-button"
               id="search-tab" data-tab="search-tab" type="button" role="tab">
@@ -77,41 +74,33 @@
     </div>
   </div>
 
-  <!-- タブコンテンツ -->
   <div class="bg-white rounded-b-lg border border-gray-200 border-t-0 p-6" id="tab-content-container">
-    <!-- 検索タブ -->
     <div id="search-tab" class="tab-panel">
       <%= render 'static_pages/guide_partials/tabs/search_tab' %>
     </div>
 
-    <!-- 投票タブ -->
     <div id="vote-tab" class="tab-panel hidden">
       <%= render 'static_pages/guide_partials/tabs/vote_tab' %>
     </div>
 
-    <!-- ランキングタブ -->
     <div id="ranking-tab" class="tab-panel hidden">
       <%= render 'static_pages/guide_partials/tabs/ranking_tab' %>
     </div>
 
-    <!-- ハッシュタグタブ -->
     <div id="hashtag-tab" class="tab-panel hidden">
       <%= render 'static_pages/guide_partials/tabs/hashtag_tab' %>
     </div>
 
-    <!-- プロフィールタブ -->
     <div id="profile-tab" class="tab-panel hidden">
       <%= render 'static_pages/guide_partials/tabs/profile_tab' %>
     </div>
 
-    <!-- フォロータブ -->
     <div id="follow-tab" class="tab-panel hidden">
       <%= render 'static_pages/guide_partials/tabs/follow_tab' %>
     </div>
   </div>
 
   <style>
-    /* シンプル化したスタイル - 修正版 */
     .gnav {
       overflow-x: auto;
       display: flex;
@@ -120,21 +109,21 @@
       margin: 0;
       scrollbar-width: none;
     }
-    
+
     .gnav::-webkit-scrollbar {
       display: none;
     }
-    
+
     .gnav .item {
       border-bottom: 2px solid transparent;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    
+
     .gnav .item.active {
       border-bottom: 2px solid #3b82f6;
     }
-    
+
     .gnav .item.active button {
       color: #3b82f6;
     }
@@ -148,97 +137,83 @@
       font-weight: 500;
     }
 
-    /* タブパネル表示スタイルの修正 */
     .tab-panel.hidden {
       display: none;
     }
-    
+
     .tab-panel {
       display: block;
     }
   </style>
 
   <script>
-  // イベントリスナー関数を定義
-  function initTabFunctionality() {
-    console.log('タブ機能の初期化');
-    // 要素の参照
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabPanels = document.querySelectorAll('.tab-panel');
-    const pcNavItems = document.querySelectorAll('#videoTabs .tab-button');
-    const mobileNavItems = document.querySelectorAll('#mobileVideoTabs .item');
+    function initTabFunctionality() {
+      console.log('タブ機能の初期化');
 
-    // タブ切り替え関数 - 修正版
-    function activateTab(targetId) {
-      console.log('タブ切替:', targetId);
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      const pcNavItems = document.querySelectorAll('#videoTabs .tab-button');
+      const mobileNavItems = document.querySelectorAll('#mobileVideoTabs .item');
 
-      // すべてのタブの表示状態をリセット
-      tabPanels.forEach(panel => {
-        if(panel.id === targetId) {
-          // 選択されたタブは表示
-          panel.classList.remove('hidden');
-          console.log(panel.id, '表示');
-        } else {
-          // それ以外のタブは非表示
-          panel.classList.add('hidden');
-          console.log(panel.id, '非表示');
-        }
-      });
-      
-      // PC用ナビゲーションの状態更新
-      pcNavItems.forEach(btn => {
-        const isSelected = btn.getAttribute('data-tab') === targetId;
-        btn.classList.toggle('text-blue-600', isSelected);
-        btn.classList.toggle('border-blue-600', isSelected);
-        btn.classList.toggle('text-gray-500', !isSelected);
-        btn.classList.toggle('border-transparent', !isSelected);
-      });
-      
-      // モバイル用ナビゲーションの状態更新
-      mobileNavItems.forEach(item => {
-        const btn = item.querySelector('.tab-button');
-        const isSelected = btn && btn.getAttribute('data-tab') === targetId;
-        item.classList.toggle('active', isSelected);
-        
-        // 選択されたタブが見えるようスクロール調整
-        if(isSelected) {
-          const container = document.getElementById('mobileVideoTabs');
-          if(container) {
-            container.scrollTo({
-              left: item.offsetLeft - (container.offsetWidth / 2) + (item.offsetWidth / 2),
-              behavior: 'smooth'
-            });
+      function activateTab(targetId) {
+        console.log('タブ切替:', targetId);
+
+        tabPanels.forEach(panel => {
+          if(panel.id === targetId) {
+            panel.classList.remove('hidden');
+            console.log(panel.id, '表示');
+          } else {
+            panel.classList.add('hidden');
+            console.log(panel.id, '非表示');
           }
-        }
-      });
-    }
-    
-    // タブ切り替えイベントの設定
-    tabButtons.forEach(button => {
-      // 既存のイベントリスナーを削除（重複登録防止）
-      button.removeEventListener('click', handleTabClick);
-      // 新しいイベントリスナーを追加
-      button.addEventListener('click', handleTabClick);
-    });
-    
-    function handleTabClick() {
-      const tabTarget = this.getAttribute('data-tab');
-      if(tabTarget) {
-        activateTab(tabTarget);
-      }
-    }
-    
-    // 初期タブの設定
-    console.log('初期タブを表示');
-    activateTab('search-tab');
-  }
+        });
 
-  // 複数のイベントでタブ機能を初期化
-  document.addEventListener('DOMContentLoaded', initTabFunctionality);
-  document.addEventListener('turbolinks:load', initTabFunctionality);
-  // turbolinksを使用していない場合の対応
-  if (document.getElementById('feature-guide-tabs')) {
-    initTabFunctionality();
-  }
-</script>
+        pcNavItems.forEach(btn => {
+          const isSelected = btn.getAttribute('data-tab') === targetId;
+          btn.classList.toggle('text-blue-600', isSelected);
+          btn.classList.toggle('border-blue-600', isSelected);
+          btn.classList.toggle('text-gray-500', !isSelected);
+          btn.classList.toggle('border-transparent', !isSelected);
+        });
+
+        mobileNavItems.forEach(item => {
+          const btn = item.querySelector('.tab-button');
+          const isSelected = btn && btn.getAttribute('data-tab') === targetId;
+          item.classList.toggle('active', isSelected);
+
+          if(isSelected) {
+            const container = document.getElementById('mobileVideoTabs');
+            if(container) {
+              container.scrollTo({
+                left: item.offsetLeft - (container.offsetWidth / 2) + (item.offsetWidth / 2),
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      }
+
+      tabButtons.forEach(button => {
+        button.removeEventListener('click', handleTabClick);
+        button.addEventListener('click', handleTabClick);
+      });
+
+      function handleTabClick() {
+        const tabTarget = this.getAttribute('data-tab');
+        if(tabTarget) {
+          activateTab(tabTarget);
+        }
+      }
+
+      console.log('初期タブを表示');
+      activateTab('search-tab');
+    }
+
+    document.addEventListener('DOMContentLoaded', initTabFunctionality);
+    document.addEventListener('turbolinks:load', initTabFunctionality);
+
+    if (document.getElementById('feature-guide-tabs')) {
+      initTabFunctionality();
+    }
+  </script>
 </div>

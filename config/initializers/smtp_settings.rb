@@ -1,4 +1,3 @@
-# 例: config/initializers/smtp_settings.rb
 if Rails.env.production?
   begin
     test_smtp = Net::SMTP.new('smtp.gmail.com', 587)

@@ -5,7 +5,6 @@
     <title><%= content_for?(:title) ? yield(:title) : "ココじゃ | 都道府県魅力度ランキングSNS" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '「ココじゃ」は、都道府県の魅力を発見・共有できる魅力度ランキングSNSです。' %>">
 
-    <!-- 基本設定 -->
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -13,11 +12,9 @@
     <%= csp_meta_tag %>
     <%= yield :head %>
 
-    <!-- アイコン -->
     <link rel="icon" href="<%= asset_path 'cocoja-icon-new.png' %>" type="image/png">
     <link rel="apple-touch-icon" href="<%= asset_path 'cocoja-icon-new.png' %>">
 
-    <!-- スタイルとスクリプト -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
@@ -25,7 +22,6 @@
   </head>
 
   <body class="bg-gray-50">
-    <!-- フラッシュメッセージ -->
     <% if notice.present? || alert.present? %>
       <div class="fixed top-4 left-1/2 transform -translate-x-1/2 w-full max-w-md z-[99999] px-4">
         <% if notice.present? %>

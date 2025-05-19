@@ -4,13 +4,11 @@ export default class extends Controller {
   static targets = ["field", "showIcon", "hideIcon"];
 
   toggle(event) {
-    // アニメーション効果の追加
     const button = event.currentTarget;
     button.classList.add("transform", "transition-transform");
     button.style.transform = "scale(0.95)";
     setTimeout(() => (button.style.transform = "scale(1)"), 100);
 
-    // パスワードフィールドの表示/非表示切り替え
     if (this.fieldTarget.type === "password") {
       this.showPassword();
     } else {

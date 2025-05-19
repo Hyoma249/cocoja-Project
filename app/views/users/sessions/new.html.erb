@@ -5,17 +5,14 @@
     <h1 class="text-2xl font-bold text-center text-black mb-5">ログイン</h1>
 
     <%= form_with(model: resource, as: resource_name, url: session_path(resource_name), html: { class: "w-full max-w-md space-y-8" }) do |f| %>
-      <!-- フラッシュメッセージ -->
       <%= render "shared/flash_messages" %>
 
       <div class="space-y-6">
-        <!-- メールアドレス入力欄 -->
         <div>
           <%= f.label :email, "メールアドレス", class: "block text-sm font-semibold text-gray-800" %>
           <%= f.email_field :email, class: "w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
         </div>
 
-        <!-- パスワード入力欄 -->
         <div class="relative">
           <%= f.label :password, "パスワード", class: "block text-sm font-semibold text-gray-800" %>
           <div data-controller="password-visibility">
@@ -49,13 +46,11 @@
         <% end %>
       </div>
 
-      <!-- ログインボタン -->
       <div class="flex justify-center">
         <%= f.submit "ログイン", class: "w-[240px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" %>
       </div>
     <% end %>
 
-    <!-- 新規登録リンク -->
     <div class="mt-8 text-center mb-4">
       <p class="text-sm text-gray-600">
         アカウントをお持ちでない方は
@@ -66,7 +61,6 @@
       </div>
     </div>
 
-    <!-- Google認証ボタンを含むリンクパーシャル -->
     <%= render "users/shared/links" %>
   </main>
 

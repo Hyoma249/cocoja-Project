@@ -1,12 +1,9 @@
-<!-- ヘッダーセクション -->
 <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg mb-8">
   <h1 class="text-2xl font-bold mb-2">おすすめ機能</h1>
   <p class="text-lg">日本の魅力を再発見！3つのおすすめ機能で楽しもう！</p>
 </div>
 
-<!-- モバイル用縦並びレイアウト -->
 <div class="block md:hidden">
-  <!-- ランキング機能（モバイル） -->
   <%= render 'static_pages/guide_partials/feature_card_mobile',
     feature_number: 1,
     feature_name: 'ランキング機能',
@@ -23,7 +20,6 @@
       { title: '「地元を応援したい」', desc: '地元の魅力を投稿して貢献' }
     ] %>
 
-  <!-- 投票機能（モバイル） -->
   <%= render 'static_pages/guide_partials/feature_card_mobile',
     feature_number: 2,
     feature_name: '投票機能',
@@ -42,7 +38,6 @@
       { title: '「色々な投稿を応援したい」', desc: '分散して投票' }
     ] %>
 
-  <!-- フォロー機能（モバイル） -->
   <%= render 'static_pages/guide_partials/feature_card_mobile',
     feature_number: 3,
     feature_name: 'フォロー機能',
@@ -60,9 +55,7 @@
     ] %>
 </div>
 
-<!-- PC/タブレット用横並びレイアウト -->
 <div class="hidden md:flex md:flex-row md:gap-6">
-  <!-- ランキング機能（PC） -->
   <%= render 'static_pages/guide_partials/feature_card_desktop',
     feature_number: 1,
     feature_name: 'ランキング機能',
@@ -79,7 +72,6 @@
       { title: '「地元を応援したい」', desc: '地元の魅力を投稿して貢献' }
     ] %>
 
-  <!-- 投票機能（PC） -->
   <%= render 'static_pages/guide_partials/feature_card_desktop',
     feature_number: 2,
     feature_name: '投票機能',
@@ -98,7 +90,6 @@
       { title: '「色々な投稿を応援したい」', desc: '分散して投票' }
     ] %>
 
-  <!-- フォロー機能（PC） -->
   <%= render 'static_pages/guide_partials/feature_card_desktop',
     feature_number: 3,
     feature_name: 'フォロー機能',

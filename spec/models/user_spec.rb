@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -25,11 +23,9 @@ RSpec.describe User, type: :model do
       it 'validates uid format' do
         user = create(:user)
 
-        # 正常系のテスト
         user.uid = 'abc123'
         expect(user).to be_valid
 
-        # 異常系のテスト
         user.uid = 'abc-123'
         expect(user).not_to be_valid
         expect(user.errors[:uid]).to include('は半角英数字のみ使用できます')
@@ -56,20 +52,20 @@ RSpec.describe User, type: :model do
           create(:vote, user: user, points: 3)
         end
 
-        expect(user.daily_votes_count).to eq(5) # 今日の投票（2+3=5）のみカウント
+        expect(user.daily_votes_count).to eq(5)
       end
     end
 
     describe '#remaining_daily_points' do
       it 'returns remaining points for today' do
         create(:vote, user: user, points: 2, created_at: Time.current)
-        expect(user.remaining_daily_points).to eq(3) # 5 - 2 = 3ポイント残り
+        expect(user.remaining_daily_points).to eq(3)
       end
 
       it 'returns 0 when used all points' do
         create(:vote, user: user, points: 5, created_at: Time.current)
 
-        expect(user.remaining_daily_points).to eq(0) # ポイントを使い切った
+        expect(user.remaining_daily_points).to eq(0)
       end
     end
 
@@ -77,13 +73,13 @@ RSpec.describe User, type: :model do
       it 'returns true when enough points remain' do
         create(:vote, user: user, points: 2, created_at: Time.current)
 
-        expect(user.can_vote?(3)).to be true # 2ポイント使用済み→3ポイント追加OK
+        expect(user.can_vote?(3)).to be true
       end
 
       it 'returns false when not enough points remain' do
         create(:vote, user: user, points: 4, created_at: Time.current)
 
-        expect(user.can_vote?(2)).to be false # 4ポイント使用済み→2ポイント追加NG
+        expect(user.can_vote?(2)).to be false
       end
     end
   end

@@ -1,5 +1,3 @@
-# ユーザーのマイページ関連機能を提供するコントローラー
-# ユーザープロフィール表示、編集、更新などを担当します
 class MypagesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: %i[show edit update posts post]
@@ -7,10 +5,8 @@ class MypagesController < ApplicationController
   def show
     @user = current_user
 
-    # すべての投稿を新着順（created_atの降順）で取得
     @posts = current_user.posts.order(created_at: :desc).includes(:post_images)
 
-    # インフィニットスクロールの場合、ページネーション処理を追加
     respond_to do |format|
       format.html
       format.json {
@@ -50,12 +46,10 @@ class MypagesController < ApplicationController
     end
   end
 
-  # ログインユーザーの投稿一覧を表示
   def posts
     @posts = current_user.posts.order(created_at: :desc)
       .includes(:user, :post_images, :hashtags, :prefecture)
 
-    # インフィニットスクロールの場合、ページネーション処理を追加
     respond_to do |format|
       format.html
       format.json {
@@ -73,7 +67,6 @@ class MypagesController < ApplicationController
     end
   end
 
-  # 個別の投稿詳細を表示
   def post
     @post = current_user.posts.includes(:user, :post_images, :hashtags, :prefecture).find(params[:id])
   rescue ActiveRecord::RecordNotFound

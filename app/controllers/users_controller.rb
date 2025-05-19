@@ -1,5 +1,3 @@
-# ユーザー（User）に関する操作を担当するコントローラー
-# ユーザープロフィール表示、フォロー/フォロワー管理機能を提供します
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: %i[show following followers posts]
@@ -24,12 +22,10 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
-  # ユーザーの投稿一覧をリスト表示
   def posts
     @posts = @user.posts.order(created_at: :desc)
       .includes(:user, :post_images, :hashtags, :prefecture)
 
-    # インフィニットスクロールの場合、ページネーション処理を追加
     respond_to do |format|
       format.html
       format.json {

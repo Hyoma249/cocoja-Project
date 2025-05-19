@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe MypagesController, type: :controller do
@@ -92,7 +90,7 @@ RSpec.describe MypagesController, type: :controller do
 
       context 'when 無効なパラメータの場合' do
         let(:invalid_params) do
-          { user: { username: '' } } # usernameは必須
+          { user: { username: '' } }
         end
 
         before { patch :update, params: invalid_params }

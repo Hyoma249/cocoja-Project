@@ -20,7 +20,6 @@
             <%= render "users/shared/error_messages", resource: resource %>
             <%= f.hidden_field :reset_password_token %>
 
-            <!-- 新しいパスワード入力欄 -->
             <div class="relative mb-6">
               <%= f.label :password, "新しいパスワード", class: "block text-sm font-semibold text-gray-800" %>
               <% if @minimum_password_length %>
@@ -50,7 +49,6 @@
               </div>
             </div>
 
-            <!-- パスワード確認入力欄 -->
             <div class="relative mb-6">
               <%= f.label :password_confirmation, "パスワードの確認", class: "block text-sm font-semibold text-gray-800" %>
               <div data-controller="password-visibility" class="relative">
@@ -77,7 +75,6 @@
               </div>
             </div>
 
-            <!-- 設定変更ボタン -->
             <div class="pt-4 flex justify-center">
               <%= f.submit "パスワードを変更", class: "w-[240px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" %>
             </div>

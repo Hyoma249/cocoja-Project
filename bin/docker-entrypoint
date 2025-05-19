@@ -1,20 +1,14 @@
-#!/bin/bash -e
-
-# デバッグ出力を有効化
 set -x
 
 echo "Starting entrypoint script..."
 
-# PIDファイルの削除
 rm -f /rails/tmp/pids/server.pid
 
-# データベース接続情報の確認
 if [ -z "$DATABASE_URL" ] && [ -z "$RAILS_MASTER_KEY" ]; then
   echo "Warning: Neither DATABASE_URL nor RAILS_MASTER_KEY is set"
   echo "Make sure credentials.yml.enc contains neon connection string"
 fi
 
-# データベース初期化（より安全な方法）
 max_attempts=15
 counter=0
 
@@ -30,10 +24,8 @@ do
     sleep 3
 done
 
-# データベースの初期セットアップ
 echo "Setting up the database..."
 RAILS_ENV=production bundle exec rails db:prepare
 
-# サーバー起動
 echo "Starting Rails server on port 8080..."
 exec "${@}"

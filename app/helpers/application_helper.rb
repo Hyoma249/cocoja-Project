@@ -1,20 +1,17 @@
-# アプリケーション全体で使用するヘルパーメソッドを提供するモジュール
 module ApplicationHelper
-  # ランキングの順位に応じたCSSクラスを返す
   def ranking_badge_class(rank)
     case rank
     when 1
-      'bg-yellow-100 text-yellow-800 border-yellow-300' # 金
+      'bg-yellow-100 text-yellow-800 border-yellow-300'
     when 2
-      'bg-gray-100 text-gray-800 border-gray-300' # 銀
+      'bg-gray-100 text-gray-800 border-gray-300'
     when 3
-      'bg-orange-100 text-orange-800 border-orange-300' # 銅
+      'bg-orange-100 text-orange-800 border-orange-300'
     else
-      'bg-gray-50 text-gray-600 border-gray-200' # その他
+      'bg-gray-50 text-gray-600 border-gray-200'
     end
   end
 
-  # ランキング変動表示用のアイコンを生成
   def rank_change_icon(change)
     return content_tag(:span, 'NEW', class: 'text-indigo-600 text-xs font-medium') if change.nil?
 
@@ -23,12 +20,10 @@ module ApplicationHelper
     display_change = rank_change_display_value(change)
 
     content_tag(:span, class: "inline-flex items-center #{css_class}") do
-      # sanitizeを使用してSVGを安全に表示
       sanitize(icon_svg) + (display_change.nil? ? '' : content_tag(:span, display_change, class: 'ml-1'))
     end
   end
 
-  # 残りのポイント数に応じたCSSクラスを返す
   def remaining_points_class(points)
     if points.zero?
       'text-red-600'
@@ -68,21 +63,16 @@ module ApplicationHelper
 
   private
 
-  # SVGパスだけを返すヘルパーメソッド
   def svg_path_for_change(change)
     if change.positive?
-      # 上向き矢印のパス
       'd="M5 10l7-7m0 0l7 7m-7-7v18"'
     elsif change.negative?
-      # 下向き矢印のパス
       'd="M19 14l-7 7m0 0l-7-7m7 7V3"'
     else
-      # 横線のパス
       'd="M5 12h14"'
     end
   end
 
-  # ランキング変動に応じたSVGを返す
   def rank_change_svg(change)
     path = svg_path_for_change(change)
 
@@ -92,7 +82,6 @@ module ApplicationHelper
       '</svg>'
   end
 
-  # ランキング変動に応じたCSSクラスを返す
   def rank_change_css_class(change)
     if change.positive?
       'text-green-600'
@@ -103,12 +92,8 @@ module ApplicationHelper
     end
   end
 
-  # ランキング変動の表示値を返す
   def rank_change_display_value(change)
-    # ガード節を使って早期にnilを返す
     return unless change.positive? || change.negative?
-
-    # 変動がある場合は絶対値を返す
     change.abs
   end
 end

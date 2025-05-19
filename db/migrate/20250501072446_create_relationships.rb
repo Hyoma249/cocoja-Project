@@ -1,4 +1,3 @@
-# フォロー・フォロワー関係を管理するテーブルを作成するマイグレーション
 class CreateRelationships < ActiveRecord::Migration[7.1]
   def change
     create_table :relationships do |t|

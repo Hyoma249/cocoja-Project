@@ -1,14 +1,10 @@
-# 投票（Vote）に関する操作を担当するコントローラー
-# ユーザーによる投稿へのポイント付与機能を提供します
 class VotesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post
   before_action :check_vote_permissions, only: [:create]
 
   def create
-    # 「今ログインしてるユーザー」が「投票」データを新しく作る
     @vote = current_user.votes.build(vote_params)
-    # 投票対象の「投稿」をセットします
     @vote.post = @post
 
     respond_to do |format|
@@ -36,7 +32,6 @@ class VotesController < ApplicationController
         end
       end
     rescue ActiveRecord::RecordNotUnique
-      # データベース制約による重複エラーを適切に処理
       error_message = 'この投稿にはすでにポイントを付けています'
       format.html { redirect_to @post, alert: error_message }
       format.turbo_stream do

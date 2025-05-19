@@ -1,13 +1,9 @@
-# 投稿（Post）に関する操作を担当するコントローラー
-# 投稿の表示、作成、編集、削除やハッシュタグ検索機能を提供します
 class PostsController < ApplicationController
-  # ログインユーザーによってのみ実行可能となる
   before_action :authenticate_user!
   include PostsHelper
   include PostsJsonBuildable
   include PostCreatable
 
-  # 定数の定義 (MAX_IMAGESはPostCreatableモジュールで定義)
   POSTS_PER_PAGE = 12
 
   def index
@@ -32,17 +28,12 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  # 「新しい投稿を作成」ボタンを押したときに実行される
   def new
-    # 「新しい投稿（Post）を作る準備」 をしている
     @post = Post.new
-    # 「都道府県のリストを全部取り出す」 ためのコード
     @prefectures = Prefecture.all
-    # 投稿に紐づいた画像フォームを出すために、空の子モデル（PostImage）を作っておく処理
     @post.post_images.build
   end
 
-  # submitボタンを押したときに実行される
   def create
     @post = current_user.posts.build(post_params)
 
@@ -90,7 +81,6 @@ class PostsController < ApplicationController
   end
 
   def load_hashtag_posts
-    # distinctを使って重複を排除する
     @posts = @tag.posts.distinct
                  .includes(:prefecture, :user, :hashtags, :post_images)
                  .order(created_at: :desc)

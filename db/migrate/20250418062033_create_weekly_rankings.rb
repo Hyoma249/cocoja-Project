@@ -1,4 +1,3 @@
-# 週間ランキングテーブルを作成するマイグレーション
 class CreateWeeklyRankings < ActiveRecord::Migration[7.1]
   def change
     create_table :weekly_rankings do |t|

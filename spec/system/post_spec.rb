@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe '投稿機能', type: :system do
@@ -28,11 +26,7 @@ RSpec.describe '投稿機能', type: :system do
       it '必須項目が未入力の場合、エラーになること' do
         click_button '投稿する'
 
-        # 実際のエラーメッセージに合わせて修正
         expect(page).to have_content 'Prefectureを入力してください'
-
-        # 特定のエリア内にエラーがないことを確認する代わりに、
-        # 単に必要なエラーメッセージが表示されていることを確認
         expect(page).to have_content 'Prefectureを入力してください'
       end
     end

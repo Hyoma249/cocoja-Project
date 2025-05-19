@@ -1,29 +1,10 @@
-#!/usr/bin/env ruby
-
-# A sample pre-deploy hook
-#
-# Checks the Github status of the build, waiting for a pending build to complete for up to 720 seconds.
-#
-# Fails unless the combined status is "success"
-#
-# These environment variables are available:
-# KAMAL_RECORDED_AT
-# KAMAL_PERFORMER
-# KAMAL_VERSION
-# KAMAL_HOSTS
-# KAMAL_COMMAND
-# KAMAL_SUBCOMMAND
-# KAMAL_ROLE (if set)
-# KAMAL_DESTINATION (if set)
-
-# Only check the build status for production deployments
 if ENV["KAMAL_COMMAND"] == "rollback" || ENV["KAMAL_DESTINATION"] != "production"
   exit 0
 end
 
 require "bundler/inline"
 
-# true = install gems so this is fast on repeat invocations
+
 gemfile(true, quiet: true) do
   source "https://rubygems.org"
 

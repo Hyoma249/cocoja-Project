@@ -1,23 +1,19 @@
 <div class="min-h-screen flex flex-col">
-  <!-- Header -->
   <%= render "shared/header/guest_header" %>
 
   <main class="flex-grow flex flex-col items-center px-4 py-8">
     <h1 class="text-2xl font-bold text-center text-black mb-5">新規会員登録</h1>
 
     <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), html: { class: "w-full max-w-md space-y-8", data: { turbo: false } }) do |f| %>
-      <%# Deviseのエラーメッセージパーシャルを表示 %>
       <%= render "users/shared/error_messages", resource: resource %>
 
       <div class="space-y-6">
-        <!-- メールアドレス入力欄 -->
         <div>
           <%= f.label :email, "メールアドレス", class: "block text-sm font-semibold text-gray-800" %>
           <%= f.email_field :email, class: "w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
           <p class="mt-1 text-sm text-gray-600">※登録後、認証用メールが送信されます</p>
         </div>
 
-        <!-- パスワード入力欄 -->
         <div class="relative">
           <%= f.label :password, "パスワード", class: "block text-sm font-semibold text-gray-800" %>
           <% if @minimum_password_length %>
@@ -46,7 +42,6 @@
           </div>
         </div>
 
-        <!-- パスワード確認入力欄 -->
         <div class="relative">
           <%= f.label :password_confirmation, "パスワードの確認", class: "block text-sm font-semibold text-gray-800" %>
           <div data-controller="password-visibility">
@@ -72,7 +67,6 @@
           </div>
         </div>
 
-        <!-- メール認証についての通知 -->
         <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
           <div class="flex">
             <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -84,31 +78,28 @@
           </div>
         </div>
 
-        <!-- 利用規約とプライバシーポリシー同意チェックボックス (コメントアウトされている) -->
         <div class="flex flex-col space-y-4">
           <div class="flex items-center">
-        <%= f.check_box :terms_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
-        <label class="ml-2 block text-[0.8rem] text-gray-800">
-          <a href="/terms" class="text-blue-500 hover:text-blue-700">利用規約</a> に同意します
-        </label>
+            <%= f.check_box :terms_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
+            <label class="ml-2 block text-[0.8rem] text-gray-800">
+             <a href="/terms" class="text-blue-500 hover:text-blue-700">利用規約</a> に同意します
+            </label>
           </div>
 
           <div class="flex items-center">
-        <%= f.check_box :privacy_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
-        <label class="ml-2 block text-[0.8rem] text-gray-800">
-          <a href="/privacy" class="text-blue-500 hover:text-blue-700">プライバシーポリシー</a> に同意します
-        </label>
+            <%= f.check_box :privacy_agreement, { required: true, class: "h-4 w-4 text-blue-600 border-gray-300 rounded" }, "1", "0" %>
+            <label class="ml-2 block text-[0.8rem] text-gray-800">
+              <a href="/privacy" class="text-blue-500 hover:text-blue-700">プライバシーポリシー</a> に同意します
+            </label>
           </div>
         </div>
       </div>
 
-      <!-- 登録ボタン -->
       <div class="flex justify-center">
         <%= f.submit "登録する", class: "w-[240px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" %>
       </div>
     <% end %>
 
-    <!-- ログインリンク -->
     <div class="mt-8 text-center mb-4">
       <p class="text-sm text-gray-600">
         アカウントをお持ちの方は
@@ -116,10 +107,8 @@
       </p>
     </div>
 
-    <!-- Google認証ボタンを含むリンクパーシャル -->
     <%= render "users/shared/links" %>
   </main>
 
-  <!-- Footer -->
   <small class="block text-center text-xs text-gray-400 m-4">© 2025 cocoja</small>
 </div>

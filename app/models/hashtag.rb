@@ -1,4 +1,3 @@
-# ハッシュタグを管理するモデル
 class Hashtag < ApplicationRecord
   has_many :post_hashtags, dependent: :destroy
   has_many :posts, through: :post_hashtags
@@ -7,7 +6,6 @@ class Hashtag < ApplicationRecord
                    length: { maximum: 99 },
                    uniqueness: { case_sensitive: false }
 
-  # 保存前に名前を小文字に変換
   before_save :downcase_name
 
   private

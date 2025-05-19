@@ -1,4 +1,3 @@
-<!-- モバイル用ヘッダー -->
 <header class="bg-white p-4 flex justify-between items-center sticky top-0 shadow-sm z-[9999] md:hidden">
   <h1>
     <%= link_to root_path do %>
@@ -6,13 +5,11 @@
     <% end %>
   </h1>
   <div class="flex items-center gap-3">
-    <!-- ログイン/登録ボタン -->
     <div class="flex gap-2">
       <%= link_to "ログイン", new_user_session_path, class: "text-[72%] font-bold px-4 py-2 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50" %>
       <%= link_to "新規登録", new_user_registration_path, class: "text-[72%] font-bold px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700" %>
     </div>
 
-    <!-- ハンバーガーメニューボタン -->
     <button id="hamburger-button" class="text-gray-700 hover:text-gray-900 focus:outline-none p-1">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -21,10 +18,8 @@
   </div>
 </header>
 
-<!-- モバイルメニュー -->
 <div id="mobile-menu" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[10000] hidden">
   <div class="absolute right-0 top-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out translate-x-full">
-    <!-- メニューヘッダー -->
     <div class="flex justify-between items-center p-4 border-b">
       <h3 class="font-bold">メニュー</h3>
       <button id="close-menu-button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
@@ -33,7 +28,7 @@
         </svg>
       </button>
     </div>
-    <!-- メニュー項目 -->
+
     <nav class="p-4">
       <ul class="space-y-3">
         <li>
@@ -47,7 +42,7 @@
         </li>
       </ul>
     </nav>
-    <!-- メニューフッター -->
+
     <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-xs text-gray-500 border-t">
       © <%= Time.current.year %> cocoja
     </div>
@@ -55,14 +50,12 @@
 </div>
 
 <script>
-  // ハンバーガーメニューの初期化関数
   function initMobileMenu() {
     const hamburgerButton = document.getElementById('hamburger-button');
     const closeMenuButton = document.getElementById('close-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuContent = mobileMenu.querySelector('div');
 
-    // すでにイベントがアタッチされている場合は削除（重複防止）
     if (hamburgerButton._initialized) {
       hamburgerButton.removeEventListener('click', openMenu);
       closeMenuButton.removeEventListener('click', closeMenu);
@@ -70,16 +63,14 @@
     }
 
     function openMenu() {
-      // スクロール位置を保存
       menuContent.dataset.scrollY = window.scrollY;
       mobileMenu.classList.remove('hidden');
 
-      // レイアウトの再計算を一度にまとめる
       requestAnimationFrame(() => {
         menuContent.classList.add('translate-x-0');
         menuContent.classList.remove('translate-x-full');
         document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed'; // 位置固定でスクロール防止
+        document.body.style.position = 'fixed';
         document.body.style.width = '100%';
       });
     }
@@ -88,7 +79,6 @@
       menuContent.classList.remove('translate-x-0');
       menuContent.classList.add('translate-x-full');
 
-      // トランジション後にスクロール位置を復元
       setTimeout(() => {
         mobileMenu.classList.add('hidden');
         document.body.style.overflow = '';
@@ -103,37 +93,27 @@
       }
     }
 
-    // イベントリスナーを設定
     hamburgerButton.addEventListener('click', openMenu);
     closeMenuButton.addEventListener('click', closeMenu);
     mobileMenu.addEventListener('click', handleOutsideClick);
-
-    // 初期化フラグを設定
     hamburgerButton._initialized = true;
   }
 
-  // ページロード時にメニューを初期化
   document.addEventListener('DOMContentLoaded', initMobileMenu);
-
-  // Turbolinks/Turboのページ遷移後にも初期化を実行
   document.addEventListener('turbolinks:load', initMobileMenu);
   document.addEventListener('turbo:load', initMobileMenu);
 
-  // SPAフレームワーク対応として、すぐに実行も行う（初期表示対策）
   initMobileMenu();
 </script>
 
-<!-- PC用サイドバー -->
 <div class="hidden md:block fixed left-0 top-0 h-screen w-72 bg-white border-r border-gray-200 shadow-sm z-50 overflow-y-auto">
   <nav class="flex flex-col h-full p-6">
-    <!-- ロゴ部分 -->
     <div class="mb-8 flex justify-center">
       <%= link_to root_path do %>
       <%= image_tag "cocoja-logo.png", class: "h-10 w-auto", alt: "ココジャ" %>
       <% end %>
     </div>
 
-    <!-- ログインボタン -->
     <div class="flex flex-col gap-3 px-2">
       <%= link_to "ログイン", new_user_session_path,
           class: "w-full text-center font-bold py-3 text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50 transition-colors" %>
@@ -141,7 +121,6 @@
           class: "w-full text-center font-bold py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors" %>
     </div>
 
-    <!-- メニュー項目 -->
     <div class="mt-8">
       <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 px-3">メニュー</h3>
       <ul class="space-y-1">
@@ -164,7 +143,6 @@
       </ul>
     </div>
 
-    <!-- 法的情報リンク -->
     <div class="mt-auto pt-6 border-t border-gray-200">
       <div class="flex flex-col space-y-1">
         <%= link_to "利用規約", terms_path, class: "text-sm text-gray-600 hover:text-blue-600 transition-colors px-3 py-1" %>
@@ -175,10 +153,8 @@
   </nav>
 </div>
 
-<!-- サイドバーの幅分のスペーサー（PC表示時のみ） -->
 <div class="hidden md:block md:w-72"></div>
 
-<%# メインコンテンツのパディング調整用 %>
 <div class="md:ml-80">
   <%= yield %>
 </div>

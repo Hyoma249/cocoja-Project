@@ -1,4 +1,3 @@
-# app/views/posts/index.json.jbuilder
 json.posts @posts do |post|
   json.id post.id
   json.content post.content

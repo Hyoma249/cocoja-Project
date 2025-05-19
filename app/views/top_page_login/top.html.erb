@@ -1,10 +1,8 @@
 <div class="min-h-screen flex flex-col">
   <%= render "shared/header/login_header" %>
 
-  <!-- メインコンテンツ -->
   <main class="flex-grow px-8 md:pl-[calc(288px+2rem)] md:pr-8">
     <div class="max-w-4xl mx-auto w-full">
-      <!-- テキストコンテンツ部分 -->
       <div class="py-6">
         <h1 class="text-4xl font-bold text-blue-600 mb-6 leading-tight">
           都道府県の魅力<br>を投稿しよう！
@@ -55,7 +53,6 @@
         <p class="mb-6">あなたの視点で切り取った日本の魅力を教えてください！</p>
       </div>
 
-      <!-- 青色の投稿エリア部分 -->
       <div class="bg-blue-500 text-white p-6 flex flex-col items-center text-center rounded-lg">
         <h2 class="text-2xl font-bold mb-6">ココじゃであなただけの<br>日本を発信しよう！</h2>
         <%= link_to "投稿する", new_post_path, class: "w-[240px] bg-white text-blue-600 font-bold py-2 px-4 rounded-full" %>
@@ -63,7 +60,6 @@
     </div>
   </main>
 
-  <!-- フッターの高さ分の余白 -->
   <div class="h-16"></div>
 
   <%= render "shared/footer/login_footer" %>

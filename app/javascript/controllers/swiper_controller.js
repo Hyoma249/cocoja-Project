@@ -2,11 +2,6 @@ import { Controller } from "@hotwired/stimulus";
 import Swiper from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 
-// スタイルインポートをコメントアウト（application.tailwind.cssで定義しているため）
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import "swiper/css/pagination";
-
 export default class extends Controller {
   static targets = ["container"];
 
@@ -27,10 +22,8 @@ export default class extends Controller {
       const hasMultipleSlides =
         container.querySelectorAll(".swiper-slide").length > 1;
 
-      // スタイルを直接適用して確実に表示を修正
       this.applyEmergencySwiperStyles(container);
 
-      // Swiperを初期化
       this.swiper = new Swiper(container, {
         modules: [Navigation, Pagination],
         slidesPerView: 1,
@@ -38,7 +31,6 @@ export default class extends Controller {
         preloadImages: true,
         updateOnWindowResize: true,
 
-        // ページネーション設定
         pagination: hasMultipleSlides
           ? {
               el: ".swiper-pagination",
@@ -66,9 +58,7 @@ export default class extends Controller {
     }
   }
 
-  // JavaScriptでスタイルを強制適用する関数を追加
   applyEmergencySwiperStyles(container) {
-    // コンテナのスタイル
     Object.assign(container.style, {
       position: "relative",
       width: "100%",
@@ -79,7 +69,6 @@ export default class extends Controller {
       marginRight: "auto",
     });
 
-    // ラッパーのスタイル
     const wrapper = container.querySelector(".swiper-wrapper");
     if (wrapper) {
       Object.assign(wrapper.style, {
@@ -94,7 +83,6 @@ export default class extends Controller {
       });
     }
 
-    // スライドのスタイル
     const slides = container.querySelectorAll(".swiper-slide");
     slides.forEach((slide) => {
       Object.assign(slide.style, {
@@ -108,7 +96,6 @@ export default class extends Controller {
       });
     });
 
-    // ページネーションのスタイル
     const pagination = container.querySelector(".swiper-pagination");
     if (pagination) {
       Object.assign(pagination.style, {

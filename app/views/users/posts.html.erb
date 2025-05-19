@@ -16,11 +16,9 @@
     </div>
 
     <% if @posts.present? %>
-      <!-- 投稿リスト - モバイルパフォーマンス最適化 -->
       <div class="grid gap-4 py-4" data-infinite-scroll-target="entries" data-post-scroll-target="container">
         <% @posts.each do |post| %>
           <div id="post-<%= post.id %>" class="bg-white rounded-lg shadow-sm overflow-hidden relative will-change-contents post-item">
-            <!-- ユーザーヘッダー -->
             <div class="flex items-center justify-between p-4 border-b border-gray-100">
               <div class="flex items-center gap-4">
                 <div class="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden">
@@ -38,7 +36,6 @@
               </div>
             </div>
 
-            <!-- 画像スライダー - posts/indexと同様に修正 -->
             <% if post.post_images.present? %>
               <div class="relative overflow-visible pb-8" data-controller="swiper">
                 <div class="swiper w-full md:aspect-[4/3] aspect-square overflow-visible" data-swiper-target="container">
@@ -59,20 +56,17 @@
                     <% end %>
                   </div>
 
-                  <!-- インジケーターとページネーション - 画像に被らないよう下部に配置 -->
                   <% if post.post_images.length > 1 %>
                     <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full z-10">
                       <span class="swiper-index">1</span>/<%= post.post_images.length %>
                     </div>
 
-                    <!-- ページネーション - 画像下部に配置 -->
                     <div class="swiper-pagination"></div>
                   <% end %>
                 </div>
               </div>
             <% end %>
 
-            <!-- 投稿本文 -->
             <div class="px-4 py-4">
               <div class="text-sm md:text-base mb-2">
                 <span><%= format_content_with_hashtags(post.content) %></span>
@@ -91,7 +85,6 @@
               <p class="text-xs md:text-sm text-gray-500 mt-4">投稿日：<%= l post.created_at, format: :long %></p>
             </div>
 
-            <!-- 詳細ページへのリンク -->
             <div class="p-4 border-t">
               <%= link_to post_path(post),
                         class: "w-full inline-flex items-center justify-center px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition duration-150 ease-in-out shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm" do %>
@@ -105,7 +98,6 @@
         <% end %>
       </div>
 
-      <!-- ローディングとページネーション -->
       <div class="py-4 flex justify-center">
         <div data-infinite-scroll-target="loading" class="hidden">
           <svg class="animate-spin h-8 w-8 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

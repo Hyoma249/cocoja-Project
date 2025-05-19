@@ -1,5 +1,3 @@
-# フォロー関係（Relationship）に関する操作を担当するコントローラー
-# ユーザー間のフォロー・アンフォロー機能を提供します
 class RelationshipsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user

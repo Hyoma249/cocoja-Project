@@ -1,10 +1,8 @@
-# JSON応答の構築に関連する機能を提供するモジュール
 module PostsJsonBuildable
   extend ActiveSupport::Concern
 
   private
 
-  # 投稿データをJSON形式で構築するメソッド
   def build_posts_json
     {
       posts: @posts.map { |post| build_post_json(post) },
@@ -12,7 +10,6 @@ module PostsJsonBuildable
     }
   end
 
-  # 単一の投稿をJSONに変換
   def build_post_json(post)
     {
       id: post.id,

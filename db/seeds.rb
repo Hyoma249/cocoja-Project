@@ -1,4 +1,3 @@
-# db/seeds.rb
 Rails.logger.info 'シードデータの投入を開始します...'
 
 prefectures = %w[

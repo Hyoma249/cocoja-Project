@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe 'プロフィール設定', type: :system do
@@ -38,7 +36,6 @@ RSpec.describe 'プロフィール設定', type: :system do
         click_button 'プロフィールを設定する'
 
         expect(page).to have_content '入力内容に誤りがあります'
-        # 実際に表示されるエラーメッセージに合わせて期待値を変更
         expect(page).to have_content 'ユーザーIDは半角英数字のみ使用できます'
         expect(current_path).to eq profile_update_path
       end

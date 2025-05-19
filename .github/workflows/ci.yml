@@ -25,13 +25,13 @@ jobs:
         options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4 # コードのチェックアウト
+      - uses: actions/checkout@v4
 
-      - name: Set up Ruby # Ruby環境のセットアップ
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
-          bundler-cache: true # Gemのキャッシュ利用
+          bundler-cache: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -49,16 +49,16 @@ jobs:
           bundle exec rails javascript:build
           bundle exec rails css:build
 
-      - name: Setup Database # テスト用DBのセットアップ
+      - name: Setup Database
         run: |
           cp config/database.yml.ci config/database.yml
           bundle exec rails db:create db:schema:load RAILS_ENV=test
 
-      # - name: Run RSpec # テストの実行
-      #   run: bundle exec rspec
+      - name: Run RSpec
+        run: bundle exec rspec
 
-      # - name: Run Rubocop # コードスタイルチェック
-      #   run: bundle exec rubocop
+      - name: Run Rubocop
+        run: bundle exec rubocop
 
-      - name: Security Check # セキュリティチェック
+      - name: Security Check
         run: bundle exec brakeman --no-pager

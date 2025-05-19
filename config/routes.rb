@@ -1,45 +1,35 @@
 Rails.application.routes.draw do
-  # OPTIONSリクエストを許可
   match '*path', to: proc { [204, {}, []] }, via: :options, constraints: { path: /.*/ }
 
   get 'settings/index'
-  # ヘルスチェック
+
   get 'up' => 'rails/health#show', :as => :rails_health_check
 
-  # 未ログインのトップページ
   root 'static_pages_guest#top'
 
-  # 使い方ガイド
   get 'guide', to: 'static_pages#guide', as: 'static_pages_guide'
 
-  # ログイントップページ
   get 'top_page_login', to: 'top_page_login#top'
 
-  # プロフィール登録
   get 'profile/setup', to: 'profiles#setup'
   patch 'profile/update', to: 'profiles#update'
 
-  # ハッシュタグ
   get '/posts/hashtag/:name', to: 'posts#hashtag', as: 'hashtag_posts'
 
-  # 検索API
   get 'search/autocomplete', to: 'search#autocomplete'
 
-  # 利用規約とプライバシーポリシー
   get '/contact', to: 'pages#contact'
   get '/terms', to: 'pages#terms'
   get '/privacy', to: 'pages#privacy'
 
-  # deviseのルーティング
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
     omniauth_callbacks: 'users/omniauth_callbacks',
     confirmations: 'users/confirmations',
-    passwords: 'users/passwords'  # これを追加
+    passwords: 'users/passwords'
   }
 
-  # ユーザーリソースとフォロー機能のルーティング
   resources :users, only: [:show] do
     member do
       get :following
@@ -49,26 +39,19 @@ Rails.application.routes.draw do
     resource :relationships, only: %i[create destroy]
   end
 
-  # 投稿関連
   resources :posts, only: %i[index new create show] do
     resources :votes, only: [:create]
   end
 
-  # 都道府県
   resources :prefectures, only: %i[index show] do
     member do
-      get :posts # 都道府県ごとの投稿一覧（タイムライン形式）を表示するための新しいルート
+      get :posts
     end
   end
 
-  # ランキング
   resources :rankings, only: [:index]
 
-  # マイページ
   resource :mypage, only: %i[show edit update] do
     get 'posts', to: 'mypages#posts'
   end
-
-  # letter_opener_webのルーティング（開発環境のみ）
-  # mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

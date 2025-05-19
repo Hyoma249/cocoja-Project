@@ -26,10 +26,8 @@ class RankingsController < ApplicationController
     start_date = Time.zone.now.beginning_of_week
     end_date = Time.zone.now
 
-    # 都道府県ごとの獲得ポイントを計算
     prefecture_points = calculate_prefecture_points(start_date, end_date)
 
-    # ポイント降順でソートしてランキング形式に変換
     sorted_prefectures = prefecture_points.values.sort_by { |p| -p[:points] }
 
     result = sorted_prefectures.map.with_index do |data, index|
@@ -40,13 +38,10 @@ class RankingsController < ApplicationController
   end
 
   def calculate_prefecture_points(start_date, end_date)
-    # 都道府県ごとのポイントを一括取得
     points_by_prefecture_id = Prefecture.weekly_points_for_all(start_date, end_date)
 
-    # 都道府県情報をプリロード
     prefectures_by_id = Prefecture.all.index_by(&:id)
 
-    # すべての都道府県を含める（ゼロポイントも）
     prefecture_points = {}
 
     prefectures_by_id.each do |id, prefecture|

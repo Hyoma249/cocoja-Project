@@ -11,8 +11,7 @@ module.exports = {
         grabbing: "grabbing",
       },
       colors: {
-        // テーマカラーの定義
-        "swiper-bullet": "#2563eb", // カラーテーマのみ定義
+        "swiper-bullet": "#2563eb",
         "swiper-bullet-active": "#2563eb",
       },
       zIndex: {
@@ -24,8 +23,6 @@ module.exports = {
   },
   plugins: [
     function ({ addUtilities }) {
-      // Swiperコンポーネント関連のスタイルはapplication.tailwind.cssに統合するため、
-      // ここではパフォーマンス最適化用のユーティリティのみ定義
       addUtilities({
         ".translate-gpu": {
           transform: "translateZ(0)",

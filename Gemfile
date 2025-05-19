@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'cssbundling-rails'
 gem 'jbuilder'
 gem 'jsbundling-rails'
@@ -9,14 +8,9 @@ gem 'puma', '>= 5.0'
 gem 'rails', '~> 7.1.5'
 gem 'stimulus-rails'
 gem 'turbo-rails'
-
 gem 'sprockets-rails'
-
 gem 'redis', '~> 5.0'
-
-# Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
-
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
 # group :development, :test do
@@ -45,20 +39,18 @@ gem 'tzinfo-data', platforms: %i[windows jruby]
 #   gem 'webdrivers', '~> 5.3' # Selenium WebDriverの自動インストール
 # end
 
-# 追加 ⬇️
-gem 'mini_magick' # 画像処理ライブラリ
-gem 'carrierwave' # 画像アップロード
-gem 'cloudinary', '~> 2.3' # 画像アップロードのストレージ
-gem 'concurrent-ruby', '~> 1.2' # 並列処理ライブラリ
-gem 'devise' # 認証機能
-gem 'kaminari' # ページネーション機能のベースとして使用
-gem 'meta-tags' # OGP対応のためのmetaタグ管理
-gem 'oj' # 高速JSONパーサー（JSON処理が多い場合）
-gem 'rack-cors' # CORS設定
-gem 'rails-i18n' # Rails の国際化対応
-gem 'sidekiq' # 非同期処理
+gem 'mini_magick'
+gem 'carrierwave'
+gem 'cloudinary', '~> 2.3'
+gem 'concurrent-ruby', '~> 1.2'
+gem 'devise'
+gem 'kaminari'
+gem 'meta-tags'
+gem 'oj'
+gem 'rack-cors'
+gem 'rails-i18n'
+gem 'sidekiq'
 
-# Google認証用のGemを追加
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-rails_csrf_protection' # CSRFトークン保護のため
+gem 'omniauth-rails_csrf_protection'

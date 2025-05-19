@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe '投票機能', type: :system do
@@ -9,7 +7,6 @@ RSpec.describe '投票機能', type: :system do
   let!(:post_item) { create(:post, user: other_user, prefecture: prefecture) }
 
   before do
-    # より安定したテスト実行のためにrack_testを使用
     driven_by(:rack_test)
     sign_in user
     visit post_path(post_item)
@@ -62,7 +59,6 @@ RSpec.describe '投票機能', type: :system do
         end
 
         it '投票フォームが表示されないこと' do
-          # 修正: 実際の表示テキストに合わせる
           expect(page).to have_content 'この投稿にはすでにポイントを付けています'
           expect(page).not_to have_content '残りポイント'
         end
@@ -70,15 +66,12 @@ RSpec.describe '投票機能', type: :system do
     end
 
     describe '投票の実行' do
-      # 投票のテストを簡素化し、モデルレベルでテスト
       context 'when 新規投票の場合' do
         it 'ポイントが正しく記録されること' do
-          # モデルレベルで投票を作成して確認
           expect {
             Vote.create!(user: user, post: post_item, points: 3)
           }.to change(Vote, :count).by(1)
 
-          # 作成された投票を確認
           vote = Vote.last
           expect(vote.points).to eq(3)
         end
@@ -96,10 +89,8 @@ RSpec.describe '投票機能', type: :system do
         end
 
         it '投票後はUIが変わること' do
-          # あらかじめ投票を作成
           Vote.create!(user: user, post: post_item, points: 3)
 
-          # 再読み込みして表示を確認
           visit post_path(post_item)
 
           expect(page).to have_content 'この投稿にはすでにポイントを付けています'
@@ -109,11 +100,9 @@ RSpec.describe '投票機能', type: :system do
 
       context 'when 投票済みの場合' do
         it '再投票できないこと' do
-          # あらかじめ投票を作成
           create(:vote, user: user, post: post_item, points: 1)
           visit post_path(post_item)
 
-          # 表示を確認
           expect(page).to have_content 'この投稿にはすでにポイントを付けています'
           expect(page).not_to have_button '1'
         end

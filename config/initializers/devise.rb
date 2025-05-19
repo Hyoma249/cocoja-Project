@@ -11,11 +11,11 @@ Devise.setup do |config|
 
   config.stretches = Rails.env.test? ? 1 : 12
 
-  config.allow_unconfirmed_access_for = 0.days  # メール認証が必要
+  config.allow_unconfirmed_access_for = 0.days
 
-  config.reconfirmable = true  # メールアドレス変更時に再確認するか
+  config.reconfirmable = true
 
-  config.confirm_within = 1.days  # 認証トークンの有効期限
+  config.confirm_within = 1.days
 
   config.expire_all_remember_me_on_sign_out = true
 
@@ -36,7 +36,6 @@ Devise.setup do |config|
 
   config.sign_in_after_change_password = true
 
-  # OmniAuthの設定を更新（HTTPSを使用）
   config.omniauth :google_oauth2,
                   Rails.application.credentials.dig(:google_oauth, :client_id),
                   Rails.application.credentials.dig(:google_oauth, :client_secret),
@@ -48,7 +47,6 @@ Devise.setup do |config|
                     redirect_uri: Rails.env.production? ? 'https://www.cocoja.jp/users/auth/google_oauth2/callback' : nil
                   }
 
-  # パスワードリセットメール送信後の遷移先を設定
   config.navigational_formats = ['*/*', :html, :turbo_stream]
   config.sign_in_after_reset_password = true
 end

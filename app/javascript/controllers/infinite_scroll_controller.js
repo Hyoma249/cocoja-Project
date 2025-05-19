@@ -1,4 +1,3 @@
-// app/javascript/controllers/infinite_scroll_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -13,16 +12,13 @@ export default class extends Controller {
     this.pageValue = this.pageValue || 1;
     this.loadingValue = false;
     this.setupLazyLoading();
-    // スクロールのデバウンス用タイマー
     this.scrollDebounceTimer = null;
-    // 次の読み込みをブロックする時間（ミリ秒）
     this.loadCooldown = 1000;
     this.lastLoadTime = 0;
   }
 
   connect() {
     if (this.hasPaginationTarget) {
-      // モバイル環境でのパフォーマンス向上のため設定を調整
       this.intersectionObserver = new IntersectionObserver(
         (entries) => {
           const now = Date.now();
@@ -32,15 +28,14 @@ export default class extends Controller {
               !this.loadingValue &&
               now - this.lastLoadTime > this.loadCooldown
             ) {
-              // デバウンス処理を強化
               clearTimeout(this.loadMoreTimeout);
               this.loadMoreTimeout = setTimeout(() => this.loadMore(), 250);
             }
           });
         },
         {
-          rootMargin: "200px", // より先読みするよう調整
-          threshold: 0.05, // しきい値を下げてわずかに見えた時点で読み込み開始
+          rootMargin: "200px",
+          threshold: 0.05,
         }
       );
 
@@ -93,7 +88,6 @@ export default class extends Controller {
         }
 
         if (data.posts && data.posts.length > 0) {
-          // 一度に大量のDOM操作を避けるため、フラグメントを使用
           const fragment = document.createDocumentFragment();
           const tempContainer = document.createElement("div");
 
@@ -103,18 +97,14 @@ export default class extends Controller {
             tempContainer.innerHTML = this.buildPostsHTML(data.posts);
           }
 
-          // tempContainerの中身をフラグメントに移動
           while (tempContainer.firstChild) {
             fragment.appendChild(tempContainer.firstChild);
           }
 
-          // DOMへの追加は一度だけ行う
           this.entriesTarget.appendChild(fragment);
 
-          // DOM追加後に必要な処理を実行
           this.setupLazyLoading();
 
-          // モバイル向けに最適化：スライダーを非同期で初期化
           if (!isMypage) {
             setTimeout(() => this.initializeNewSliders(), 10);
           }
@@ -133,9 +123,7 @@ export default class extends Controller {
       });
   }
 
-  // 画像の遅延読み込み設定
   setupLazyLoading() {
-    // セレクタを拡張して両方のタイプの画像をカバー
     const lazyImages = document.querySelectorAll(
       "img[data-src]:not(.opacity-100)"
     );
@@ -149,9 +137,8 @@ export default class extends Controller {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
                 const lazyImage = entry.target;
-                this.imageObserver.unobserve(lazyImage); // 先に監視を解除してパフォーマンス向上
+                this.imageObserver.unobserve(lazyImage);
 
-                // 必要なクラスの追加を確認
                 if (!lazyImage.classList.contains("opacity-0")) {
                   lazyImage.classList.add("opacity-0");
                 }
@@ -168,7 +155,6 @@ export default class extends Controller {
                   lazyImage.classList.add("opacity-100");
                 };
                 lazyImage.onerror = () => {
-                  // エラー時の処理
                   lazyImage.classList.remove("opacity-0");
                   lazyImage.classList.add("opacity-100");
                 };
@@ -176,24 +162,22 @@ export default class extends Controller {
             });
           },
           {
-            rootMargin: "300px", // より先に読み込み開始
+            rootMargin: "300px",
             threshold: 0.01,
           }
         );
       }
 
-      // バッチ処理で登録
       const batchSize = 5;
       for (let i = 0; i < lazyImages.length; i += batchSize) {
         const batch = Array.from(lazyImages).slice(i, i + batchSize);
         batch.forEach((image) => {
-          // 読み込み済みかどうかのチェックを.opacity-100に基づいて行う
+
           if (!image.classList.contains("opacity-100")) {
             this.imageObserver.observe(image);
           }
         });
 
-        // バッチ間で少し遅延を入れる（モバイルのパフォーマンス向上）
         if (i + batchSize < lazyImages.length) {
           setTimeout(() => {}, 5);
         }
@@ -201,7 +185,6 @@ export default class extends Controller {
     }
   }
 
-  // 新しく追加されたスライダーを初期化 - Swiperを使用するように修正
   initializeNewSliders() {
     const application = this.application;
     const newSliders = this.entriesTarget.querySelectorAll(
@@ -210,7 +193,6 @@ export default class extends Controller {
 
     if (!newSliders.length) return;
 
-    // 一度に初期化せず、少しずつ初期化する
     let index = 0;
     const initializeNextSlider = () => {
       if (index >= newSliders.length) return;
@@ -220,9 +202,8 @@ export default class extends Controller {
       application.getControllerForElementAndIdentifier(slider, "swiper");
 
       index++;
-      // 次のスライダーを非同期で初期化
       if (index < newSliders.length) {
-        setTimeout(initializeNextSlider, 16); // ≈1フレームの遅延
+        setTimeout(initializeNextSlider, 16);
       }
     };
 
@@ -258,7 +239,6 @@ export default class extends Controller {
       .join("");
   }
 
-  // 投稿のHTMLを生成する関数（ハッシュタグページ用） - Swiperに対応
   buildPostsHTML(posts) {
     return posts
       .map((post) => {
@@ -367,7 +347,6 @@ export default class extends Controller {
       .join("");
   }
 
-  // ハッシュタグをリンクに変換する関数（サーバーサイドのformat_content_with_hashtagsと同等の処理）
   formatContentWithHashtags(content) {
     if (!content) return "";
     return content.replace(

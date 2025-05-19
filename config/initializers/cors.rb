@@ -3,7 +3,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     if Rails.env.development?
       origins 'localhost:3000'
     else
-      # Back4appの実際のドメインを指定
       origins ENV.fetch('ALLOWED_ORIGINS') {
         'https://www.cocoja.jp/'
       }

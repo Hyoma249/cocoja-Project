@@ -1,4 +1,3 @@
-# 投稿とハッシュタグの中間テーブルを作成するマイグレーション
 class CreatePostHashtags < ActiveRecord::Migration[7.1]
   def change
     create_table :post_hashtags do |t|

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe 'ユーザー登録', type: :system do
@@ -27,7 +25,6 @@ RSpec.describe 'ユーザー登録', type: :system do
         before do
           within 'form' do
             fill_in 'ユーザー名', with: 'testuser'
-            # 実際のフィールドラベルに修正
             fill_in 'ユーザーID', with: 'testid123'
             click_button 'プロフィールを設定する'
           end
@@ -41,7 +38,6 @@ RSpec.describe 'ユーザー登録', type: :system do
     end
 
     context 'when 無効な値の場合' do
-      # テスト長とエクスペクテーション数を減らすために分割
       before do
         within 'form[action="/users"]' do
           fill_in 'メールアドレス', with: 'invalid-email'
@@ -56,8 +52,8 @@ RSpec.describe 'ユーザー登録', type: :system do
       end
 
       it 'メールアドレスのエラーが表示されること' do
-        expect(page).to have_content('メールアドレス') # 「Email」ではなく「メールアドレス」に変更
-        expect(page).to have_content('不正な形式') # 「不正な値」ではなく「不正な形式」に変更
+        expect(page).to have_content('メールアドレス')
+        expect(page).to have_content('不正な形式')
       end
 
       it 'パスワードのエラーが表示されること' do
@@ -66,7 +62,6 @@ RSpec.describe 'ユーザー登録', type: :system do
         expect(page).to have_content('一致しません')
       end
 
-      # 別のケースでエラーメッセージをテスト
       context 'when パスワードが短い場合' do
         before do
           within 'form[action="/users"]' do
@@ -89,11 +84,9 @@ RSpec.describe 'ユーザー登録', type: :system do
     end
 
     context 'when メールアドレスの重複がある場合' do
-      # テストで明示的に参照する
       let!(:existing_user) { create(:user, email: 'existing@example.com') }
 
       it '登録に失敗しエラーメッセージが表示されること' do
-        # 既存ユーザーを参照（警告解消のため）
         expect(existing_user.email).to eq('existing@example.com')
 
         within 'form[action="/users"]' do
