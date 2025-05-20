@@ -11,25 +11,25 @@ class Prefecture < ApplicationRecord
       .group('prefectures.id')
   }
 
-  scope :popular_posts, -> {
+  scope :with_points_between, ->(start_date, end_date) {
+    joins(posts: :votes)
+      .where('votes.voted_on BETWEEN ? AND ?', start_date.to_date, end_date.to_date)
+      .group(:id)
+      .select('prefectures.*, COALESCE(SUM(votes.points), 0) as weekly_points')
+  }
+
+  def popular_posts
     posts.joins(:votes)
          .select('posts.*, SUM(votes.points) as total_points_sum')
          .group('posts.id')
          .having('SUM(votes.points) > 0')
          .order('total_points_sum DESC')
-  }
-
-  scope :with_points_between, ->(start_date, end_date) {
-    joins(posts: :votes)
-      .where('votes.created_at BETWEEN ? AND ?', start_date, end_date)
-      .group(:id)
-      .select('prefectures.*, COALESCE(SUM(votes.points), 0) as weekly_points')
-  }
+  end
 
   def weekly_points(start_date, end_date)
     Post.joins(:votes)
         .where(prefecture_id: id)
-        .where('votes.created_at BETWEEN ? AND ?', start_date, end_date)
+        .where('votes.voted_on BETWEEN ? AND ?', start_date.to_date, end_date.to_date)
         .sum('votes.points')
   end
 
@@ -45,7 +45,7 @@ class Prefecture < ApplicationRecord
 
   def self.weekly_points_for_all(start_date, end_date)
     joins(posts: :votes)
-      .where('votes.created_at BETWEEN ? AND ?', start_date, end_date)
+      .where('votes.voted_on BETWEEN ? AND ?', start_date.to_date, end_date.to_date)
       .group(:id)
       .sum('votes.points')
   end

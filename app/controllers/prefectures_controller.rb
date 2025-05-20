@@ -11,7 +11,7 @@ class PrefecturesController < ApplicationController
   def posts
     @prefecture = Prefecture.find(params[:id])
     @posts = @prefecture.posts.with_associations.recent
-                        .page(params[:page]).per(10)
+                        .paginate((params[:page] || 1).to_i, 10)
 
     @posts_count = @prefecture.posts.count
 

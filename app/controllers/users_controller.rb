@@ -3,11 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show following followers posts]
 
   def show
-    @user = User.find(params[:id])
-    @posts = @user.posts.order(created_at: :desc).includes(:post_images)
-  rescue ActiveRecord::RecordNotFound
-    flash[:alert] = t('controllers.users.not_found')
-    redirect_to user_path
+    @posts = @user.posts.with_associations.recent
   end
 
   def following
@@ -28,11 +24,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        page = params[:page].to_i || 1
-        per_page = 10
-        offset = (page - 1) * per_page
+        page = (params[:page] || 1).to_i
+        per_page = 12
 
-        paginated_posts = @posts.offset(offset).limit(per_page)
+        paginated_posts = @posts.paginate(page, per_page)
         render json: {
           posts: render_to_string(partial: 'posts/post', collection: paginated_posts, formats: [:html]),
           next_page: page + 1,
@@ -48,6 +43,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = t('controllers.users.not_found')
-    redirect_to user_path
+    redirect_to root_path
   end
 end

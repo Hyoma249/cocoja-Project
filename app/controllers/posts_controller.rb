@@ -13,7 +13,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        page = params[:slide].to_i
+        page = (params[:page] || 1).to_i
         @posts = Post.with_associations.recent.paginate(page, POSTS_PER_PAGE)
 
         render json: build_posts_json
@@ -60,12 +60,12 @@ class PostsController < ApplicationController
   def load_posts_with_filters
     @posts = Post.with_associations.recent
     @posts = @posts.by_hashtag(params[:name]) if params[:name].present?
-    @posts = @posts.page(params[:slide]).per(POSTS_PER_PAGE)
+    @posts = @posts.paginate((params[:page] || 1).to_i, POSTS_PER_PAGE)
   end
 
   def load_hashtag_posts
     @posts = @tag.posts.distinct.with_associations.recent
-                 .page(params[:slide] || params[:page]).per(POSTS_PER_PAGE)
+                 .paginate((params[:page] || 1).to_i, POSTS_PER_PAGE)
   end
 
   def render_response
@@ -73,9 +73,5 @@ class PostsController < ApplicationController
       format.html
       format.json { render json: build_posts_json }
     end
-  end
-
-  def created_at_formatted
-    I18n.l(created_at, format: :long)
   end
 end

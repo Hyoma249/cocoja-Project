@@ -4,17 +4,15 @@ class MypagesController < ApplicationController
 
   def show
     @user = current_user
-
-    @posts = current_user.posts.order(created_at: :desc).includes(:post_images)
+    @posts = current_user.posts.with_associations.recent
 
     respond_to do |format|
       format.html
       format.json {
-        page = params[:page].to_i || 1
+        page = (params[:page] || 1).to_i
         per_page = 12
-        offset = (page - 1) * per_page
 
-        @posts = @posts.offset(offset).limit(per_page)
+        @posts = @posts.paginate(page, per_page)
         render json: {
           posts: @posts.as_json(
             include: [
@@ -52,11 +50,10 @@ class MypagesController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        page = params[:page].to_i || 1
-        per_page = 10
-        offset = (page - 1) * per_page
+        page = (params[:page] || 1).to_i
+        per_page = 12
 
-        paginated_posts = @posts.offset(offset).limit(per_page)
+        paginated_posts = @posts.paginate(page, per_page)  # offset/limit の代わりに paginate スコープを使用
         render json: {
           posts: render_to_string(partial: 'posts/post', collection: paginated_posts, formats: [:html]),
           next_page: page + 1,

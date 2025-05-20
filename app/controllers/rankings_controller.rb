@@ -24,16 +24,29 @@ class RankingsController < ApplicationController
   def calculate_current_rankings
     start_date = Time.zone.now.beginning_of_week
     end_date = Time.zone.now
+    current_year = Time.zone.now.year
+    current_week = Time.zone.now.to_date.cweek
 
-    prefecture_points = calculate_prefecture_points(start_date, end_date)
+    ActiveRecord::Base.transaction do
+      WeeklyRanking.where(year: current_year, week: current_week).lock(true).delete_all
 
-    sorted_prefectures = prefecture_points.values.sort_by { |p| -p[:points] }
+      prefecture_points = calculate_prefecture_points(start_date, end_date)
+      sorted_prefectures = prefecture_points.values.sort_by { |p| -p[:points] }
 
-    result = sorted_prefectures.map.with_index do |data, index|
-      { prefecture: data[:prefecture], rank: index + 1, points: data[:points] }
+      sorted_prefectures.each.with_index do |data, index|
+        WeeklyRanking.create!(
+          prefecture: data[:prefecture],
+          year: current_year,
+          week: current_week,
+          rank: index + 1,
+          points: data[:points]
+        )
+      end
     end
 
-    result
+    sorted_prefectures.map.with_index do |data, index|
+      { prefecture: data[:prefecture], rank: index + 1, points: data[:points] }
+    end
   end
 
   def calculate_prefecture_points(start_date, end_date)
