@@ -60,7 +60,7 @@ class VotesController < ApplicationController
       return
     end
 
-    if Vote.exists?(user_id: current_user.id, post_id: @post.id, voted_on: Time.zone.today)
+    if Vote.today.by_user(current_user.id).for_post(@post.id).exists?
       redirect_to @post, alert: 'この投稿には本日すでにポイントを付けています'
       return
     end

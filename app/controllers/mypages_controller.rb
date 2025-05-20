@@ -47,8 +47,7 @@ class MypagesController < ApplicationController
   end
 
   def posts
-    @posts = current_user.posts.order(created_at: :desc)
-      .includes(:user, :post_images, :hashtags, :prefecture)
+    @posts = current_user.posts.with_associations.recent
 
     respond_to do |format|
       format.html
@@ -68,7 +67,8 @@ class MypagesController < ApplicationController
   end
 
   def post
-    @post = current_user.posts.includes(:user, :post_images, :hashtags, :prefecture).find(params[:id])
+    @post = current_user.posts.with_associations.find(params[:id])
+
   rescue ActiveRecord::RecordNotFound
     redirect_to mypage_path, alert: "投稿が見つかりませんでした"
   end

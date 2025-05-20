@@ -1,4 +1,3 @@
-# ランキング（Ranking）に関する操作を担当するコントローラー
 class RankingsController < ApplicationController
   def index
     @current_rankings = Rails.cache.fetch("current_rankings", expires_in: 1.hour) do
@@ -38,15 +37,13 @@ class RankingsController < ApplicationController
   end
 
   def calculate_prefecture_points(start_date, end_date)
-    points_by_prefecture_id = Prefecture.weekly_points_for_all(start_date, end_date)
-
-    prefectures_by_id = Prefecture.all.index_by(&:id)
-
     prefecture_points = {}
+    prefectures_with_points = Prefecture.with_points_between(start_date, end_date).to_a
 
-    prefectures_by_id.each do |id, prefecture|
-      points = points_by_prefecture_id[id] || 0
-      prefecture_points[id] = { prefecture: prefecture, points: points }
+    Prefecture.all.each do |prefecture|
+      pref_with_points = prefectures_with_points.find { |p| p.id == prefecture.id }
+      points = pref_with_points ? pref_with_points.weekly_points.to_i : 0
+      prefecture_points[prefecture.id] = { prefecture: prefecture, points: points }
     end
 
     prefecture_points

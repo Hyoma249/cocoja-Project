@@ -5,18 +5,26 @@ class Post < ApplicationRecord
   has_many :post_hashtags, dependent: :destroy
   has_many :hashtags, through: :post_hashtags
   has_many :votes, dependent: :destroy
-
-  def total_points
-    votes.sum(:points)
-  end
-
   has_many :post_images, -> { order(created_at: :asc) }, dependent: :destroy, autosave: false
+
   accepts_nested_attributes_for :post_images, allow_destroy: true
 
   validates_associated :post_images
   validate :post_images_count_within_limit
 
   after_create :create_hashtags
+
+  scope :recent, -> { order(created_at: :desc) }
+  scope :with_associations, -> { includes(:user, :post_images, :hashtags, :prefecture) }
+  scope :by_prefecture, ->(prefecture_id) { where(prefecture_id: prefecture_id) }
+  scope :by_hashtag, ->(hashtag_name) {
+    joins(:hashtags).where(hashtags: { name: hashtag_name }) if hashtag_name.present?
+  }
+  scope :paginate, ->(page, per_page) { page(page).per(per_page) }
+
+  def total_points
+    votes.sum(:points)
+  end
 
   def created_at_formatted
     I18n.l(created_at, format: :long) if created_at

@@ -25,11 +25,7 @@ class WeeklyRanking < ApplicationRecord
     prev_year = prev_week.year
     prev_week_num = prev_week.strftime('%U').to_i
 
-    prev_ranking = WeeklyRanking.find_by(
-      prefecture_id: prefecture_id,
-      year: prev_year,
-      week: prev_week_num
-    )
+    prev_ranking = WeeklyRanking.previous_week.find_by(prefecture_id: prefecture_id)
 
     return nil unless prev_ranking
     prev_ranking.rank - rank

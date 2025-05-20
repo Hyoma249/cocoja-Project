@@ -20,6 +20,9 @@ class Vote < ApplicationRecord
   scope :today, lambda {
     where("DATE(created_at AT TIME ZONE 'UTC') = ?", Time.zone.today)
   }
+  scope :for_post, ->(post_id) { where(post_id: post_id) }
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :total_points, -> { sum(:points) }
 
   before_validation :set_voted_on
 
@@ -28,7 +31,7 @@ class Vote < ApplicationRecord
   def daily_point_limit
     return unless user && points
 
-    total_points_today = user.votes.today.sum(:points)
+    total_points_today = user.votes.today.total_points
     total_after_vote = total_points_today + points.to_i
 
     return unless total_after_vote > 5

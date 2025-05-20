@@ -2,23 +2,16 @@ class PrefecturesController < ApplicationController
   def show
     @prefecture = Prefecture.find(params[:id])
 
-    @posts = @prefecture.posts.joins(:votes)
-                        .select('posts.*, SUM(votes.points) as total_points_sum')
-                        .group('posts.id')
-                        .having('SUM(votes.points) > 0')
-                        .order('total_points_sum DESC')
+    @posts = @prefecture.popular_posts
 
     @posts_count = @posts.length
-    @total_points = @prefecture.posts.joins(:votes).sum('votes.points')
+    @total_points = @prefecture.total_votes_points
   end
 
   def posts
     @prefecture = Prefecture.find(params[:id])
-    @posts = @prefecture.posts
-                        .includes(:user, :hashtags, :post_images)
-                        .order(created_at: :desc)
-                        .page(params[:page])
-                        .per(10)
+    @posts = @prefecture.posts.with_associations.recent
+                        .page(params[:page]).per(10)
 
     @posts_count = @prefecture.posts.count
 
@@ -26,7 +19,7 @@ class PrefecturesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @total_points = @prefecture.posts.left_joins(:votes).sum('COALESCE(votes.points, 0)')
+        @total_points = @prefecture.total_votes_points
       end
 
       format.json do

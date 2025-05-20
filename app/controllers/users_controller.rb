@@ -23,8 +23,7 @@ class UsersController < ApplicationController
   end
 
   def posts
-    @posts = @user.posts.order(created_at: :desc)
-      .includes(:user, :post_images, :hashtags, :prefecture)
+    @posts = @user.posts.with_associations.recent
 
     respond_to do |format|
       format.html
