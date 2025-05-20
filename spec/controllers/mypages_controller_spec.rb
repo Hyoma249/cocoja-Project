@@ -1,7 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe MypagesController, type: :controller do
-  let(:user) { create(:user) }
+  let(:user) do
+    user = build(:user)
+    allow(user).to receive(:send_confirmation_instructions).and_return(true)
+    allow(user).to receive(:send_on_create_confirmation_instructions).and_return(true)
+    user.skip_confirmation! if user.respond_to?(:skip_confirmation!)
+    user.confirm if user.respond_to?(:confirm)
+    user.save(validate: false)
+    user
+  end
+
+  before(:each) do
+    allow_any_instance_of(User).to receive(:send_welcome_email).and_return(true) if defined?(User.send_welcome_email)
+    allow_any_instance_of(Net::SMTP).to receive(:start).and_return(true)
+    allow_any_instance_of(Net::SMTP).to receive(:send_message).and_return(true)
+    ActionMailer::Base.delivery_method = :test
+    ActionMailer::Base.perform_deliveries = false
+  end
 
   describe 'アクセス制御' do
     context 'when 未ログインの場合' do
@@ -29,8 +45,13 @@ RSpec.describe MypagesController, type: :controller do
     end
 
     describe 'GET #show' do
-      let!(:newer_post) { create(:post, user: user, created_at: 1.day.ago) }
-      let!(:older_post) { create(:post, user: user, created_at: 2.days.ago) }
+      let!(:newer_post) do
+        create(:post, user: user, created_at: 1.day.ago)
+      end
+
+      let!(:older_post) do
+        create(:post, user: user, created_at: 2.days.ago)
+      end
 
       before { get :show }
 
@@ -44,7 +65,7 @@ RSpec.describe MypagesController, type: :controller do
       end
 
       context 'when JSONフォーマットでリクエストされた場合' do
-        before { get :show, format: :json }
+        before { get :show, format: :json, params: { page: 1 } }
 
         it '正常にレスポンスを返すこと' do
           expect(response).to be_successful

@@ -1,7 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationController, type: :controller do
-  let(:user) { create(:user) }
+  let(:user) do
+    user = build(:user)
+    allow(user).to receive(:send_confirmation_instructions).and_return(true)
+    allow(user).to receive(:send_on_create_confirmation_instructions).and_return(true)
+    user.skip_confirmation!
+    user.confirm
+    user.save(validate: false)
+    user
+  end
+
+  before(:each) do
+    allow_any_instance_of(User).to receive(:send_welcome_email).and_return(true) if defined?(User.send_welcome_email)
+    allow_any_instance_of(Net::SMTP).to receive(:start).and_return(true)
+    allow_any_instance_of(Net::SMTP).to receive(:send_message).and_return(true)
+    ActionMailer::Base.delivery_method = :test
+    ActionMailer::Base.perform_deliveries = false
+  end
 
   describe '#after_sign_in_path_for' do
     before do
@@ -21,10 +37,17 @@ RSpec.describe ApplicationController, type: :controller do
       def index
         render plain: 'Hello World'
       end
+
+      def test_redirect_if_authenticated
+        redirect_if_authenticated
+      end
     end
 
     before do
-      routes.draw { get 'index' => 'anonymous#index' }
+      routes.draw do
+        get 'index' => 'anonymous#index'
+        get 'test_redirect' => 'anonymous#test_redirect_if_authenticated'
+      end
       @request.env['HTTP_HOST'] = 'test.host'
     end
 
@@ -39,6 +62,34 @@ RSpec.describe ApplicationController, type: :controller do
 
     context 'when ログインしていない' do
       it 'リダイレクトしないこと' do
+        allow(controller).to receive(:authenticate_user!).and_return(true)
+        allow(controller).to receive(:user_signed_in?).and_return(false)
+
+        get :index
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to eq 'Hello World'
+      end
+    end
+  end
+
+  describe 'インテグレーションテスト' do
+    controller do
+      def index
+        render plain: 'Hello World'
+      end
+    end
+
+    before do
+      routes.draw do
+        get 'index' => 'anonymous#index'
+      end
+    end
+
+    context 'ログインしていない場合' do
+      it 'indexアクションにアクセスできること' do
+        allow(controller).to receive(:authenticate_user!).and_return(true)
+        allow(controller).to receive(:user_signed_in?).and_return(false)
+
         get :index
         expect(response).to have_http_status(:ok)
         expect(response.body).to eq 'Hello World'

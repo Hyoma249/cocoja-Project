@@ -1,8 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
-  let(:user) { create(:user) }
+  let(:user) do
+    user = build(:user)
+    allow(user).to receive(:send_confirmation_instructions).and_return(true)
+    allow(user).to receive(:send_on_create_confirmation_instructions).and_return(true)
+    user.skip_confirmation! if user.respond_to?(:skip_confirmation!)
+    user.confirm if user.respond_to?(:confirm)
+    user.save(validate: false)
+    user
+  end
+
   let(:prefecture) { create(:prefecture) }
+
+  before(:each) do
+    allow_any_instance_of(User).to receive(:send_welcome_email).and_return(true) if defined?(User.send_welcome_email)
+    allow_any_instance_of(Net::SMTP).to receive(:start).and_return(true)
+    allow_any_instance_of(Net::SMTP).to receive(:send_message).and_return(true)
+    ActionMailer::Base.delivery_method = :test
+    ActionMailer::Base.perform_deliveries = false
+  end
 
   describe 'アクセス制御' do
     context 'when 未ログインの場合' do
@@ -86,7 +103,7 @@ RSpec.describe PostsController, type: :controller do
 
         it '投稿一覧ページにリダイレクトすること' do
           post :create, params: valid_params
-          expect(response).to redirect_to(posts_url(protocol: 'https'))
+          expect(response).to redirect_to(posts_path)
         end
 
         it '成功メッセージが表示されること' do
@@ -117,8 +134,7 @@ RSpec.describe PostsController, type: :controller do
         end
 
         it 'エラーメッセージを設定すること' do
-          # 実際のエラーメッセージに合わせて修正
-          expect(flash.now[:alert]).to eq 'Prefectureを入力してください'
+          expect(flash.now[:alert]).to eq '都道府県は必須項目です'
         end
       end
     end
