@@ -12,8 +12,8 @@ class Prefecture < ApplicationRecord
   }
 
   scope :with_points_between, ->(start_date, end_date) {
-    joins(posts: :votes)
-      .where('votes.voted_on BETWEEN ? AND ?', start_date.to_date, end_date.to_date)
+    left_outer_joins(posts: :votes)
+      .where('votes.voted_on IS NULL OR votes.voted_on BETWEEN ? AND ?', start_date.to_date, end_date.to_date)
       .group(:id)
       .select('prefectures.*, COALESCE(SUM(votes.points), 0) as weekly_points')
   }
