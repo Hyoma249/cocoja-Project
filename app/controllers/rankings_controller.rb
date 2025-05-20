@@ -55,7 +55,7 @@ class RankingsController < ApplicationController
 
     Prefecture.all.each do |prefecture|
       pref_with_points = prefectures_with_points.find { |p| p.id == prefecture.id }
-      points = pref_with_points ? pref_with_points.weekly_points.to_i : 0
+      points = pref_with_points ? pref_with_points.attributes['weekly_points'].to_i : 0
       prefecture_points[prefecture.id] = { prefecture: prefecture, points: points }
     end
 
