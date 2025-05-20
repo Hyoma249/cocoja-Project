@@ -1,4 +1,3 @@
-# ユーザーの投票を管理するモデル
 class Vote < ApplicationRecord
   belongs_to :user
   belongs_to :post
@@ -17,10 +16,9 @@ class Vote < ApplicationRecord
   validate :daily_point_limit
   validate :cannot_vote_own_post
 
-  scope :today, -> { where(voted_on: Time.zone.today) }
-  scope :for_post, ->(post_id) { where(post_id: post_id) }
-  scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :total_points, -> { sum(:points) }
+  scope :today, lambda {
+    where("DATE(created_at AT TIME ZONE 'UTC') = ?", Time.zone.today)
+  }
 
   before_validation :set_voted_on
 
@@ -29,9 +27,12 @@ class Vote < ApplicationRecord
   def daily_point_limit
     return unless user && points
 
-    return unless points.to_i > user.remaining_daily_points
+    total_points_today = user.votes.today.sum(:points)
+    total_after_vote = total_points_today + points.to_i
 
-    errors.add(:points, "1日の投票ポイント上限（5ポイント）を超えています。残り#{user.remaining_daily_points}ポイントです。")
+    return unless total_after_vote > 5
+
+    errors.add(:points, "1日の投票ポイント上限（5ポイント）を超えています。残り#{5 - total_points_today}ポイントです。")
   end
 
   def cannot_vote_own_post

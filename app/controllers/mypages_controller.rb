@@ -4,15 +4,17 @@ class MypagesController < ApplicationController
 
   def show
     @user = current_user
-    @posts = current_user.posts.with_associations.recent
+
+    @posts = current_user.posts.order(created_at: :desc).includes(:post_images)
 
     respond_to do |format|
       format.html
       format.json {
-        page = (params[:page] || 1).to_i
+        page = params[:page].to_i || 1
         per_page = 12
+        offset = (page - 1) * per_page
 
-        @posts = @posts.paginate(page, per_page)
+        @posts = @posts.offset(offset).limit(per_page)
         render json: {
           posts: @posts.as_json(
             include: [
@@ -45,15 +47,17 @@ class MypagesController < ApplicationController
   end
 
   def posts
-    @posts = current_user.posts.with_associations.recent
+    @posts = current_user.posts.order(created_at: :desc)
+      .includes(:user, :post_images, :hashtags, :prefecture)
 
     respond_to do |format|
       format.html
       format.json {
-        page = (params[:page] || 1).to_i
-        per_page = 12
+        page = params[:page].to_i || 1
+        per_page = 10
+        offset = (page - 1) * per_page
 
-        paginated_posts = @posts.paginate(page, per_page)  # offset/limit の代わりに paginate スコープを使用
+        paginated_posts = @posts.offset(offset).limit(per_page)
         render json: {
           posts: render_to_string(partial: 'posts/post', collection: paginated_posts, formats: [:html]),
           next_page: page + 1,
@@ -64,7 +68,7 @@ class MypagesController < ApplicationController
   end
 
   def post
-    @post = current_user.posts.with_associations.find(params[:id])
+    @post = current_user.posts.includes(:user, :post_images, :hashtags, :prefecture).find(params[:id])
 
   rescue ActiveRecord::RecordNotFound
     redirect_to mypage_path, alert: "投稿が見つかりませんでした"

@@ -13,8 +13,11 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        page = (params[:page] || 1).to_i
-        @posts = Post.with_associations.recent.paginate(page, POSTS_PER_PAGE)
+        page = params[:slide].to_i
+        @posts = Post.includes(:user, :prefecture, :hashtags, :post_images)
+                     .order(created_at: :desc)
+                     .page(page)
+                     .per(POSTS_PER_PAGE)
 
         render json: build_posts_json
       end
@@ -58,14 +61,31 @@ class PostsController < ApplicationController
   end
 
   def load_posts_with_filters
-    @posts = Post.with_associations.recent
-    @posts = @posts.by_hashtag(params[:name]) if params[:name].present?
-    @posts = @posts.paginate((params[:page] || 1).to_i, POSTS_PER_PAGE)
+    @posts = build_base_query
+    filter_by_hashtag if params[:name].present?
+    apply_pagination
+  end
+
+  def build_base_query
+    Post.includes(:prefecture, :user, :hashtags, :post_images)
+        .order(created_at: :desc)
+  end
+
+  def filter_by_hashtag
+    @tag = Hashtag.find_by(name: params[:name])
+    @posts = @posts.joins(:hashtags).where(hashtags: { name: params[:name] }) if @tag
+  end
+
+  def apply_pagination
+    @posts = @posts.page(params[:slide]).per(POSTS_PER_PAGE)
   end
 
   def load_hashtag_posts
-    @posts = @tag.posts.distinct.with_associations.recent
-                 .paginate((params[:page] || 1).to_i, POSTS_PER_PAGE)
+    @posts = @tag.posts.distinct
+                 .includes(:prefecture, :user, :hashtags, :post_images)
+                 .order(created_at: :desc)
+                 .page(params[:slide] || params[:page])
+                 .per(POSTS_PER_PAGE)
   end
 
   def render_response
@@ -73,5 +93,9 @@ class PostsController < ApplicationController
       format.html
       format.json { render json: build_posts_json }
     end
+  end
+
+  def created_at_formatted
+    I18n.l(created_at, format: :long)
   end
 end

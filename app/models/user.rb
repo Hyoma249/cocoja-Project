@@ -31,11 +31,11 @@ class User < ApplicationRecord
   end
 
   def voted_today_for?(post)
-    votes.today.for_post(post.id).exists?
+    votes.where(post_id: post.id, voted_on: Time.zone.today).exists?
   end
 
   def voted_for?(post)
-    votes.for_post(post.id).exists?
+    votes.exists?(post_id: post.id)
   end
 
   def follow(user)
@@ -49,7 +49,7 @@ class User < ApplicationRecord
   end
 
   def following?(user)
-    active_relationships.exists?(followed_id: user.id)
+    followings.include?(user)
   end
 
   def self.from_omniauth(auth)

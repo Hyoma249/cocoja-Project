@@ -14,14 +14,6 @@ class Post < ApplicationRecord
 
   after_create :create_hashtags
 
-  scope :recent, -> { order(created_at: :desc) }
-  scope :with_associations, -> { includes(:user, :post_images, :hashtags, :prefecture) }
-  scope :by_prefecture, ->(prefecture_id) { where(prefecture_id: prefecture_id) }
-  scope :by_hashtag, ->(hashtag_name) {
-    joins(:hashtags).where(hashtags: { name: hashtag_name }) if hashtag_name.present?
-  }
-  scope :paginate, ->(page, per_page) { page(page).per(per_page) }
-
   def total_points
     votes.sum(:points)
   end
