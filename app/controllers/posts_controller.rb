@@ -14,10 +14,7 @@ class PostsController < ApplicationController
       format.html
       format.json do
         page = params[:slide].to_i
-        @posts = Post.includes(:user, :prefecture, :hashtags, :post_images)
-                     .order(created_at: :desc)
-                     .page(page)
-                     .per(POSTS_PER_PAGE)
+        @posts = Post.with_associations.recent.page(page).per(POSTS_PER_PAGE)
 
         render json: build_posts_json
       end
@@ -67,8 +64,7 @@ class PostsController < ApplicationController
   end
 
   def build_base_query
-    Post.includes(:prefecture, :user, :hashtags, :post_images)
-        .order(created_at: :desc)
+    Post.with_associations.recent
   end
 
   def filter_by_hashtag
@@ -81,11 +77,7 @@ class PostsController < ApplicationController
   end
 
   def load_hashtag_posts
-    @posts = @tag.posts.distinct
-                 .includes(:prefecture, :user, :hashtags, :post_images)
-                 .order(created_at: :desc)
-                 .page(params[:slide] || params[:page])
-                 .per(POSTS_PER_PAGE)
+    @posts = @tag.posts.distinct.with_associations.recent.page(params[:slide] || params[:page]).per(POSTS_PER_PAGE)
   end
 
   def render_response

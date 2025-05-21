@@ -14,6 +14,12 @@ class Post < ApplicationRecord
 
   after_create :create_hashtags
 
+  scope :with_associations, -> {
+    includes(:prefecture, :user, :hashtags, :post_images)
+  }
+
+  scope :recent, -> { order(created_at: :desc) }
+
   def total_points
     votes.sum(:points)
   end
